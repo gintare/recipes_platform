@@ -1,0 +1,19 @@
+.error {
+  color: var(--tomato);
+}
+
+.submit-btn {
+  background-color: var(--subtle-red);
+}
+
+.submit-btn:hover {
+  background-color: var(--subtle-red);
+}
+
+.nav-login {
+  color: var(--tomato);
+}
+
+.register-form > input {
+  margin-bottom: -1rem;
+}

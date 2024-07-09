@@ -1,0 +1,16 @@
+.error {
+  color: var(--tomato);
+}
+
+.login-btn {
+  color: var(--black);
+  background-color: var(--lime-green);
+}
+
+.login-btn:hover {
+  background-color: var(--gradient-violet-blue);
+}
+
+.nav-register {
+  color: var(--tomato);
+}

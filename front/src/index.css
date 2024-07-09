@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  background-color: var(--whitesmoke);
+  min-width: 375px;
+}
+
+h1,
+h2,
+h3,
+h4,
+a {
+  font-family: 'Open Sans', sans-serif;
+}
+
+p,
+span,
+label,
+select,
+button {
+  font-family: 'Montserrat', sans-serif;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.App {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 3.75rem;
+}
