@@ -11,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -61,6 +63,12 @@ public class UserService {
         response.setToken(null);
         response.setMessage("Email or password is incorrect");
         return response;
+    }
+
+    public List<String> getAllUserEmails() {
+        return userRepository.findAll().stream()
+                .map(User::getEmail)
+                .collect(Collectors.toList());
     }
 
     public Optional<User> getCurrentUser() {
