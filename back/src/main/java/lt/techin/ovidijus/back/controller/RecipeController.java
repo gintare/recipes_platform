@@ -2,6 +2,7 @@ package lt.techin.ovidijus.back.controller;
 
 import lt.techin.ovidijus.back.dto.RecipeRequestDTO;
 import lt.techin.ovidijus.back.dto.RecipeResponseDTO;
+import lt.techin.ovidijus.back.dto.RecipeUpdateDTO;
 import lt.techin.ovidijus.back.service.RecipeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,12 @@ public class RecipeController {
     recipeService.deleteRecipe(recipeId);
     return ResponseEntity.ok("Recipe deleted successfully");
     }
+    @PutMapping("/api/recipes/{id}")
+    public ResponseEntity<String> updateRecipe(@PathVariable("id") Long recipeId,
+                                               @RequestBody RecipeUpdateDTO recipeUpdateDTO) {
+        recipeService.updateRecipe(recipeId, recipeUpdateDTO);
+        return ResponseEntity.ok("Recipe updated successfully");
+    }
+
 
 }
