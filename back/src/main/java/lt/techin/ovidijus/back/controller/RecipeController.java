@@ -37,7 +37,7 @@ public class RecipeController {
 
 
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/api/recipes/{id}")
     public ResponseEntity<String> deleteRecipe(@PathVariable("id") Long recipeId){
     recipeService.deleteRecipe(recipeId);
     return ResponseEntity.ok("Recipe deleted successfully");

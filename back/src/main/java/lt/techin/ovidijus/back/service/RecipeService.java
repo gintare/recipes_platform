@@ -124,7 +124,7 @@ public class RecipeService {
     }
 
     public void deleteRecipe (Long recipeId){
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(()->new RecipeNotFoundException("Recipe not found"));
         recipeRepository.deleteById(recipeId);
     }
 }
