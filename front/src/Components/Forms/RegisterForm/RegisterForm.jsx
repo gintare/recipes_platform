@@ -1,14 +1,16 @@
 import { useForm } from 'react-hook-form';
 import './RegisterForm.css';
-import { useState, useRef, useContext } from 'react';
+import { useState, useRef, useContext, useEffect } from 'react';
 import { postRegister } from '../../../services/post';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import UserContext from '../../../Context/UserContext/UserContext';
+import { getUserEmail } from '../../../services/get';
 
 const RegisterForm = () => {
   const [error, setError] = useState('');
   const { updateUser } = useContext(UserContext);
+  const [existingUserEmail, setExistingUserEmail] = useState([]);
 
   const {
     register,
@@ -29,7 +31,21 @@ const RegisterForm = () => {
   password.current = watch('password', '');
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchUsersEmail = async () => {
+      const userEmail = await getUserEmail();
+      setExistingUserEmail(userEmail);
+    };
+
+    fetchUsersEmail();
+  }, []);
+
   const formSubmitHandler = async (data) => {
+    if (existingUserEmail.includes(data.email)) {
+      toast.error('A user with this email already exists!');
+      return;
+    }
+
     try {
       const dataCopy = { ...data };
       delete dataCopy['repeatPassword'];
@@ -50,10 +66,8 @@ const RegisterForm = () => {
       onSubmit={handleSubmit(formSubmitHandler)}
     >
       <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
-        <label htmlFor='userName' className='form-label'>
-          User Name
-        </label>
         <input
+          placeholder='User name'
           type='text'
           className={`form-control ${errors.userName ? 'is-invalid' : ''}`}
           id='userName'
@@ -65,10 +79,8 @@ const RegisterForm = () => {
         {errors.userName && <div className='invalid-feedback'>{errors.userName.message}</div>}
       </div>
       <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
-        <label htmlFor='email' className='form-label'>
-          Email
-        </label>
         <input
+          placeholder='Email'
           type='email'
           className={`form-control ${errors.email ? 'is-invalid' : ''}`}
           id='email'
@@ -84,25 +96,30 @@ const RegisterForm = () => {
         {errors.email && <div className='invalid-feedback'>{errors.email.message}</div>}
       </div>
       <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
-        <label htmlFor='password' className='form-label'>
-          Password
-        </label>
         <input
+          placeholder='Password'
           type='password'
           className={`form-control ${errors.password ? 'is-invalid' : ''}`}
           id='password'
           {...register('password', {
             required: 'Password is required',
-            validate: (value) => value.length >= 8 || 'Password must have at least 8 characters',
+            validate: {
+              hasUpperCase: (value) =>
+                /[A-Z]/.test(value) || 'Password must include at least one uppercase letter.',
+              hasLowerCase: (value) =>
+                /[a-z]/.test(value) || 'Password must include at least one lowercase letter.',
+              hasNumber: (value) =>
+                /\d/.test(value) || 'Password must include at least one number.',
+              minLength: (value) =>
+                value.length >= 8 || 'Password must have at least 8 characters.',
+            },
           })}
         />
         {errors.password && <div className='invalid-feedback'>{errors.password.message}</div>}
       </div>
       <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
-        <label htmlFor='repeatPassword' className='form-label'>
-          Repeat Password
-        </label>
         <input
+          placeholder='Repeat password'
           type='password'
           className={`form-control ${errors.repeatPassword ? 'is-invalid' : ''}`}
           id='repeatPassword'
