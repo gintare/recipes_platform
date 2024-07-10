@@ -24,6 +24,7 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.recipeService.createRecipe(recipeRequestDTO));
     }
 
+
     @GetMapping("/api/recipes")
     public List<RecipeResponseDTO> findAllRecipes() {
         return this.recipeService.findAll();
@@ -34,5 +35,12 @@ public class RecipeController {
          return ResponseEntity.ok(this.recipeService.updateRecipe(categoryId, recipeId, recipeRequestDTO));
     }
 
+
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteRecipe(@PathVariable("id") Long recipeId){
+    recipeService.deleteRecipe(recipeId);
+    return ResponseEntity.ok("Recipe deleted successfully");
+    }
 
 }

@@ -13,6 +13,7 @@ import lt.techin.ovidijus.back.model.Recipe;
 import lt.techin.ovidijus.back.repository.CategoryRepository;
 import lt.techin.ovidijus.back.repository.IngredientRepository;
 import lt.techin.ovidijus.back.repository.RecipeRepository;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -120,5 +121,10 @@ public class RecipeService {
         recipeResponseDTO.setInstructions(recipe.getInstructions());
 
         return recipeResponseDTO;
+    }
+
+    public void deleteRecipe (Long recipeId){
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
+        recipeRepository.deleteById(recipeId);
     }
 }
