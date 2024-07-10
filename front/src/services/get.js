@@ -19,3 +19,12 @@ export const getOne = async (id) => {
     console.error(`Error fetching data for ID ${id}: ${error.message}`);
   }
 };
+
+export const getAllCategories = async () => {
+  try {
+    const resp = await axios.get(`${API_URL}/api/categories`);
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error fetching all data: ${error.message}`);
+  }
+};
