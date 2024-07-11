@@ -4,7 +4,7 @@ import { getAllCategories } from "../../../services/get";
 import IngredientsTable from "./IngredientsTable ";
 import { recipePost } from "../../../services/post";
 import { Controller } from "react-hook-form";
-import ImageUpload from "./ImageUpload";
+import { Toaster, toast } from 'sonner'
 
 const RecipesForm = () => {
   const [error, setError] = useState("");
@@ -37,6 +37,8 @@ const RecipesForm = () => {
     try{
       const recipe = recipePost(data.categoryId, data);
       console.log(recipe);
+      toast.success('Recipe has been created')
+      reset();
     }catch(error){
        setError(error.message)
     }
@@ -95,10 +97,10 @@ const RecipesForm = () => {
             Recipe image file
           </label>
           <input
-            type="file"
+            type="text"
             id="image"
             className="form-control"
-            aria-label="file example"
+            aria-label="image file url"
             {...register("image")}
           />
         </div>
@@ -167,22 +169,6 @@ const RecipesForm = () => {
             </select>
             )}
             />
-
-          {/* <select
-            className="form-select form-select-md mb-3"
-            id="category"
-            aria-label="Large select example"
-            onChange={handleChange}
-            //{...register("categoryId")}
-          >
-            {categories.map((category) => {
-              return (
-                <option key={category.id} value="{category.id}">
-                  {category.name}
-                </option>
-              );
-            })}
-          </select> */}
         </div>
 
         <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
@@ -206,6 +192,8 @@ const RecipesForm = () => {
               pattern: /^[1-9]+$/i,
               validate: (value) =>
                 value.trim() !== "" || "Recipe preparation time cannot be empty",
+              validate: (value) =>
+                value.trim() !== "0" || "Recipe preparation time cannot be 0",
             })}
           />
           {errors.timeInMinutes && (
@@ -220,10 +208,7 @@ const RecipesForm = () => {
           {error && <div className="alert alert-danger mt-3">{error}</div>}
         </div>
       </form>
-      <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
-        <ImageUpload />
-      </div>
-      
+      <Toaster position="top-left" richColors />
     </>
   );
 };

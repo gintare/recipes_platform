@@ -3,8 +3,10 @@ import RecipesForm from "../../Components/Forms/RecipesForm/RecipesForm";
 const RecipesPage = () => {
   return (
     <div className='recipes-page'>
-      <h2>Hello1</h2>
       <div>
+         <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
+          <h1>Recipe register</h1>
+        </div>
         <RecipesForm/>
         {/* <form >
           <div class="mb-3">

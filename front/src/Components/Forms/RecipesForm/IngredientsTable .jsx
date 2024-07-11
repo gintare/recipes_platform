@@ -9,18 +9,7 @@ function IngredientsTable({ ingredients, setIngredients, register }) {
     setIngredientsArray([...ingredientsArray, newRow]);
   };
 
-//   const handleFormChange = (index, event) => {
-//     const newIngredientsArray = [...ingredientsArray];
-//     newIngredientsArray[index][event.target.name] = event.target.value;
-
-//     // Update the local state
-//     setIngredientsArray(newIngredientsArray);
-
-//     // Update the parent state
-//     setIngredients(newIngredientsArray);
-//     console.log(ingredients);
-
-//   };
+  
 
   const renderIngredients = (ingredient, index) => {
     return (
