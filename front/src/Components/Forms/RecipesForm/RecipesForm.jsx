@@ -11,6 +11,7 @@ const RecipesForm = () => {
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
   const [ingredients, setIngredients] = useState([]);
+  const [update, setUpdate] = useState(0);
 
   const {
     register,
@@ -39,6 +40,8 @@ const RecipesForm = () => {
       console.log(recipe);
       toast.success('Recipe has been created')
       reset();
+      setIngredients([]);
+      setUpdate((prev) => prev + 1)
     }catch(error){
        setError(error.message)
     }
@@ -64,7 +67,7 @@ const RecipesForm = () => {
       }
     };
     getCategories();
-  }, []);
+  }, [update]);
 
   return (
     <>
@@ -189,7 +192,7 @@ const RecipesForm = () => {
             id="timeInMinutes"
             {...register("timeInMinutes", {
               required: "Recipe preparation time is required",
-              pattern: /^[1-9]+$/i,
+              pattern: /^[0-9]+$/i,
               validate: (value) =>
                 value.trim() !== "" || "Recipe preparation time cannot be empty",
               validate: (value) =>
