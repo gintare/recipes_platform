@@ -31,7 +31,7 @@ public class RecipeService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    public RecipeResponseDTO createRecipe(RecipeRequestDTO recipeRequestDTO) {
+    public RecipeResponseDTO createRecipe(Long categoryId, RecipeRequestDTO recipeRequestDTO) {
         if(recipeRequestDTO.getName().isEmpty()){
             throw new RequiredFieldIsEmptyException("Required name field is empty");
         }
@@ -44,12 +44,7 @@ public class RecipeService {
         if(recipeRequestDTO.getTimeInMinutes() == 0){
             throw new RequiredFieldIsEmptyException("Required timeInMinutes field is 0");
         }
-        Category category = categoryRepository.findByName(recipeRequestDTO.getCategory().getName());
-        if(category == null){
-            category = new Category();
-            category.setName(recipeRequestDTO.getCategory().getName());
-            categoryRepository.save(category);
-        }
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("No category found with an id = "+categoryId));
 
         Recipe recipe = new Recipe();
         recipe.setName(recipeRequestDTO.getName());

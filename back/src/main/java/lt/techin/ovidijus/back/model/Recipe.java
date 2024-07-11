@@ -22,6 +22,7 @@ public class Recipe {
 
     private String name;
 
+    @Column(columnDefinition = "text")
     private String image;
 
     @Column(columnDefinition = "text")

@@ -44,6 +44,15 @@ export const getCategories = async () => {
   }
 };
 
+export const getAllCategories = async () => {
+  try {
+    const resp = await axios.get(`${API_URL}/api/categories`);
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error fetching all data: ${error.message}`);
+  }
+};
+
 export const getAllRecipes = async () => {
   try {
     const resp = await axios.get(`${API_URL}/api/recipes`);

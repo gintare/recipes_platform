@@ -20,7 +20,5 @@ public class RecipeRequestDTO {
 
     private int timeInMinutes;
 
-    private CategoryRequestDTO category;
-
     private Set<IngredientRequestDTO> ingredients ;
 }
