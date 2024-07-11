@@ -3,7 +3,7 @@ import './RecipeCarousel.css';
 import { useEffect, useState } from 'react';
 import { getAllRecipes } from '../../services/get';
 
-const RecipeCarousel = () => {
+const RecipeCarusele = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
@@ -34,4 +34,4 @@ const RecipeCarousel = () => {
   );
 };
 
-export default RecipeCarousel;
+export default RecipeCarusele;
