@@ -1,10 +1,10 @@
-import RecipeCarusele from "../../Components/RecipeCarousel/RecipeCarousel";
+import RecipeCarusele from '../../Components/RecipeCarousel/RecipeCarousel';
 import React, { useEffect, useState } from 'react';
-import { getAllRecipes } from "../../services/get"; 
-import RecipeCard from "../../Components/RecipeCard/RecipeCard";
+import { getAllRecipes } from '../../services/get';
+import RecipeCard from '../../Components/RecipeCard/RecipeCard';
+import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 
 const RecipesPage = () => {
-
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
@@ -21,14 +21,14 @@ const RecipesPage = () => {
   }, []);
 
   return (
-    <div className="recipes-page">
-      <RecipesForm/>
-      <RecipeCarusele />  
-      <div className="recipe-list">
-      {recipes.map((recipe) => (
-        <RecipeCard key={recipe.id} recipe={recipe} />
-      ))}
-    </div>
+    <div className='recipes-page'>
+      <RecipesForm />
+      <RecipeCarusele />
+      <div className='recipe-list'>
+        {recipes.map((recipe) => (
+          <RecipeCard key={recipe.id} recipe={recipe} />
+        ))}
+      </div>
     </div>
   );
 };
