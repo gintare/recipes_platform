@@ -33,7 +33,7 @@ export const loginPost = async (data) => {
 
 export const postCategory = async (data) => {
   try {
-    const response = await axios.post(`${API_URL}/categories`, data, {
+    const response = await axios.post(`${API_URL}/api/categories`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

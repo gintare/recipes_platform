@@ -14,7 +14,7 @@ export const deleteData = async (id) => {
 
 export const deleteCategory = async (id) => {
   try {
-    const resp = await axios.delete(`${API_URL}/categories/${id}`, {
+    const resp = await axios.delete(`${API_URL}/api/categories/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

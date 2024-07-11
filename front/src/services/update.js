@@ -14,7 +14,7 @@ export const updateData = async (id, data) => {
 
 export const updateCategoryAuth = async (id, data) => {
   try {
-    const resp = await axios.patch(`${API_URL}/${id}`, data, {
+    const resp = await axios.patch(`${API_URL}/api/categories/${id}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

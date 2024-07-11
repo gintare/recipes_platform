@@ -3,7 +3,7 @@ import { postCategory } from '../../../services/post';
 import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import CategoriesContext from '../../../Context/CategoriesContext/CategoriesContext';
-import { getCategories } from '../../../services/get';
+import { getAllCategories } from '../../../services/get';
 import './CategoriesForm.css';
 
 const CategoriesForm = () => {
@@ -19,13 +19,13 @@ const CategoriesForm = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      title: '',
+      name: '',
     },
   });
 
   const fetchCategories = async () => {
     try {
-      const categories = await getCategories();
+      const categories = await getAllCategories();
       setExistingCategory(categories);
     } catch (error) {
       setError(error.message);
@@ -39,13 +39,14 @@ const CategoriesForm = () => {
 
   const formSubmitHandler = async (data) => {
     const categoryExists = existingCategory.some(
-      (category) => category.title.toLowerCase() === data.title.toLowerCase()
+      (category) => category.name.toLowerCase() === data.name.toLowerCase()
     );
 
     if (categoryExists) {
-      toast.error('Category already exists');
+      toast.error('Category already exists!');
       return;
     }
+
     try {
       const response = await postCategory(data);
       setUpdate((update) => update + 1);
@@ -55,7 +56,7 @@ const CategoriesForm = () => {
       return response;
     } catch (error) {
       setError(error.message);
-      toast.error('Error adding category');
+      toast.error('Error creating category');
     }
   };
 
@@ -75,16 +76,16 @@ const CategoriesForm = () => {
         >
           <div className='mb-3'>
             <input
-              placeholder='Category title'
+              placeholder='Category name'
               type='text'
-              className={`form-control ${errors.title ? 'is-invalid' : ''}`}
-              id='title'
-              {...register('title', {
-                required: 'Category title is required',
-                validate: (value) => value.trim() !== '' || 'Category title cannot be empty',
+              className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+              id='name'
+              {...register('name', {
+                required: 'Category name is required',
+                validate: (value) => value.trim() !== '' || 'Category name cannot be empty',
               })}
             />
-            {errors.title && <div className='invalid-feedback'>{errors.title.message}</div>}
+            {errors.name && <div className='invalid-feedback'>{errors.name.message}</div>}
           </div>
 
           <button type='submit' className='btn btn-success submit-category-btn w-100'>
