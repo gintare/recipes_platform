@@ -1,14 +1,20 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { getAllCategories } from "../../../services/get";
+import IngredientsTable from "./IngredientsTable ";
+import { recipePost } from "../../../services/post";
+import { Controller } from "react-hook-form";
+import ImageUpload from "./ImageUpload";
 
 const RecipesForm = () => {
   const [error, setError] = useState("");
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
+  const [ingredients, setIngredients] = useState([]);
 
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors },
@@ -22,16 +28,35 @@ const RecipesForm = () => {
       timeInMinutes: 0,
       categoryId: 0,
       category: {},
+      ingredients: [{ title: "" }],
     },
   });
 
-  const formSubmitHandler = (data) => {};
+  const formSubmitHandler = (data) => {
+    console.log(data);
+    try{
+      const recipe = recipePost(data.categoryId, data);
+      console.log(recipe);
+    }catch(error){
+       setError(error.message)
+    }
+  };
+
+  const handleChange = (event) => {
+    setCategory(event.target.value);
+    console.log(event.target.value);
+    // setValue("categoryId", event.target.value);
+  };
 
   useEffect(() => {
     const getCategories = async () => {
       try {
         const categor = await getAllCategories();
         console.log(categor);
+        if (categor.lenght == 0) {
+          throw new Error("no categories found");
+        }
+        setCategories(categor);
       } catch (error) {
         setError(error.message);
       }
@@ -119,12 +144,86 @@ const RecipesForm = () => {
         </div>
 
         <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
+          <label htmlFor="category" className="form-label">
+            Category
+          </label>
+          <Controller 
+            name="categoryId" 
+            control = {control}
+            render= {({field:{onChange, value}}) => (
+              <select
+              // labelId="category"
+              className="form-select form-select-md mb-3"
+              id="category"
+              value={value}
+              label="Category"
+              onChange={onChange}
+              // {...register("categoryId")}
+            >
+              <option value={0}></option>
+              {categories.map((category) => {
+                 return <option key={category.id} value={category.id}>{category.name}</option>
+              })}
+            </select>
+            )}
+            />
+
+          {/* <select
+            className="form-select form-select-md mb-3"
+            id="category"
+            aria-label="Large select example"
+            onChange={handleChange}
+            //{...register("categoryId")}
+          >
+            {categories.map((category) => {
+              return (
+                <option key={category.id} value="{category.id}">
+                  {category.name}
+                </option>
+              );
+            })}
+          </select> */}
+        </div>
+
+        <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
+          <IngredientsTable
+            ingredients={ingredients}
+            setIngredients={setIngredients}
+            register={register}
+          />
+        </div>
+
+        <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
+          <label htmlFor="timeInMinutes" className="form-label">
+            Preparation time, min
+          </label>
+          <input
+            type="number"
+            className={`form-control ${errors.timeInMinutes ? "is-invalid" : ""}`}
+            id="timeInMinutes"
+            {...register("timeInMinutes", {
+              required: "Recipe preparation time is required",
+              pattern: /^[1-9]+$/i,
+              validate: (value) =>
+                value.trim() !== "" || "Recipe preparation time cannot be empty",
+            })}
+          />
+          {errors.timeInMinutes && (
+            <div className="invalid-feedback">{errors.timeInMinutes.message}</div>
+          )}
+        </div>
+
+        <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
           <button type="submit" className="btn submit-btn w-100">
             Register
           </button>
           {error && <div className="alert alert-danger mt-3">{error}</div>}
         </div>
       </form>
+      <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
+        <ImageUpload />
+      </div>
+      
     </>
   );
 };

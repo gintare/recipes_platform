@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class RecipeController {
 
     RecipeService recipeService;
@@ -19,9 +20,9 @@ public class RecipeController {
     }
 
 
-    @PostMapping("/api/recipes")
-    public ResponseEntity<?> createRecipe(@RequestBody RecipeRequestDTO recipeRequestDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.recipeService.createRecipe(recipeRequestDTO));
+    @PostMapping("/api/categories/{categoryId}/recipes")
+    public ResponseEntity<?> createRecipe(@PathVariable Long categoryId, @RequestBody RecipeRequestDTO recipeRequestDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.recipeService.createRecipe(categoryId, recipeRequestDTO));
     }
 
     @GetMapping("/api/recipes")
@@ -29,7 +30,7 @@ public class RecipeController {
         return this.recipeService.findAll();
     }
 
-    @PutMapping("/api/category/{categoryId}/recipes/{recipeId}")
+    @PutMapping("/api/categories/{categoryId}/recipes/{recipeId}")
     public ResponseEntity<?> updateRecipe(@PathVariable Long categoryId, @PathVariable Long recipeId, @RequestBody RecipeRequestDTO recipeRequestDTO){
          return ResponseEntity.ok(this.recipeService.updateRecipe(categoryId, recipeId, recipeRequestDTO));
     }
