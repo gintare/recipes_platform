@@ -18,7 +18,7 @@ export const UserProvider = ({ children }) => {
   const logoutHandler = () => {
     localStorage.clear();
     sessionStorage.clear();
-    toast.success('Logged out!');
+    toast.success('You have been logged out successfully.');
     updateUser();
     navigate('/login', { replace: true });
   };

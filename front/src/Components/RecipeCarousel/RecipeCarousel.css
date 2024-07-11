@@ -1,0 +1,9 @@
+.recipe-carousel-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 4rem;
+    width: 100%;
+    height: auto;
+    max-width: 800px; /* Nustatykite maksimalų plotį, kad paveikslėlis nebūtų per didelis */
+}

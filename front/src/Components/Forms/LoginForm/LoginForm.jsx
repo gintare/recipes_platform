@@ -32,7 +32,6 @@ const LoginForm = () => {
       navigate('/recipes');
       toast.success('Login successfull!');
     } catch (error) {
-      setError(error.message);
       toast.error('Invalid email or password');
     }
   };
@@ -44,10 +43,8 @@ const LoginForm = () => {
       onSubmit={handleSubmit(formSubmitHandler)}
     >
       <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
-        <label htmlFor='email' className='form-label'>
-          Email
-        </label>
         <input
+          placeholder='Email'
           type='email'
           className={`form-control ${errors.email ? 'is-invalid' : ''}`}
           id='email'
@@ -63,10 +60,8 @@ const LoginForm = () => {
         {errors.email && <div className='invalid-feedback'>{errors.email.message}</div>}
       </div>
       <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
-        <label htmlFor='password' className='form-label'>
-          Password
-        </label>
         <input
+          placeholder='Password'
           type='password'
           className={`form-control ${errors.password ? 'is-invalid' : ''}`}
           id='password'

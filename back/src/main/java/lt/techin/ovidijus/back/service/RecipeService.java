@@ -1,9 +1,6 @@
 package lt.techin.ovidijus.back.service;
 
-import lt.techin.ovidijus.back.dto.IngredientRequestDTO;
-import lt.techin.ovidijus.back.dto.IngredientResponseDTO;
-import lt.techin.ovidijus.back.dto.RecipeRequestDTO;
-import lt.techin.ovidijus.back.dto.RecipeResponseDTO;
+import lt.techin.ovidijus.back.dto.*;
 import lt.techin.ovidijus.back.exceptions.CategoryNotFoundException;
 import lt.techin.ovidijus.back.exceptions.RecipeNotFoundException;
 import lt.techin.ovidijus.back.exceptions.RequiredFieldIsEmptyException;
@@ -13,6 +10,7 @@ import lt.techin.ovidijus.back.model.Recipe;
 import lt.techin.ovidijus.back.repository.CategoryRepository;
 import lt.techin.ovidijus.back.repository.IngredientRepository;
 import lt.techin.ovidijus.back.repository.RecipeRepository;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -116,4 +114,29 @@ public class RecipeService {
 
         return recipeResponseDTO;
     }
+
+    public void deleteRecipe (Long recipeId){
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(()->new RecipeNotFoundException("Recipe not found"));
+        recipeRepository.deleteById(recipeId);
+    }
+    public void updateRecipe(Long recipeId, RecipeUpdateDTO recipeUpdateDTO) {
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
+
+        Category category = categoryRepository.findByName(recipeUpdateDTO.getCategory());
+        if (category == null) {
+            category = new Category();
+            category.setName(recipeUpdateDTO.getCategory());
+            categoryRepository.save(category);
+        }
+
+        recipe.setName(recipeUpdateDTO.getName());
+        recipe.setImage(recipeUpdateDTO.getImage());
+        recipe.setDescription(recipeUpdateDTO.getDescription());
+        recipe.setInstructions(recipeUpdateDTO.getInstructions());
+        recipe.setTimeInMinutes(recipeUpdateDTO.getTimeInMinutes());
+        recipe.setCategory(category);
+
+        recipeRepository.save(recipe);
+    }
+
 }
