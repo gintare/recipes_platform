@@ -15,7 +15,7 @@ import { CategoriesProvider } from './Context/CategoriesContext/CategoriesContex
 function App() {
   return (
     <>
-      <ToastContainer autoClose={800} position='top-center' />
+      <ToastContainer autoClose={1000} position='top-center' />
       <CategoriesProvider>
         <UserProvider>
           <Header />

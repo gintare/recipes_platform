@@ -20,7 +20,7 @@ nav {
   background-color: var(--primary-blue);
 }
 
-.active:not(.username) {
+.active:not(.carousel-control-prev, .carousel-item, .carousel-indicators > button) {
   background-color: var(--dark-salmon) !important;
   border-radius: 0.2rem;
 }

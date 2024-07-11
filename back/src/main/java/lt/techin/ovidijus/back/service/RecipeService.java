@@ -1,9 +1,6 @@
 package lt.techin.ovidijus.back.service;
 
-import lt.techin.ovidijus.back.dto.IngredientRequestDTO;
-import lt.techin.ovidijus.back.dto.IngredientResponseDTO;
-import lt.techin.ovidijus.back.dto.RecipeRequestDTO;
-import lt.techin.ovidijus.back.dto.RecipeResponseDTO;
+import lt.techin.ovidijus.back.dto.*;
 import lt.techin.ovidijus.back.exceptions.CategoryNotFoundException;
 import lt.techin.ovidijus.back.exceptions.RecipeNotFoundException;
 import lt.techin.ovidijus.back.exceptions.RequiredFieldIsEmptyException;
@@ -127,4 +124,24 @@ public class RecipeService {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(()->new RecipeNotFoundException("Recipe not found"));
         recipeRepository.deleteById(recipeId);
     }
+    public void updateRecipe(Long recipeId, RecipeUpdateDTO recipeUpdateDTO) {
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow();
+
+        Category category = categoryRepository.findByName(recipeUpdateDTO.getCategory());
+        if (category == null) {
+            category = new Category();
+            category.setName(recipeUpdateDTO.getCategory());
+            categoryRepository.save(category);
+        }
+
+        recipe.setName(recipeUpdateDTO.getName());
+        recipe.setImage(recipeUpdateDTO.getImage());
+        recipe.setDescription(recipeUpdateDTO.getDescription());
+        recipe.setInstructions(recipeUpdateDTO.getInstructions());
+        recipe.setTimeInMinutes(recipeUpdateDTO.getTimeInMinutes());
+        recipe.setCategory(category);
+
+        recipeRepository.save(recipe);
+    }
+
 }
