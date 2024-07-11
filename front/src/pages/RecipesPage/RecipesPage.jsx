@@ -22,6 +22,7 @@ const RecipesPage = () => {
 
   return (
     <div className="recipes-page">
+      <RecipesForm/>
       <RecipeCarusele />  
       <div className="recipe-list">
       {recipes.map((recipe) => (
