@@ -24,7 +24,20 @@ export const getOne = async (id) => {
 
 export const getUserEmail = async () => {
   try {
-    const resp = await axios.get(`${API_URL}/emails`);    
+    const resp = await axios.get(`${API_URL}/emails`);
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error fetching all data: ${error.message}`);
+  }
+};
+
+export const getCategories = async () => {
+  try {
+    const resp = await axios.get(`${API_URL}/categories`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return resp.data;
   } catch (error) {
     throw new Error(`Error fetching all data: ${error.message}`);

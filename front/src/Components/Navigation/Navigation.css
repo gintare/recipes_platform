@@ -20,10 +20,9 @@ nav {
   background-color: var(--primary-blue);
 }
 
-.active {
+.active:not(.username) {
   background-color: var(--dark-salmon) !important;
-  padding: 0.2rem;
-  border-radius: 0.3rem;
+  border-radius: 0.2rem;
 }
 
 .logout {
@@ -40,6 +39,9 @@ nav {
   margin-right: 1rem;
   font-weight: 600;
   color: var(--white);
+  border: 1px solid var(--light-white);
   display: grid;
   align-items: center;
+  padding: 0rem 0.3rem;
+  border-radius: 0.2rem;
 }

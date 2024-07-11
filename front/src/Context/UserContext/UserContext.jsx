@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react';
-import { getUserNameFromToken } from '../../utils/jwt';
+import { getUserNameFromToken, getUserRoleFromToken } from '../../utils/jwt';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ export const UserProvider = ({ children }) => {
   const token = localStorage.getItem('token');
   const isLoggedIn = !!token;
   const userName = isLoggedIn ? getUserNameFromToken(token) : null;
+  const role = isLoggedIn ? getUserRoleFromToken(token) : null;
 
   const navigate = useNavigate();
 
@@ -29,7 +30,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, isLoggedIn, updateUser, logoutHandler, userName }}
+      value={{ user, setUser, isLoggedIn, updateUser, logoutHandler, userName, role }}
     >
       {children}
     </UserContext.Provider>

@@ -9,28 +9,40 @@ import RecipesPage from './pages/RecipesPage/RecipesPage';
 import { UserProvider } from './Context/UserContext/UserContext';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import AdminPage from './pages/AdminPage/AdminPage';
+import { CategoriesProvider } from './Context/CategoriesContext/CategoriesContext';
 
 function App() {
   return (
     <>
       <ToastContainer autoClose={800} position='top-center' />
-      <UserProvider>
-        <Header />
-        <Routes>
-          <Route path='/' element={<Navigate to='/register' />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route
-            path='/recipes'
-            element={
-              <ProtectedRoute>
-                <RecipesPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path='*' element={<NotFoundPage />} />
-        </Routes>
-      </UserProvider>
+      <CategoriesProvider>
+        <UserProvider>
+          <Header />
+          <Routes>
+            <Route path='/' element={<Navigate to='/register' />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route
+              path='/recipes'
+              element={
+                <ProtectedRoute>
+                  <RecipesPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/admin'
+              element={
+                <ProtectedRoute>
+                  <AdminPage adminOnly={true} />
+                </ProtectedRoute>
+              }
+            />
+            <Route path='*' element={<NotFoundPage />} />
+          </Routes>
+        </UserProvider>
+      </CategoriesProvider>
       <Footer />
     </>
   );

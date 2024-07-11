@@ -55,7 +55,7 @@ const RegisterForm = () => {
       toast.success('User created successfully!');
       navigate('/login');
     } catch (error) {
-      setError(error.message);
+      toast.error('Error creating user');
     }
   };
 
@@ -67,7 +67,7 @@ const RegisterForm = () => {
     >
       <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
         <input
-          placeholder='User name'
+          placeholder='Username'
           type='text'
           className={`form-control ${errors.userName ? 'is-invalid' : ''}`}
           id='userName'
