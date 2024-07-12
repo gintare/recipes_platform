@@ -34,7 +34,6 @@ const RecipeCarusele = () => {
               />
               <Carousel.Caption>
                 <h3>{recipe.name}</h3>
-                <p>{recipe.description}</p>
               </Carousel.Caption>
             </Carousel.Item>
           ))}

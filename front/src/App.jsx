@@ -20,7 +20,7 @@ function App() {
         <UserProvider>
           <Header />
           <Routes>
-            <Route path='/' element={<Navigate to='/register' />} />
+            <Route path='/' element={<Navigate to='/recipes' />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/login' element={<LoginPage />} />
             <Route path='/recipes' element={<RecipesPage />} />
