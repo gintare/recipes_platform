@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import CategoriesList from "../../Components/CategoriesList/CategoriesList";
-import CategoriesForm from "../../Components/Forms/CategoriesForm/CategoriesForm";
-import { getAllCategories } from "../../services/get";
-import "./AdminPage.css";
-import CategoriesContext from "../../Context/CategoriesContext/CategoriesContext";
+import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import CategoriesList from '../../Components/CategoriesList/CategoriesList';
+import CategoriesForm from '../../Components/Forms/CategoriesForm/CategoriesForm';
+import { getAllCategories } from '../../services/get';
+import './AdminPage.css';
+import CategoriesContext from '../../Context/CategoriesContext/CategoriesContext';
 
 const AdminPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -14,7 +14,6 @@ const AdminPage = () => {
     setIsLoading(true);
     try {
       const data = await getAllCategories();
-      console.log(data);
       setCategories(data);
     } catch (error) {
       toast.error(error.message);
@@ -28,13 +27,15 @@ const AdminPage = () => {
   }, [update]);
 
   return (
-    <div className="row admin-page">
-      <h1 className="text-center mt-3">Categories</h1>
-      <div className="d-flex flex-column align-items-end mt-3">
-        <CategoriesForm className="col-12 col-md-8 d-flex flex-column" />
+    <>
+      <div className='row admin-page'>
+        <h1 className='text-center mt-3'>Categories</h1>
+        <div className='d-flex flex-column align-items-end mt-3'>
+          <CategoriesForm className='col-12 col-md-8 d-flex flex-column' />
+        </div>
+        <CategoriesList />
       </div>
-      <CategoriesList className="d-grid col-12 col-md-8 col-xl-10" />
-    </div>
+    </>
   );
 };
 

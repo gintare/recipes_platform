@@ -1,6 +1,6 @@
 .category-card {
   border: 1px solid var(--black);
-  width: 10%;
+  /* width: 50%; */
   border-radius: 0.2rem;
 }
 
@@ -25,7 +25,5 @@
 }
 
 .form-edit-input {
-  /* background-color: var(--whitesmoke); */
-  /* border: none; */
   margin-right: 0.2rem;
 }

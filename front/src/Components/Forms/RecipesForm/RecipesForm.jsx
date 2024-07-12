@@ -41,10 +41,11 @@ const RecipesForm = () => {
       toast.success('Recipe has been created');
       reset();
       setIngredients([]);
-      setUpdate((prev) => prev + 1)
-    }catch(error){
-       setError(error.message)
+      setUpdate((prev) => prev + 1);
+    } catch (error) {
+      setError(error.message);
     }
+    ``;
   };
 
   const handleChange = (event) => {
@@ -184,18 +185,14 @@ const RecipesForm = () => {
             Preparation time, min
           </label>
           <input
-
-            type="number"
-            className={`form-control ${errors.timeInMinutes ? "is-invalid" : ""}`}
-            id="timeInMinutes"
-            {...register("timeInMinutes", {
-              required: "Recipe preparation time is required",
-              pattern: /^[0-9]+$/i,
-              validate: (value) =>
-                value.trim() !== "" || "Recipe preparation time cannot be empty",
-              validate: (value) =>
-                value.trim() !== "0" || "Recipe preparation time cannot be 0",
-
+            type='number'
+            className={`form-control ${errors.timeInMinutes ? 'is-invalid' : ''}`}
+            id='timeInMinutes'
+            {...register('timeInMinutes', {
+              required: 'Recipe preparation time is required',
+              pattern: /^[1-9]+$/i,
+              validate: (value) => value.trim() !== '' || 'Recipe preparation time cannot be empty',
+              validate: (value) => value.trim() !== '0' || 'Recipe preparation time cannot be 0',
             })}
           />
           {errors.timeInMinutes && (
