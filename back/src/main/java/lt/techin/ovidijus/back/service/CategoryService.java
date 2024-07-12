@@ -9,6 +9,7 @@ import lt.techin.ovidijus.back.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,21 +24,21 @@ public class CategoryService {
         this.userService = userService;
     }
 
-//    public List<CategoryResponseDTO> selectAll() {
-//        List<Category> categories = this.categoryRepository.findAll();
-//        List<CategoryResponseDTO> categoriesDTOS = new ArrayList<>();
-//        for (Category cat : categories) {
-//            CategoryResponseDTO catDTO = new CategoryResponseDTO();
-//            catDTO.setId(cat.getId());
-//            catDTO.setName(cat.getName());
-//            categoriesDTOS.add(catDTO);
-//        }
-//        return categoriesDTOS;
-//    }
-
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryResponseDTO> selectAll() {
+        List<Category> categories = this.categoryRepository.findAll();
+        List<CategoryResponseDTO> categoriesDTOS = new ArrayList<>();
+        for (Category cat : categories) {
+            CategoryResponseDTO catDTO = new CategoryResponseDTO();
+            catDTO.setId(cat.getId());
+            catDTO.setName(cat.getName());
+            categoriesDTOS.add(catDTO);
+        }
+        return categoriesDTOS;
     }
+
+//    public List<Category> getAllCategories() {
+//        return categoryRepository.findAll();
+//    }
 
     public Category createCategory(CategoryResponseDTO categoryResponseDTO) throws NotAdminException {
         User user = checkAuthorized();

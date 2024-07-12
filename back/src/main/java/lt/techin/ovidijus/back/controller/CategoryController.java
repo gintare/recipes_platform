@@ -24,16 +24,16 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-//    @GetMapping("/api/categories")
-//    public List<CategoryResponseDTO> findAllCategories() {
-//        return categoryService.selectAll();
-//    }
-
     @GetMapping("/api/categories")
-    public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> categories = categoryService.getAllCategories();
-        return new ResponseEntity<>(categories, HttpStatus.OK);
+    public List<CategoryResponseDTO> findAllCategories() {
+        return categoryService.selectAll();
     }
+
+//    @GetMapping("/api/categories")
+//    public ResponseEntity<List<Category>> getAllCategories() {
+//        List<Category> categories = categoryService.getAllCategories();
+//        return new ResponseEntity<>(categories, HttpStatus.OK);
+//    }
 
     @PostMapping("/api/categories")
     public ResponseEntity<Category> createCategory(@RequestBody CategoryResponseDTO categoryResponseDTO) throws NotAdminException {
