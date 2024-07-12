@@ -184,6 +184,7 @@ const RecipesForm = () => {
             Preparation time, min
           </label>
           <input
+
             type="number"
             className={`form-control ${errors.timeInMinutes ? "is-invalid" : ""}`}
             id="timeInMinutes"
@@ -194,6 +195,7 @@ const RecipesForm = () => {
                 value.trim() !== "" || "Recipe preparation time cannot be empty",
               validate: (value) =>
                 value.trim() !== "0" || "Recipe preparation time cannot be 0",
+
             })}
           />
           {errors.timeInMinutes && (
