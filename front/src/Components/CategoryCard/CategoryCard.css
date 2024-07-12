@@ -1,0 +1,31 @@
+.category-card {
+  border: 1px solid var(--black);
+  width: 10%;
+  border-radius: 0.2rem;
+}
+
+.edit-category {
+  color: var(--dark-green);
+  cursor: pointer;
+  margin-right: 0.2rem;
+}
+
+.delete-category {
+  color: var(--tomato);
+  cursor: pointer;
+}
+
+.accept-category {
+  color: var(--light-green);
+  margin-right: 0.2rem;
+}
+
+.cancel-category {
+  color: var(--tomato);
+}
+
+.form-edit-input {
+  /* background-color: var(--whitesmoke); */
+  /* border: none; */
+  margin-right: 0.2rem;
+}

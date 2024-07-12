@@ -10,6 +10,8 @@ import { UserProvider } from './Context/UserContext/UserContext';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
+import AdminPage from './pages/AdminPage/AdminPage';
+import { CategoriesProvider } from './Context/CategoriesContext/CategoriesContext';
 
 function App() {
   return (
@@ -35,6 +37,16 @@ function App() {
                 <RecipesPage />
             }
           />
+
+           <Route
+              path='/admin'
+              element={
+                <ProtectedRoute>
+                  <AdminPage adminOnly={true} />
+                </ProtectedRoute>
+              }
+            />
+
           <Route
             path='/profile'
             element={
