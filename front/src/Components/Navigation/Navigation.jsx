@@ -5,7 +5,9 @@ import UserContext from '../../Context/UserContext/UserContext';
 import './Navigation.css';
 
 const Navigation = () => {
-  const { isLoggedIn, logoutHandler, userName } = useContext(UserContext);
+  const { isLoggedIn, logoutHandler, userName, role } = useContext(UserContext);
+
+  const accountPath = role === 'ADMIN' ? '/admin' : '/user';
 
   return (
     <nav className='navbar navbar-expand-lg'>
@@ -28,7 +30,9 @@ const Navigation = () => {
           <div className='navbar-nav ms-auto text-end'>
             {isLoggedIn ? (
               <>
-                <span className='username'>Account: {userName}</span>
+                <NavLink className='username' to={accountPath}>
+                  Account: {userName}
+                </NavLink>
                 <NavLink
                   className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
                   to='/recipes'

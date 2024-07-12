@@ -1,0 +1,11 @@
+.add-category-container {
+  margin-right: 1rem;
+}
+
+.add-category-btn {
+  padding: 0.5rem 2.5rem;
+}
+
+.submit-category-btn {
+  background: var(--gradient-violet-blue);
+}

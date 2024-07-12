@@ -1,7 +1,7 @@
-import Carousel from "react-bootstrap/Carousel";
-import "./RecipeCarousel.css";
-import React, { useEffect, useState } from "react";
-import { getAllRecipes } from "../../services/get";
+import Carousel from 'react-bootstrap/Carousel';
+import './RecipeCarousel.css';
+import { useEffect, useState } from 'react';
+import { getAllRecipes } from '../../services/get';
 
 const RecipeCarusele = () => {
   const [recipes, setRecipes] = useState([]);
@@ -10,10 +10,10 @@ const RecipeCarusele = () => {
     const fetchData = async () => {
       try {
         const data = await getAllRecipes();
-        console.log("Data from API:", data);
+        console.log('Data from API:', data);
         setRecipes(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
     fetchData();
