@@ -6,6 +6,7 @@ import './CategoriesList.css';
 
 const CategoriesList = () => {
   const { setUpdate, categories } = useContext(CategoriesContext);
+  // console.log(categories);
   return (
     <>
       <div className='categories-list'>
