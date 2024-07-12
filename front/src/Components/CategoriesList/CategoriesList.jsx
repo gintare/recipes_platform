@@ -10,7 +10,10 @@ const CategoriesList = () => {
     <div className='container mt-5'>
       <div className='row justify-content-center container-row'>
         {categories.map((category) => (
-          <div key={category.id} className='col-12 col-sm-6 col-md-4 col-lg-2 col-xl-1 mb-4'>
+          <div
+            key={category.id}
+            className='col-8 col-sm-6 col-md-4 col-lg-2 col-xxl-1 mb-4 mx-lg-3'
+          >
             <CategoryCard category={category} setUpdate={setUpdate} />
           </div>
         ))}
