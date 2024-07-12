@@ -1,18 +1,15 @@
-.recip-image {
+.recipe-carousel-image {
     display: block;
     margin-left: auto;
     margin-right: auto;
     margin-top: 4rem;
     width: 100%;
     height: 500px;
-    
-    width: 800px; /* Nustatykite maksimalų plotį, kad paveikslėlis nebūtų per didelis */
-
-    
+    max-width: 800px; 
 }
-.no-recipes-message{
+.no-recipes-message {
     text-align: center;
-  font-size: 1.5rem;
-  margin-top: 20px;
-  color: #555;
-}
+    font-size: 1.5rem;
+    margin-top: 20px;
+    color: #555;
+  }

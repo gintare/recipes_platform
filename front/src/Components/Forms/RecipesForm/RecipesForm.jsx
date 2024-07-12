@@ -184,16 +184,6 @@ const RecipesForm = () => {
             Preparation time, min
           </label>
           <input
-<<<<<<< HEAD
-            type='number'
-            className={`form-control ${errors.timeInMinutes ? 'is-invalid' : ''}`}
-            id='timeInMinutes'
-            {...register('timeInMinutes', {
-              required: 'Recipe preparation time is required',
-              pattern: /^[1-9]+$/i,
-              validate: (value) => value.trim() !== '' || 'Recipe preparation time cannot be empty',
-              validate: (value) => value.trim() !== '0' || 'Recipe preparation time cannot be 0',
-=======
             type="number"
             className={`form-control ${errors.timeInMinutes ? "is-invalid" : ""}`}
             id="timeInMinutes"
@@ -204,7 +194,6 @@ const RecipesForm = () => {
                 value.trim() !== "" || "Recipe preparation time cannot be empty",
               validate: (value) =>
                 value.trim() !== "0" || "Recipe preparation time cannot be 0",
->>>>>>> 333c387606fe18b1a136d42eb5763825eb302260
             })}
           />
           {errors.timeInMinutes && (
