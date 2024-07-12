@@ -4,6 +4,15 @@
     margin-right: auto;
     margin-top: 4rem;
     width: 100%;
-    height: auto;
-    max-width: 800px; /* Nustatykite maksimalų plotį, kad paveikslėlis nebūtų per didelis */
+    height: 500px;
+    
+    width: 800px; /* Nustatykite maksimalų plotį, kad paveikslėlis nebūtų per didelis */
+
+    
+}
+.no-recipes-message{
+    text-align: center;
+  font-size: 1.5rem;
+  margin-top: 20px;
+  color: #555;
 }

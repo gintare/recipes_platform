@@ -3,7 +3,7 @@ import './RecipeCard.css'
 
 const RecipeCard = ({ recipe }) => {
   return (
-    <Card style={{ width: '18rem' }}>
+    <Card >
       <Card.Img variant="top" src={recipe.image} alt={recipe.title} />
       <Card.Body>
         <Card.Title>{recipe.title}</Card.Title>
