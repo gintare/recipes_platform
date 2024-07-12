@@ -20,12 +20,18 @@ function App() {
           <Route path='/' element={<Navigate to='/register' />} />
           <Route path='/register' element={<RegisterPage />} />
           <Route path='/login' element={<LoginPage />} />
-          <Route
+          {/* <Route
             path='/recipes'
             element={
               <ProtectedRoute>
                 <RecipesPage />
               </ProtectedRoute>
+            }
+          /> */}
+          <Route
+            path='/recipes'
+            element={
+                <RecipesPage />
             }
           />
           <Route path='*' element={<NotFoundPage />} />
