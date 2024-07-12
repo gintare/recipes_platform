@@ -41,6 +41,10 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Ingredient> ingredients = new LinkedHashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public void addCategory(Category category) {
         this.category = category;
         this.category.getRecipes().add(this);
@@ -51,5 +55,14 @@ public class Recipe {
         this.category = null;
     }
 
+    public void addUser(User user){
+        this.user = user;
+        this.user.getRecipes().add(this);
+    }
+
+    public void removeUser(){
+        this.user.getRecipes().remove(this);
+        this.user = null;
+    }
 
 }

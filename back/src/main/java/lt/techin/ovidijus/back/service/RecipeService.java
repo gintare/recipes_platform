@@ -4,19 +4,19 @@ import lt.techin.ovidijus.back.dto.*;
 import lt.techin.ovidijus.back.exceptions.CategoryNotFoundException;
 import lt.techin.ovidijus.back.exceptions.RecipeNotFoundException;
 import lt.techin.ovidijus.back.exceptions.RequiredFieldIsEmptyException;
+import lt.techin.ovidijus.back.exceptions.UserNotFoundException;
 import lt.techin.ovidijus.back.model.Category;
 import lt.techin.ovidijus.back.model.Ingredient;
 import lt.techin.ovidijus.back.model.Recipe;
+import lt.techin.ovidijus.back.model.User;
 import lt.techin.ovidijus.back.repository.CategoryRepository;
 import lt.techin.ovidijus.back.repository.IngredientRepository;
 import lt.techin.ovidijus.back.repository.RecipeRepository;
+import lt.techin.ovidijus.back.repository.UserRepository;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class RecipeService {
@@ -24,14 +24,16 @@ public class RecipeService {
     RecipeRepository recipeRepository;
     CategoryRepository categoryRepository;
     IngredientRepository ingredientRepository;
+    UserRepository userRepository;
 
-    public RecipeService(RecipeRepository recipeRepository, CategoryRepository categoryRepository, IngredientRepository ingredientRepository) {
+    public RecipeService(RecipeRepository recipeRepository, CategoryRepository categoryRepository, IngredientRepository ingredientRepository, UserRepository userRepository) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
         this.ingredientRepository = ingredientRepository;
+        this.userRepository = userRepository;
     }
 
-    public RecipeResponseDTO createRecipe(Long categoryId, RecipeRequestDTO recipeRequestDTO) {
+    public RecipeResponseDTO createRecipe(Long categoryId, Long userId, RecipeRequestDTO recipeRequestDTO) {
         if(recipeRequestDTO.getName().isEmpty()){
             throw new RequiredFieldIsEmptyException("Required name field is empty");
         }
@@ -45,6 +47,7 @@ public class RecipeService {
             throw new RequiredFieldIsEmptyException("Required timeInMinutes field is 0");
         }
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("No category found with an id = "+categoryId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("No user found by user id ="+userId));
 
         Recipe recipe = new Recipe();
         recipe.setName(recipeRequestDTO.getName());
@@ -53,6 +56,7 @@ public class RecipeService {
         recipe.setInstructions(recipeRequestDTO.getInstructions());
         recipe.setTimeInMinutes(recipeRequestDTO.getTimeInMinutes());
         recipe.setCategory(category);
+        recipe.setUser(user);
         this.recipeRepository.save(recipe);
 
         Set<IngredientResponseDTO> ingredientResponseDTOSet = new LinkedHashSet<>();
@@ -86,6 +90,7 @@ public class RecipeService {
         for(Recipe recipe : recipes){
             RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
             recipeResponseDTO.setId(recipe.getId());
+            recipeResponseDTO.setUserId(recipe.getUser().getId());
             recipeResponseDTO.setName(recipe.getName());
             recipeResponseDTO.setDescription(recipe.getDescription());
             recipeResponseDTO.setImage(recipe.getImage());
@@ -139,4 +144,21 @@ public class RecipeService {
         recipeRepository.save(recipe);
     }
 
+    public List<RecipeResponseDTO> findByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("No user found by user id ="+userId));
+        List<Recipe> recipes = this.recipeRepository.findByUser(user);
+
+        List<RecipeResponseDTO> recipeResponseDTOS = new ArrayList<>();
+        for(Recipe recipe : recipes){
+            RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
+            recipeResponseDTO.setId(recipe.getId());
+            recipeResponseDTO.setUserId(recipe.getUser().getId());
+            recipeResponseDTO.setName(recipe.getName());
+            recipeResponseDTO.setDescription(recipe.getDescription());
+            recipeResponseDTO.setImage(recipe.getImage());
+            recipeResponseDTO.setInstructions(recipe.getInstructions());
+            recipeResponseDTOS.add(recipeResponseDTO);
+        }
+        return recipeResponseDTOS;
+    }
 }
