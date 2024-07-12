@@ -16,14 +16,15 @@ import { CategoriesProvider } from './Context/CategoriesContext/CategoriesContex
 function App() {
   return (
     <>
-      <ToastContainer autoClose={800} position='top-center' />
+      <ToastContainer autoClose={1000} position='top-center' />
       <UserProvider>
-        <Header />
-        <Routes>
-          <Route path='/' element={<Navigate to='/register' />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          {/* <Route
+        <CategoriesProvider>
+          <Header />
+          <Routes>
+            <Route path='/' element={<Navigate to='/register' />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            {/* <Route
             path='/recipes'
             element={
               <ProtectedRoute>
@@ -31,14 +32,9 @@ function App() {
               </ProtectedRoute>
             }
           /> */}
-          <Route
-            path='/recipes'
-            element={
-                <RecipesPage />
-            }
-          />
+            <Route path='/recipes' element={<RecipesPage />} />
 
-           <Route
+            <Route
               path='/admin'
               element={
                 <ProtectedRoute>
@@ -47,17 +43,18 @@ function App() {
               }
             />
 
-          <Route
-            path='/profile'
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path='/profile'
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
 
-          <Route path='*' element={<NotFoundPage />} />
-        </Routes>
+            <Route path='*' element={<NotFoundPage />} />
+          </Routes>
+        </CategoriesProvider>
       </UserProvider>
       <Footer />
     </>
