@@ -37,7 +37,29 @@ const CategoriesForm = () => {
     fetchCategories();
   }, []);
 
+  const validateFormInput = (data) => {
+    const value = data.name;
+
+    if (value.length < 1) {
+      toast.error('Category name must be at least 1 character');
+      return false;
+    }
+    if (value.length > 8) {
+      toast.error('Category name cannot exceed 8 characters');
+      return false;
+    }
+    if (!/^[a-zA-Z0-9]*$/.test(value)) {
+      toast.error('Category name can only contain letters and numbers');
+      return false;
+    }
+    return true;
+  };
+
   const formSubmitHandler = async (data) => {
+    if (!validateFormInput(data)) {
+      return;
+    }
+
     const categoryExists = existingCategory.some(
       (category) => category.name.toLowerCase() === data.name.toLowerCase()
     );

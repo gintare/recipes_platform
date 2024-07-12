@@ -23,20 +23,24 @@ const CategoryCard = ({ category, setUpdate }) => {
   const token = localStorage.getItem('token');
   const role = getUserRoleFromToken(token);
 
-  const checkLength = (value) => {
+  const validateCategoryInput = (value) => {
     if (value.length < 1) {
       toast.error('Category name must be at least 1 character');
       return false;
     }
-    if (value.length > 10) {
-      toast.error('Category name cannot exceed 10 characters');
+    if (value.length > 8) {
+      toast.error('Category name cannot exceed 8 characters');
+      return false;
+    }
+    if (!/^[a-zA-Z0-9]*$/.test(value)) {
+      toast.error('Category name can only contain letters and numbers');
       return false;
     }
     return true;
   };
 
   const handleCategoryNameChange = async (data) => {
-    if (!checkLength(data.name)) {
+    if (!validateCategoryInput(data.name)) {
       return;
     }
 
