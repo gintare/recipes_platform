@@ -5,10 +5,11 @@
   margin-top: 20px;
 }
 
-.card {
-  margin-bottom: 70px;
-  width: 24rem;
-  
-  
 
+.recipe-card img {
+  width: 500px;
+  height: 400px; 
+  object-fit: cover;
+  object-position: center; 
 }
+
