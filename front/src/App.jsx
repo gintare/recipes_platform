@@ -9,6 +9,7 @@ import RecipesPage from './pages/RecipesPage/RecipesPage';
 import { UserProvider } from './Context/UserContext/UserContext';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
 
 function App() {
   return (
@@ -34,6 +35,15 @@ function App() {
                 <RecipesPage />
             }
           />
+          <Route
+            path='/profile'
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </UserProvider>
