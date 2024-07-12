@@ -8,6 +8,7 @@ import java.util.Set;
 @Data
 public class RecipeResponseDTO {
     private Long id;
+    private Long userId;
     private String name;
     private String image;
     private String description;

@@ -1,9 +1,6 @@
 package lt.techin.ovidijus.back.exceptions.handler;
 
-import lt.techin.ovidijus.back.exceptions.CategoryNotFoundException;
-import lt.techin.ovidijus.back.exceptions.NotAdminException;
-import lt.techin.ovidijus.back.exceptions.RecipeNotFoundException;
-import lt.techin.ovidijus.back.exceptions.RequiredFieldIsEmptyException;
+import lt.techin.ovidijus.back.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,5 +31,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> notAdminExceptionHandler(NotAdminException ex) {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorDetails> exceptionUserNotFoundHandler(UserNotFoundException ex) {
+        ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 }
