@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const token = localStorage.getItem("token");
+const token = localStorage.getItem('token');
 
 export const getAllData = async () => {
   try {
@@ -30,7 +30,7 @@ export const getUserEmail = async () => {
     throw new Error(`Error fetching emails: ${error.message}`);
   }
 };
- 
+
 export const getCategories = async () => {
   try {
     const resp = await axios.get(`${API_URL}/categories`, {
@@ -58,6 +58,6 @@ export const getAllRecipes = async () => {
     const resp = await axios.get(`${API_URL}/api/recipes`);
     return resp.data;
   } catch (error) {
-    throw new Error(`Error fetching all data: ${error.message}`);
+    throw new Error(`Error fetching all recipes: ${error.message}`);
   }
 };

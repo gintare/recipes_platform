@@ -1,16 +1,16 @@
-import RecipeCarusele from "../../Components/RecipeCarousel/RecipeCarousel";
+import RecipeCarusele from '../../Components/RecipeCarousel/RecipeCarousel';
 import React, { useContext, useEffect, useState } from 'react';
-import { getAllRecipes } from "../../services/get"; 
-import RecipeCard from "../../Components/RecipeCard/RecipeCard";
-import RecipesForm from "../../Components/Forms/RecipesForm/RecipesForm";
-import { Button } from "react-bootstrap";
-import "./RecipesPage.css"
-import UserContext from "../../Context/UserContext/UserContext";
+import { getAllRecipes } from '../../services/get';
+import RecipeCard from '../../Components/RecipeCard/RecipeCard';
+import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
+import { Button } from 'react-bootstrap';
+import './RecipesPage.css';
+import UserContext from '../../Context/UserContext/UserContext';
 
 const RecipesPage = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [recipes, setRecipes] = useState([]);
-  const {isLoggedIn} = useContext(UserContext)
+  const { isLoggedIn } = useContext(UserContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,21 +26,23 @@ const RecipesPage = () => {
   }, []);
 
   return (
-    <div className="recipes-page">
-      {isLoggedIn && <div className="button-create-content col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
-        <Button onClick={() => setIsVisible(!isVisible)}>
-          {isVisible ? 'Hide Create Recipe' : 'Create Recipe'}
-        </Button>
-      </div>}
-      
-      {isVisible && ( <RecipesForm/> )}
-       
-      <RecipeCarusele />  
-      <div className="recipe-list">
-      {recipes.map((recipe) => (
-        <RecipeCard key={recipe.id} recipe={recipe} />
-      ))}
-    </div>
+    <div className='recipes-page'>
+      {isLoggedIn && (
+        <div className='button-create-content col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
+          <Button onClick={() => setIsVisible(!isVisible)}>
+            {isVisible ? 'Hide Create Recipe' : 'Create Recipe'}
+          </Button>
+        </div>
+      )}
+
+      {isVisible && <RecipesForm />}
+
+      <RecipeCarusele />
+      <div className='recipe-list'>
+        {recipes.map((recipe) => (
+          <RecipeCard key={recipe.id} recipe={recipe} />
+        ))}
+      </div>
     </div>
   );
 };

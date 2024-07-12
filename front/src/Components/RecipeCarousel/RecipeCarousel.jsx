@@ -1,8 +1,7 @@
-import Carousel from "react-bootstrap/Carousel";
-import "./RecipeCarousel.css";
-import React, { useEffect, useState } from "react";
-import { getAllRecipes } from "../../services/get";
-// import ExampleCarouselImage from "components/ExampleCarouselImage";
+import Carousel from 'react-bootstrap/Carousel';
+import './RecipeCarousel.css';
+import { useEffect, useState } from 'react';
+import { getAllRecipes } from '../../services/get';
 
 const RecipeCarusele = () => {
   const [recipes, setRecipes] = useState([]);
@@ -11,10 +10,10 @@ const RecipeCarusele = () => {
     const fetchData = async () => {
       try {
         const data = await getAllRecipes();
-        console.log("Data from API:", data); // Log data received from the API
+        console.log('Data from API:', data);
         setRecipes(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error('Error fetching data:', error);
       }
     };
     fetchData();
@@ -24,15 +23,10 @@ const RecipeCarusele = () => {
     <Carousel>
       {recipes.map((recipe, index) => (
         <Carousel.Item key={index}>
-          <img
-            src={recipe.image}
-            alt={recipe.name}
-            className="recipe-carousel-image"
-          />
+          <img src={recipe.image} alt={recipe.name} className='recipe-carousel-image' />
           <Carousel.Caption>
             <h3>{recipe.name}</h3>
-            <p>{recipe.description}</p>{" "}
-            {/* Assuming your recipe object has a description property */}
+            <p>{recipe.description}</p>
           </Carousel.Caption>
         </Carousel.Item>
       ))}
