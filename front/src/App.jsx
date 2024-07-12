@@ -12,18 +12,19 @@ import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import AdminPage from './pages/AdminPage/AdminPage';
 import { CategoriesProvider } from './Context/CategoriesContext/CategoriesContext';
-
+ 
 function App() {
   return (
     <>
       <ToastContainer autoClose={800} position='top-center' />
       <UserProvider>
-        <Header />
-        <Routes>
-          <Route path='/' element={<Navigate to='/register' />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          {/* <Route
+        <CategoriesProvider>
+          <Header />
+          <Routes>
+            <Route path='/' element={<Navigate to='/recipes' />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            {/* <Route
             path='/recipes'
             element={
               <ProtectedRoute>
@@ -31,14 +32,9 @@ function App() {
               </ProtectedRoute>
             }
           /> */}
-          <Route
-            path='/recipes'
-            element={
-                <RecipesPage />
-            }
-          />
-
-           <Route
+            <Route path='/recipes' element={<RecipesPage />} />
+ 
+            <Route
               path='/admin'
               element={
                 <ProtectedRoute>
@@ -46,22 +42,23 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-          <Route
-            path='/profile'
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route path='*' element={<NotFoundPage />} />
-        </Routes>
+ 
+            <Route
+              path='/profile'
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+ 
+            <Route path='*' element={<NotFoundPage />} />
+          </Routes>
+        </CategoriesProvider>
       </UserProvider>
       <Footer />
     </>
   );
 }
-
+ 
 export default App;

@@ -45,12 +45,22 @@ const Navigation = () => {
               </>
             ) : (
               <>
+
+<NavLink
+                  className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+                  to='/recipes'
+                >
+                  Recipes
+                </NavLink>
                 <NavLink
                   className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
                   to='/login'
                 >
                   Login
                 </NavLink>
+
+              
+
                 <NavLink
                   className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
                   to='/register'
