@@ -22,7 +22,7 @@ const RecipeCarusele = () => {
   return (
     <>
       {recipes.length === 0 ? (
-        <div className="no-recipes-message">Receptų nėra</div>
+        <div className="no-recipes-message">There are no recipes</div>
       ) : (
         <Carousel>
           {recipes.map((recipe, index) => (
