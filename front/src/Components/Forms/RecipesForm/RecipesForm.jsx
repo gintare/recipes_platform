@@ -78,7 +78,7 @@ const RecipesForm = () => {
       >
         <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
           <label htmlFor="name" className="form-label">
-            Pecipe Name
+            Recipe Name
           </label>
           <input
             type="text"
