@@ -20,17 +20,26 @@ const RecipeCarusele = () => {
   }, []);
 
   return (
-    <Carousel>
-      {recipes.map((recipe, index) => (
-        <Carousel.Item key={index}>
-          <img src={recipe.image} alt={recipe.name} className='recipe-carousel-image' />
-          <Carousel.Caption>
-            <h3>{recipe.name}</h3>
-            <p>{recipe.description}</p>
-          </Carousel.Caption>
-        </Carousel.Item>
-      ))}
-    </Carousel>
+    <>
+      {recipes.length === 0 ? (
+        <div className="no-recipes-message">Receptų nėra</div>
+      ) : (
+        <Carousel>
+          {recipes.map((recipe, index) => (
+            <Carousel.Item key={index}>
+              <img
+                src={recipe.image}
+                alt={recipe.name}
+                className="recipe-carousel-image"
+              />
+              <Carousel.Caption>
+                <h3>{recipe.name}</h3>
+              </Carousel.Caption>
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      )}
+    </>
   );
 };
 

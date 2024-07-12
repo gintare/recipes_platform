@@ -1,13 +1,12 @@
 import Card from 'react-bootstrap/Card';
-import './RecipeCard.css'
+import './RecipeCard.css';
 
 const RecipeCard = ({ recipe }) => {
   return (
-    <Card style={{ width: '18rem' }}>
+    <Card className="recipe-card">
       <Card.Img variant="top" src={recipe.image} alt={recipe.title} />
       <Card.Body>
-        <Card.Title>{recipe.title}</Card.Title>
-        <Card.Text>{recipe.description}</Card.Text>
+        <Card.Title className="recipe-card-title">{recipe.name}</Card.Title>
       </Card.Body>
     </Card>
   );

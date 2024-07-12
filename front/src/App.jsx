@@ -1,71 +1,18 @@
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Header from "./Components/Header/Header";
-import Footer from "./Components/Footer/Footer";
-import { Routes, Route, Navigate } from "react-router-dom";
-import LoginPage from "./pages/LoginPage/LoginPage";
-import RegisterPage from "./pages/RegisterPage/RegisterPage";
-import RecipesPage from "./pages/RecipesPage/RecipesPage";
-import { UserProvider } from "./Context/UserContext/UserContext";
-import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
-import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
-import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import AdminPage from "./pages/AdminPage/AdminPage";
-import { CategoriesProvider } from "./Context/CategoriesContext/CategoriesContext";
-
-// function App() {
-//   return (
-//     <>
-//       <ToastContainer autoClose={1000} position='top-center' />
-//       <CategoriesProvider>
-//         <UserProvider>
-//         <Header />
-//         <Routes>
-//           <Route path='/' element={<Navigate to='/register' />} />
-//           <Route path='/register' element={<RegisterPage />} />
-//           <Route path='/login' element={<LoginPage />} />
-//           {/* <Route
-//             path='/recipes'
-//             element={
-//               <ProtectedRoute>
-//                 <RecipesPage />
-//               </ProtectedRoute>
-//             }
-//           /> */}
-//           <Route
-//             path='/recipes'
-//             element={
-//                 <RecipesPage />
-//             }
-//           />
-
-//            <Route
-//               path='/admin'
-//               element={
-//                 <ProtectedRoute>
-//                   <AdminPage adminOnly={true} />
-//                 </ProtectedRoute>
-//               }
-//             />
-
-//           <Route
-//             path='/profile'
-//             element={
-//               <ProtectedRoute>
-//                 <ProfilePage />
-//               </ProtectedRoute>
-//             }
-//           />
-
-//           <Route path='*' element={<NotFoundPage />} />
-//         </Routes>
-//       </UserProvider>
-//       <CategoriesProvider/>
-//       <Footer />
-//     </>
-//   );
-// }
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Header from './Components/Header/Header';
+import Footer from './Components/Footer/Footer';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './pages/LoginPage/LoginPage';
+import RegisterPage from './pages/RegisterPage/RegisterPage';
+import RecipesPage from './pages/RecipesPage/RecipesPage';
+import { UserProvider } from './Context/UserContext/UserContext';
+import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
+import AdminPage from './pages/AdminPage/AdminPage';
+import { CategoriesProvider } from './Context/CategoriesContext/CategoriesContext';
+ 
 function App() {
   return (
     <>
@@ -74,27 +21,38 @@ function App() {
         <CategoriesProvider>
           <Header />
           <Routes>
-            <Route path="/" element={<Navigate to="/register" />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/recipes" element={<RecipesPage />} />
+            <Route path='/' element={<Navigate to='/recipes' />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            {/* <Route
+            path='/recipes'
+            element={
+              <ProtectedRoute>
+                <RecipesPage />
+              </ProtectedRoute>
+            }
+          /> */}
+            <Route path='/recipes' element={<RecipesPage />} />
+ 
             <Route
-              path="/admin"
+              path='/admin'
               element={
                 <ProtectedRoute>
                   <AdminPage adminOnly={true} />
                 </ProtectedRoute>
               }
             />
+ 
             <Route
-              path="/profile"
+              path='/profile'
               element={
                 <ProtectedRoute>
                   <ProfilePage />
                 </ProtectedRoute>
               }
             />
-            <Route path="*" element={<NotFoundPage />} />
+ 
+            <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </CategoriesProvider>
       </UserProvider>
@@ -102,5 +60,5 @@ function App() {
     </>
   );
 }
-
+ 
 export default App;
