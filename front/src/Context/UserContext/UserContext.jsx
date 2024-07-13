@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react';
-import { getUserNameFromToken, getUserRoleFromToken } from '../../utils/jwt';
+import { getUserIdFromToken, getUserNameFromToken, getUserRoleFromToken } from '../../utils/jwt';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,6 +13,7 @@ export const UserProvider = ({ children }) => {
   const isLoggedIn = !!token;
   const userName = isLoggedIn ? getUserNameFromToken(token) : null;
   const role = isLoggedIn ? getUserRoleFromToken(token) : null;
+  const id = isLoggedIn ? getUserIdFromToken(token) : null;
 
   const navigate = useNavigate();
 
@@ -30,7 +31,7 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, isLoggedIn, updateUser, logoutHandler, userName, role }}
+      value={{ user, setUser, isLoggedIn, updateUser, logoutHandler, userName, role, id }}
     >
       {children}
     </UserContext.Provider>

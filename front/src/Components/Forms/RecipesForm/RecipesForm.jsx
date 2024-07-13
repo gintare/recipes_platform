@@ -1,10 +1,11 @@
 import { useForm } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getAllCategories } from '../../../services/get';
 import IngredientsTable from './IngredientsTable ';
 import { recipePost } from '../../../services/post';
 import { Controller } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import UserContext from '../../../Context/UserContext/UserContext';
 
 const RecipesForm = () => {
   const [error, setError] = useState('');
@@ -12,7 +13,8 @@ const RecipesForm = () => {
   const [category, setCategory] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const [update, setUpdate] = useState(0);
-
+  const { id } = useContext(UserContext);
+  console.log(`User id: ${id}`);
   const {
     register,
     control,
@@ -36,7 +38,7 @@ const RecipesForm = () => {
   const formSubmitHandler = (data) => {
     console.log(data);
     try {
-      const recipe = recipePost(data.categoryId, data);
+      const recipe = recipePost(data.categoryId, id, data);
       console.log(recipe);
       toast.success('Recipe has been created');
       reset();
@@ -45,7 +47,6 @@ const RecipesForm = () => {
     } catch (error) {
       setError(error.message);
     }
-    ``;
   };
 
   const handleChange = (event) => {
@@ -190,7 +191,7 @@ const RecipesForm = () => {
             id='timeInMinutes'
             {...register('timeInMinutes', {
               required: 'Recipe preparation time is required',
-              pattern: /^[1-9]+$/i,
+              pattern: /^[0-9]+$/i,
               validate: (value) => value.trim() !== '' || 'Recipe preparation time cannot be empty',
               validate: (value) => value.trim() !== '0' || 'Recipe preparation time cannot be 0',
             })}

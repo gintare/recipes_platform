@@ -46,6 +46,7 @@ public class JwtService {
     public String generateToken(User user) {
         return Jwts
                 .builder()
+                .claim("id", user.getId())
                 .claim("name", user.getUsername())
                 .claim("email", user.getEmail())
                 .claim("role", user.getRole())
