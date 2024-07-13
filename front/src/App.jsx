@@ -12,11 +12,11 @@ import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import AdminPage from './pages/AdminPage/AdminPage';
 import { CategoriesProvider } from './Context/CategoriesContext/CategoriesContext';
- 
+
 function App() {
   return (
     <>
-      <ToastContainer autoClose={1000} position="top-center" />
+      <ToastContainer autoClose={1200} position='top-center' />
       <UserProvider>
         <CategoriesProvider>
           <Header />
@@ -33,7 +33,7 @@ function App() {
             }
           /> */}
             <Route path='/recipes' element={<RecipesPage />} />
- 
+
             <Route
               path='/admin'
               element={
@@ -42,7 +42,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
- 
+
             <Route
               path='/profile'
               element={
@@ -51,7 +51,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
- 
+
             <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </CategoriesProvider>
@@ -60,5 +60,5 @@ function App() {
     </>
   );
 }
- 
+
 export default App;

@@ -1,5 +1,6 @@
 package lt.techin.ovidijus.back.service;
 
+import lt.techin.ovidijus.back.dto.CategoryRequestDTO;
 import lt.techin.ovidijus.back.dto.CategoryResponseDTO;
 import lt.techin.ovidijus.back.exceptions.CategoryNotFoundException;
 import lt.techin.ovidijus.back.exceptions.NotAdminException;
@@ -41,23 +42,23 @@ public class CategoryService {
 //        return categoryRepository.findAll();
 //    }
 
-    public Category createCategory(CategoryResponseDTO categoryResponseDTO) throws NotAdminException {
+    public Category createCategory(CategoryRequestDTO categoryRequestDTO) throws NotAdminException {
         User user = checkAuthorized();
         if (!user.getRole().equals("ADMIN")) {
             throw new NotAdminException("Only admins can create categories!");
         }
-        if (categoryRepository.existsByName(categoryResponseDTO.getName())) {
+        if (categoryRepository.existsByName(categoryRequestDTO.getName())) {
             throw new RuntimeException("Category already exists!");
         }
 
+        validateCategory(categoryRequestDTO.getName());
         Category category = new Category();
-        validateCategory(categoryResponseDTO.getName());
-        category.setName(categoryResponseDTO.getName());
+        category.setName(categoryRequestDTO.getName());
 
         return categoryRepository.save(category);
     }
 
-    public Category updateCategory(long id, Category category) throws CategoryNotFoundException, NotAdminException {
+    public CategoryResponseDTO updateCategory(long id, CategoryRequestDTO categoryRequestDTO) throws CategoryNotFoundException, NotAdminException {
         User user = checkAuthorized();
         if (!user.getRole().equals("ADMIN")) {
             throw new NotAdminException("Only admins can update categories!");
@@ -66,12 +67,16 @@ public class CategoryService {
         Category existingCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
 
-        validateCategory(existingCategory.getName());
+        validateCategory(categoryRequestDTO.getName());
 
-        if (category.getName() != null) {
-            existingCategory.setName(category.getName());
+        if (categoryRequestDTO.getName() != null) {
+            existingCategory.setName(categoryRequestDTO.getName());
         }
-        return categoryRepository.save(existingCategory);
+        Category updatedCategory = categoryRepository.save(existingCategory);
+
+        CategoryResponseDTO responseDTO = new CategoryResponseDTO();
+        responseDTO.setName(updatedCategory.getName());
+        return responseDTO;
     }
 
     public void deleteCategory(long id) throws CategoryNotFoundException, NotAdminException {
@@ -86,7 +91,6 @@ public class CategoryService {
         }
     }
 
-
     public User checkAuthorized() {
         return userService.getCurrentUser()
                 .orElseThrow(() -> new RuntimeException("Not authorized"));
@@ -96,9 +100,12 @@ public class CategoryService {
         int min = 1;
         int max = 8;
 
+        if (name.isEmpty() || name.isBlank()) {
+            throw new IllegalArgumentException(String.format("Category name cannot be empty %n"));
+        }
         if (name.length() < min) {
             String minMessage = min == 1 ? "character" : "characters";
-            throw new IllegalArgumentException(String.format("Category name must be at least %d %s", min, minMessage));
+           throw new IllegalArgumentException(String.format("Category name must be at least %d %s %n", min, minMessage));
         }
         if (name.length() > max) {
             throw new IllegalArgumentException(String.format("Category name cannot exceed %d characters", max));
