@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class CategoryService {
@@ -50,6 +51,7 @@ public class CategoryService {
         }
 
         Category category = new Category();
+        validateCategory(categoryResponseDTO.getName());
         category.setName(categoryResponseDTO.getName());
 
         return categoryRepository.save(category);
@@ -63,6 +65,8 @@ public class CategoryService {
 
         Category existingCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+
+        validateCategory(existingCategory.getName());
 
         if (category.getName() != null) {
             existingCategory.setName(category.getName());
@@ -86,5 +90,21 @@ public class CategoryService {
     public User checkAuthorized() {
         return userService.getCurrentUser()
                 .orElseThrow(() -> new RuntimeException("Not authorized"));
+    }
+
+    public void validateCategory(String name) {
+        int min = 1;
+        int max = 8;
+
+        if (name.length() < min) {
+            String minMessage = min == 1 ? "character" : "characters";
+            throw new IllegalArgumentException(String.format("Category name must be at least %d %s", min, minMessage));
+        }
+        if (name.length() > max) {
+            throw new IllegalArgumentException(String.format("Category name cannot exceed %d characters", max));
+        }
+        if (!Pattern.matches("^[a-zA-Z]+$", name)) {
+            throw new IllegalArgumentException("Category name can only contain letters");
+        }
     }
 }

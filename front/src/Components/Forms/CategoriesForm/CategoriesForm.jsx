@@ -48,8 +48,8 @@ const CategoriesForm = () => {
       toast.error('Category name cannot exceed 8 characters');
       return false;
     }
-    if (!/^[a-zA-Z0-9]*$/.test(value)) {
-      toast.error('Category name can only contain letters and numbers');
+    if (!/^[a-zA-Z]*$/.test(value)) {
+      toast.error('Category name can only contain letters');
       return false;
     }
     return true;
