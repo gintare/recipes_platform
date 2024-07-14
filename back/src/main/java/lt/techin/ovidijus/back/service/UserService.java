@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,12 +37,14 @@ public class UserService {
             return "Email already exists!";
         }
         if (userRepository.existsByUserName(userDTO.getUserName())) {
-            return "This user name already exists!";
+            return "This username already exists!";
         }
 
         User user = new User();
         user.setUserName(userDTO.getUserName());
+        validateEmail(userDTO.getEmail());
         user.setEmail(userDTO.getEmail());
+        validatePassword(userDTO.getPassword());
         user.setPassword(authenticationService.encodePassword(userDTO.getPassword()));
         user.setRole("USER");
 
@@ -79,5 +82,29 @@ public class UserService {
             return userRepository.findByUserName(username);
         }
         return Optional.empty();
+    }
+
+    public void validateEmail(String email) {
+        if (!Pattern.matches("^[A-Za-z0-9._%-]+@[A-Za-z0-9-]+(\\.[A-Za-z]{2,4})+$", email)) {
+            throw new IllegalArgumentException("Invalid email address format");
+        }
+    }
+
+    public void validatePassword(String password) {
+        if (password == null || password.isEmpty() || password.isBlank()) {
+            throw new IllegalArgumentException("Password cannot be empty or blank");
+        }
+        if (!Pattern.matches(".*[A-Z].*", password)) {
+            throw new IllegalArgumentException("Password must include at least one uppercase letter");
+        }
+        if (!Pattern.matches(".*[a-z].*", password)) {
+            throw new IllegalArgumentException("Password must include at least one lowercase letter");
+        }
+        if (!Pattern.matches(".*\\d.*", password)) {
+            throw new IllegalArgumentException("Password must include at least one number");
+        }
+        if (password.length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long");
+        }
     }
 }

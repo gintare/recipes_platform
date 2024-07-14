@@ -74,6 +74,10 @@ const RegisterForm = () => {
           {...register('userName', {
             required: 'User name is required',
             validate: (value) => value.trim() !== '' || 'User name cannot be empty',
+            maxLength: {
+              value: 255,
+              message: 'Username cannot exceed 255 characters',
+            },
           })}
         />
         {errors.userName && <div className='invalid-feedback'>{errors.userName.message}</div>}
@@ -88,8 +92,12 @@ const RegisterForm = () => {
             required: 'Email is required',
             validate: (value) => value.trim() !== '' || 'Email cannot be empty',
             pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              value: /^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/,
               message: 'Invalid email address format',
+            },
+            maxLength: {
+              value: 255,
+              message: 'Email cannot exceed 255 characters',
             },
           })}
         />
@@ -112,6 +120,7 @@ const RegisterForm = () => {
                 /\d/.test(value) || 'Password must include at least one number.',
               minLength: (value) =>
                 value.length >= 8 || 'Password must have at least 8 characters.',
+              maxLength: (value) => value.length <= 255 || 'Password cannot exceed 255 characters',
             },
           })}
         />
@@ -125,7 +134,13 @@ const RegisterForm = () => {
           id='repeatPassword'
           {...register('repeatPassword', {
             required: 'Repeat your password',
-            validate: (value) => value === password.current || 'Passwords do not match',
+            validate: {
+              matchesOriginal: (value) => value === password.current || 'Passwords do not match',
+            },
+            maxLength: {
+              value: 255,
+              message: 'Repeat password cannot exceed 255 characters',
+            },
           })}
         />
         {errors.repeatPassword && (
