@@ -85,10 +85,18 @@ public class UserService {
     }
 
     public void validateEmail(String email) {
-        if (!Pattern.matches("^[A-Za-z0-9._%-]+@[A-Za-z0-9-]+(\\.[A-Za-z]{2,4})+$", email)) {
+        if (!Pattern.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", email)) {
             throw new IllegalArgumentException("Invalid email address format");
         }
     }
+
+//    public void validateEmail(String email) {
+//        String emailPattern = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+//        Pattern pattern = Pattern.compile(emailPattern, Pattern.CASE_INSENSITIVE);
+//        if (!pattern.matcher(email).matches()) {
+//            throw new IllegalArgumentException("Invalid email address format");
+//        }
+//    }
 
     public void validatePassword(String password) {
         if (password == null || password.isEmpty() || password.isBlank()) {
