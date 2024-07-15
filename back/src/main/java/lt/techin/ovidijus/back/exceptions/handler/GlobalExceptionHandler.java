@@ -9,6 +9,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(IngredientNotFoundException.class)
+    public ResponseEntity<ErrorDetails> exceptionIngredientNotFoundHandler(IngredientNotFoundException ex) {
+        ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<ErrorDetails> exceptionCategoryNotFoundHandler(CategoryNotFoundException ex) {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
