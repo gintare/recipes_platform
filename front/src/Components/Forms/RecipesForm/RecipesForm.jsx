@@ -12,7 +12,7 @@ import { updateRecipe } from "../../../services/update";
 const RecipesForm = ({ recipe }) => {
   const [error, setError] = useState("");
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const { update, setUpdate } = useContext(RecipesContext);
   const { id } = useContext(UserContext);
@@ -27,14 +27,14 @@ const RecipesForm = ({ recipe }) => {
     watch,
   } = useForm({
     defaultValues: {
-      name: "",
-      image: "",
-      description: "",
-      instructions: "",
+      name: '',
+      image: '',
+      description: '',
+      instructions: '',
       timeInMinutes: 0,
       categoryId: 0,
       category: {},
-      ingredients: [{ title: "" }],
+      ingredients: [{ title: '' }],
     },
   });
 
@@ -72,7 +72,7 @@ const RecipesForm = ({ recipe }) => {
         const categor = await getAllCategories();
         // console.log(categor);
         if (categor.lenght == 0) {
-          throw new Error("no categories found");
+          throw new Error('no categories found');
         }
         setCategories(categor);
         if (recipe) {
@@ -101,96 +101,89 @@ const RecipesForm = ({ recipe }) => {
   return (
     <>
       <form
-        className="row g-3 needs-validation register-form mt-2 d-flex flex-column align-items-stretch"
+        className='row g-3 needs-validation register-form mt-2 d-flex flex-column align-items-stretch'
         noValidate
         onSubmit={handleSubmit(formSubmitHandler)}
       >
-        <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
-          <label htmlFor="name" className="form-label">
+        <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
+          <label htmlFor='name' className='form-label'>
             Recipe Name
           </label>
           <input
-            type="text"
-            className={`form-control ${errors.name ? "is-invalid" : ""}`}
-            id="name"
-            {...register("name", {
-              required: "Recipe name is required",
-              validate: (value) =>
-                value.trim() !== "" || "Recipe name cannot be empty",
+            type='text'
+            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+            id='name'
+            {...register('name', {
+              required: 'Recipe name is required',
+              validate: (value) => value.trim() !== '' || 'Recipe name cannot be empty',
             })}
           />
-          {errors.name && (
-            <div className="invalid-feedback">{errors.name.message}</div>
-          )}
+          {errors.name && <div className='invalid-feedback'>{errors.name.message}</div>}
         </div>
 
-        <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
-          <label htmlFor="image" className="form-label">
+        <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
+          <label htmlFor='image' className='form-label'>
             Recipe image file
           </label>
           <input
-            type="text"
-            id="image"
-            className="form-control"
-            aria-label="image file url"
-            {...register("image")}
+            type='text'
+            id='image'
+            className='form-control'
+            aria-label='image file url'
+            {...register('image')}
           />
         </div>
 
-        <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
-          <label htmlFor="description" className="form-label">
+        <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
+          <label htmlFor='description' className='form-label'>
             Description
           </label>
           <textarea
-            className="form-control"
-            id="description"
-            placeholder="Recipe description here"
-            {...register("description", {
-              required: "Recipe description is required",
-              validate: (value) =>
-                value.trim() !== "" || "Recipe description cannot be empty",
+            className='form-control'
+            id='description'
+            placeholder='Recipe description here'
+            {...register('description', {
+              required: 'Recipe description is required',
+              validate: (value) => value.trim() !== '' || 'Recipe description cannot be empty',
             })}
           ></textarea>
           {errors.description && (
-            <div className="invalid-feedback">{errors.description.message}</div>
+            <div className='invalid-feedback'>{errors.description.message}</div>
           )}
         </div>
 
-        <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
-          <label htmlFor="instructions" className="form-label">
+        <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
+          <label htmlFor='instructions' className='form-label'>
             Instructions
           </label>
           <textarea
-            className="form-control"
-            id="instructions"
-            placeholder="Recipe instructions here"
-            {...register("instructions", {
-              required: "Recipe instructions is required",
-              validate: (value) =>
-                value.trim() !== "" || "Recipe instructions cannot be empty",
+            className='form-control'
+            id='instructions'
+            placeholder='Recipe instructions here'
+            {...register('instructions', {
+              required: 'Recipe instructions is required',
+              validate: (value) => value.trim() !== '' || 'Recipe instructions cannot be empty',
             })}
           ></textarea>
           {errors.instructions && (
-            <div className="invalid-feedback">
-              {errors.instructions.message}
-            </div>
+            <div className='invalid-feedback'>{errors.instructions.message}</div>
           )}
         </div>
 
-        <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
-          <label htmlFor="category" className="form-label">
+        <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
+          <label htmlFor='category' className='form-label'>
             Category
           </label>
           <Controller
-            name="categoryId"
+            name='categoryId'
             control={control}
             render={({ field: { onChange, value } }) => (
               <select
                 // labelId="category"
-                className="form-select form-select-md mb-3"
-                id="category"
+                className='form-select form-select-md mb-3'
+                id='category'
                 value={value}
-                label="Category"
+                label='Category'
                 onChange={onChange}
                 // {...register("categoryId")}
               >
@@ -206,7 +199,7 @@ const RecipesForm = ({ recipe }) => {
           />
         </div>
 
-        <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
+        <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
           <IngredientsTable
             ingredients={ingredients}
             setIngredients={setIngredients}
@@ -214,18 +207,16 @@ const RecipesForm = ({ recipe }) => {
           />
         </div>
 
-        <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
-          <label htmlFor="timeInMinutes" className="form-label">
+        <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
+          <label htmlFor='timeInMinutes' className='form-label'>
             Preparation time, min
           </label>
           <input
-            type="number"
-            className={`form-control ${
-              errors.timeInMinutes ? "is-invalid" : ""
-            }`}
-            id="timeInMinutes"
-            {...register("timeInMinutes", {
-              required: "Recipe preparation time is required",
+            type='number'
+            className={`form-control ${errors.timeInMinutes ? 'is-invalid' : ''}`}
+            id='timeInMinutes'
+            {...register('timeInMinutes', {
+              required: 'Recipe preparation time is required',
               pattern: /^[0-9]+$/i,
               validate: (value) =>
                 value.toString().trim() !== "" ||
@@ -236,9 +227,7 @@ const RecipesForm = ({ recipe }) => {
             })}
           />
           {errors.timeInMinutes && (
-            <div className="invalid-feedback">
-              {errors.timeInMinutes.message}
-            </div>
+            <div className='invalid-feedback'>{errors.timeInMinutes.message}</div>
           )}
         </div>
 
@@ -246,7 +235,7 @@ const RecipesForm = ({ recipe }) => {
           <button type="submit" className="btn submit-btn w-100">
             {recipe ? 'Update recipe' : "Add recipe"}
           </button>
-          {error && <div className="alert alert-danger mt-3">{error}</div>}
+          {error && <div className='alert alert-danger mt-3'>{error}</div>}
         </div>
       </form>
       {/* <Toaster position='top-left' richColors /> */}

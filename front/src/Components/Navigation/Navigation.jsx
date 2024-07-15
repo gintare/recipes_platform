@@ -7,13 +7,13 @@ import './Navigation.css';
 const Navigation = () => {
   const { isLoggedIn, logoutHandler, userName, role } = useContext(UserContext);
 
-  const accountPath = role === 'ADMIN' ? '/admin' : '/user';
+  const accountPath = role === 'ADMIN' ? '/admin' : '/profile';
 
   return (
     <nav className='navbar navbar-expand-lg'>
       <div className='container-fluid'>
         <NavLink className='navbar-brand text-light' to='/'>
-          Logo
+          <img src='public\code_bakers.png' alt='logo' className='logo' />
         </NavLink>
         <button
           className='navbar-toggler mb-2'
@@ -27,10 +27,10 @@ const Navigation = () => {
           <span className='navbar-toggler-icon'></span>
         </button>
         <div className='collapse navbar-collapse' id='navbarNavAltMarkup'>
-          <div className='navbar-nav ms-auto text-end'>
+          <div className='navbar-nav ms-auto text-end gap-2'>
             {isLoggedIn ? (
               <>
-                <NavLink className='username' to={accountPath}>
+                <NavLink className='username w-100' to={accountPath}>
                   Account: {userName}
                 </NavLink>
                 <NavLink
@@ -45,8 +45,7 @@ const Navigation = () => {
               </>
             ) : (
               <>
-
-<NavLink
+                <NavLink
                   className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
                   to='/recipes'
                 >
@@ -58,8 +57,6 @@ const Navigation = () => {
                 >
                   Login
                 </NavLink>
-
-              
 
                 <NavLink
                   className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}

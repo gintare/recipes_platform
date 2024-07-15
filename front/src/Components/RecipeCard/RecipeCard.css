@@ -2,13 +2,18 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+
+  gap: 20px;
   margin-top: 20px;
+  margin-bottom: 100px;
 }
 
-.card {
-  margin-bottom: 70px;
-  width: 24rem;
-  
-  
-
+.recipe-card img {
+  width: 15.625rem;
+  height: 19rem;
+  object-fit: cover;
+  object-position: center;
+}
+.card-body{
+  width: 15.625rem;
 }

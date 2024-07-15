@@ -74,6 +74,10 @@ const RegisterForm = () => {
           {...register('userName', {
             required: 'User name is required',
             validate: (value) => value.trim() !== '' || 'User name cannot be empty',
+            maxLength: {
+              value: 255,
+              message: 'Username cannot exceed 255 characters',
+            },
           })}
         />
         {errors.userName && <div className='invalid-feedback'>{errors.userName.message}</div>}
@@ -86,10 +90,13 @@ const RegisterForm = () => {
           id='email'
           {...register('email', {
             required: 'Email is required',
-            validate: (value) => value.trim() !== '' || 'Email cannot be empty',
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: 'Invalid email address format',
+            validate: {
+              notEmpty: (value) => value.trim() !== '' || 'Email cannot be empty',
+              emailRegex: (value) =>
+                /^(?=.{1,64}@)[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*(\.[A-Za-z]{2,})$/.test(
+                  value
+                ) || 'Invalid email address format',
+              maxLength: (value) => value.length <= 255 || 'Email cannot exceed 255 characters',
             },
           })}
         />
@@ -112,6 +119,7 @@ const RegisterForm = () => {
                 /\d/.test(value) || 'Password must include at least one number.',
               minLength: (value) =>
                 value.length >= 8 || 'Password must have at least 8 characters.',
+              maxLength: (value) => value.length <= 255 || 'Password cannot exceed 255 characters',
             },
           })}
         />
@@ -125,7 +133,13 @@ const RegisterForm = () => {
           id='repeatPassword'
           {...register('repeatPassword', {
             required: 'Repeat your password',
-            validate: (value) => value === password.current || 'Passwords do not match',
+            validate: {
+              matchesOriginal: (value) => value === password.current || 'Passwords do not match',
+            },
+            maxLength: {
+              value: 255,
+              message: 'Repeat password cannot exceed 255 characters',
+            },
           })}
         />
         {errors.repeatPassword && (

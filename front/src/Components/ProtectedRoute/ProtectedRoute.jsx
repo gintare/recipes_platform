@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { getUserRoleFromToken } from '../../utils/jwt';
-
 import './ProtectedRoute.css';
 
 const ProtectedRoute = ({ children, adminOnly, ...rest }) => {
   const [isAuthorized, setIsAuthorized] = useState(false);
+
   const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
 
@@ -14,8 +14,10 @@ const ProtectedRoute = ({ children, adminOnly, ...rest }) => {
 
     if (token) {
       const role = getUserRoleFromToken(token);
-      if (role) setIsAuthorized(true);
-      if (role === 'ADMIN') setIsAdmin(true);
+      setIsAuthorized(true);
+      if (role === 'ADMIN') {
+        setIsAdmin(true);
+      }
     }
   }, []);
 

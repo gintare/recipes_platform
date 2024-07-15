@@ -29,7 +29,7 @@ const LoginForm = () => {
       localStorage.setItem('token', response.token);
       localStorage.setItem('user', JSON.stringify(response));
       reset();
-      navigate('/recipes');
+      navigate('/recipes', {replace: true});
       toast.success('Login successfull!');
     } catch (error) {
       toast.error('Invalid email or password');

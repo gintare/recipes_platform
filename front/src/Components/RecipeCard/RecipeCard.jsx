@@ -2,6 +2,8 @@ import Card from 'react-bootstrap/Card';
 import './RecipeCard.css';
 
 const RecipeCard = ({ recipe }) => {
+
+  
   return (
     <Card className="recipe-card">
       <Card.Img variant="top" src={recipe.image} alt={recipe.title} />

@@ -3,7 +3,7 @@ import './RecipeCarousel.css';
 import { useEffect, useState } from 'react';
 import { getAllRecipes } from '../../services/get';
 
-const RecipeCarusele = () => {
+const RecipeCarousel = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
@@ -19,13 +19,15 @@ const RecipeCarusele = () => {
     fetchData();
   }, []);
 
+  const limitedRecipes = recipes.slice(0, 6);
+
   return (
     <>
       {recipes.length === 0 ? (
-        <div className="no-recipes-message">Receptų nėra</div>
+        <div className="no-recipes-message">There are no recipes</div>
       ) : (
         <Carousel>
-          {recipes.map((recipe, index) => (
+          {limitedRecipes.map((recipe, index) => (
             <Carousel.Item key={index}>
               <img
                 src={recipe.image}
@@ -43,4 +45,4 @@ const RecipeCarusele = () => {
   );
 };
 
-export default RecipeCarusele;
+export default RecipeCarousel;
