@@ -14,4 +14,6 @@
   object-fit: cover;
   object-position: center;
 }
-
+.card-body{
+  width: 15.625rem;
+}
