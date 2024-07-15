@@ -7,3 +7,9 @@
   text-align: center;
   font-weight: 600;
 }
+
+.loader {
+  text-align: center;
+  font-weight: 600;
+  margin-top: 5rem;
+}

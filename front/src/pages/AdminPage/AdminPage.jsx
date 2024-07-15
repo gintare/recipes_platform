@@ -33,7 +33,9 @@ const AdminPage = () => {
         <div className='d-flex flex-column align-items-end mt-3'>
           <CategoriesForm className='col-12 col-md-8 d-flex flex-column' />
         </div>
-        {categories.length === 0 ? (
+        {isLoading ? (
+          <div className='loader'>Loading...</div>
+        ) : categories.length === 0 ? (
           <p className='no-categories'>No categories found</p>
         ) : (
           <CategoriesList />
