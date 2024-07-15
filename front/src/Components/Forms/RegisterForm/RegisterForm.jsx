@@ -116,8 +116,9 @@ const RegisterForm = () => {
             validate: {
               notEmpty: (value) => value.trim() !== '' || 'Email cannot be empty',
               emailRegex: (value) =>
-                /^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(value) ||
-                'Invalid email address format',
+                /^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$/.test(
+                  value
+                ) || 'Invalid email address format',
               maxLength: (value) => value.length <= 255 || 'Email cannot exceed 255 characters',
             },
           })}

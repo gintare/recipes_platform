@@ -1,4 +1,37 @@
 .container-row {
-  margin-left: 1rem;
+  margin-right: 1rem;
+  gap: 1rem;
 }
 
+@media screen and (min-width: 992px) {
+  .container-row {
+    grid-row-gap: 1rem;
+    grid-column-gap: 4rem;
+  }
+
+  .category-card {
+    width: 13rem;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .container-row {
+    grid-row-gap: 0rem;
+    grid-column-gap: 6.5rem;
+  }
+  .category-card {
+    width: 13rem;
+  }
+}
+
+@media screen and (min-width: 1800px) {
+  .container-row {
+    gap: 5rem;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  .container-row {
+    gap: 1rem;
+  }
+}

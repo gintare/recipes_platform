@@ -22,7 +22,7 @@ export const UserProvider = ({ children }) => {
     sessionStorage.clear();
     toast.success('You have been logged out successfully.');
     updateUser();
-    navigate('/login', { replace: true });
+    navigate('/', { replace: true });
   };
 
   const updateUser = () => {
