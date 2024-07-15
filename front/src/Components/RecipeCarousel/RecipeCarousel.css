@@ -4,10 +4,10 @@
     margin-right: auto;
     margin-top: 4rem;
     width: 100%;
-    height: 500px; /* Nurodytas aukštis */
+    height: 500px; 
     max-width: 800px; 
-    object-fit: cover; /* Užtikrina, kad paveikslėlis bus apkarpytas ir užpildys plotą, neprarandant proporcijų */
-    object-position: center; /* Centruoja paveikslėlį */
+    object-fit: cover; 
+    object-position: center;
   }
   
   .no-recipes-message {
