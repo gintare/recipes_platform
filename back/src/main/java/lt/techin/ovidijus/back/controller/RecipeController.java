@@ -3,11 +3,13 @@ package lt.techin.ovidijus.back.controller;
 import lt.techin.ovidijus.back.dto.RecipeRequestDTO;
 import lt.techin.ovidijus.back.dto.RecipeResponseDTO;
 import lt.techin.ovidijus.back.dto.RecipeUpdateDTO;
+import lt.techin.ovidijus.back.model.Recipe;
 import lt.techin.ovidijus.back.service.RecipeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -21,9 +23,9 @@ public class RecipeController {
     }
 
 
-    @PostMapping("/api/categories/{categoryId}/recipes")
-    public ResponseEntity<?> createRecipe(@PathVariable Long categoryId, @RequestBody RecipeRequestDTO recipeRequestDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.recipeService.createRecipe(categoryId, recipeRequestDTO));
+    @PostMapping("/api/categories/{categoryId}/users/{userId}/recipes")
+    public ResponseEntity<?> createRecipe(@PathVariable Long categoryId, @PathVariable Long userId, @RequestBody RecipeRequestDTO recipeRequestDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.recipeService.createRecipe(categoryId, userId, recipeRequestDTO));
     }
 
 
@@ -51,5 +53,9 @@ public class RecipeController {
         return ResponseEntity.ok("Recipe updated successfully");
     }
 
+    @GetMapping("/api/users/{userId}/recipes")
+    public List<RecipeResponseDTO> findARecipesByUserId(@PathVariable Long userId) {
+        return this.recipeService.findByUserId(userId);
+    }
 
 }

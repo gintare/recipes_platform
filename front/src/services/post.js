@@ -44,10 +44,10 @@ export const postCategory = async (data) => {
   }
 };
 
-export const recipePost = async (categoryId, data) => {
+export const recipePost = async (categoryId, userId, data) => {
   try {
     const userToken = getDefaultToken();
-    const response = await axios.post(`${API_URL}/api/categories/${categoryId}/recipes`, data, {
+    const response = await axios.post(`${API_URL}/api/categories/${categoryId}/users/${userId}/recipes`, data, {
       headers: {
         Authorization: `Bearer ${userToken}`,
       },
