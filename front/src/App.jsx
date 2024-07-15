@@ -30,7 +30,10 @@ function App() {
               <Route path='/login' element={<LoginPage />} />
             </>
           ) : (
-            <Route path='*' element={<Navigate to='/recipes' replace />} />
+            <>
+              <Route path='/register' element={<Navigate to='/recipes' replace />} />
+              <Route path='/login' element={<Navigate to='/recipes' replace />} />
+            </>
           )}
           <Route path='/recipes' element={<RecipesPage />} />
           <Route

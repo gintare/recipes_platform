@@ -1,3 +1,9 @@
+.logo {
+  width: 3rem;
+  border-radius: 20%;
+  border: 1px solid var(--light-white);
+}
+
 .nav-link {
   color: var(--white);
   display: grid;
