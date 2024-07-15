@@ -1,6 +1,5 @@
 .category-card {
   border: 1px solid var(--black);
-  width: 10%;
   border-radius: 0.2rem;
 }
 
@@ -25,7 +24,11 @@
 }
 
 .form-edit-input {
-  /* background-color: var(--whitesmoke); */
-  /* border: none; */
   margin-right: 0.2rem;
+}
+
+@media screen and (min-width: 1400px) {
+  .category-card {
+    width: 130%;
+  }
 }

@@ -36,6 +36,7 @@ export const postCategory = async (data) => {
     const response = await axios.post(`${API_URL}/api/categories`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Cache-Control': 'no-cache',
       },
     });
     return response.data;

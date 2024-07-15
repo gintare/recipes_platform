@@ -1,5 +1,6 @@
 package lt.techin.ovidijus.back.controller;
 
+import lt.techin.ovidijus.back.dto.CategoryRequestDTO;
 import lt.techin.ovidijus.back.dto.CategoryResponseDTO;
 import lt.techin.ovidijus.back.exceptions.CategoryNotFoundException;
 import lt.techin.ovidijus.back.exceptions.NotAdminException;
@@ -36,23 +37,28 @@ public class CategoryController {
 //    }
 
     @PostMapping("/api/categories")
-    public ResponseEntity<Category> createCategory(@RequestBody CategoryResponseDTO categoryResponseDTO) throws NotAdminException {
-        Category newCategory = categoryService.createCategory(categoryResponseDTO);
+    public ResponseEntity<Category> createCategory(@RequestBody CategoryRequestDTO categoryRequestDTO) throws NotAdminException {
+        Category newCategory = categoryService.createCategory(categoryRequestDTO);
         return new ResponseEntity<>(newCategory, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/api/categories/{id}")
-    public void deleteCategory(@PathVariable long id) throws CategoryNotFoundException, NotAdminException {
+    public ResponseEntity<String> deleteCategory(@PathVariable long id) throws CategoryNotFoundException, NotAdminException {
         categoryService.deleteCategory(id);
+        return ResponseEntity.ok("Category deleted");
     }
 
     @PatchMapping("/api/categories/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable long id, @RequestBody Category category) {
+    public ResponseEntity<CategoryResponseDTO> updateCategory(@PathVariable long id, @RequestBody CategoryRequestDTO categoryRequestDTO) {
         try {
-            Category updatedCategory = categoryService.updateCategory(id, category);
+            CategoryResponseDTO updatedCategory = categoryService.updateCategory(id, categoryRequestDTO);
             return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
-        } catch (CategoryNotFoundException | NotAdminException e) {
+        } catch (CategoryNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (NotAdminException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

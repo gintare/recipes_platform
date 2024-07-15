@@ -74,10 +74,37 @@ const RegisterForm = () => {
           {...register('userName', {
             required: 'User name is required',
             validate: (value) => value.trim() !== '' || 'User name cannot be empty',
+            maxLength: {
+              value: 255,
+              message: 'Username cannot exceed 255 characters',
+            },
           })}
         />
         {errors.userName && <div className='invalid-feedback'>{errors.userName.message}</div>}
       </div>
+      {/* <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
+        <input
+          placeholder='Email'
+          type='email'
+          className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+          id='email'
+          {...register('email', {
+            required: 'Email is required',
+            validate: {
+              notEmpty: (value) => value.trim() !== '' || 'Email cannot be empty',
+            },
+            pattern: {
+              value: /^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+              message: 'Invalid email address format',
+            },
+            maxLength: {
+              value: 255,
+              message: 'Email cannot exceed 255 characters',
+            },
+          })}
+        />
+        {errors.email && <div className='invalid-feedback'>{errors.email.message}</div>}
+      </div> */}
       <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
         <input
           placeholder='Email'
@@ -86,10 +113,12 @@ const RegisterForm = () => {
           id='email'
           {...register('email', {
             required: 'Email is required',
-            validate: (value) => value.trim() !== '' || 'Email cannot be empty',
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: 'Invalid email address format',
+            validate: {
+              notEmpty: (value) => value.trim() !== '' || 'Email cannot be empty',
+              emailRegex: (value) =>
+                /^(?=.{1,64}@)[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(value) ||
+                'Invalid email address format',
+              maxLength: (value) => value.length <= 255 || 'Email cannot exceed 255 characters',
             },
           })}
         />
@@ -112,6 +141,7 @@ const RegisterForm = () => {
                 /\d/.test(value) || 'Password must include at least one number.',
               minLength: (value) =>
                 value.length >= 8 || 'Password must have at least 8 characters.',
+              maxLength: (value) => value.length <= 255 || 'Password cannot exceed 255 characters',
             },
           })}
         />
@@ -125,7 +155,13 @@ const RegisterForm = () => {
           id='repeatPassword'
           {...register('repeatPassword', {
             required: 'Repeat your password',
-            validate: (value) => value === password.current || 'Passwords do not match',
+            validate: {
+              matchesOriginal: (value) => value === password.current || 'Passwords do not match',
+            },
+            maxLength: {
+              value: 255,
+              message: 'Repeat password cannot exceed 255 characters',
+            },
           })}
         />
         {errors.repeatPassword && (
