@@ -8,7 +8,7 @@ import CategoriesContext from '../../Context/CategoriesContext/CategoriesContext
 
 const AdminPage = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { update, setCategories } = useContext(CategoriesContext);
+  const { update, setCategories, categories } = useContext(CategoriesContext);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -33,7 +33,11 @@ const AdminPage = () => {
         <div className='d-flex flex-column align-items-end mt-3'>
           <CategoriesForm className='col-12 col-md-8 d-flex flex-column' />
         </div>
-        <CategoriesList />
+        {categories.length === 0 ? (
+          <p className='no-categories'>No categories found</p>
+        ) : (
+          <CategoriesList />
+        )}
       </div>
     </>
   );
