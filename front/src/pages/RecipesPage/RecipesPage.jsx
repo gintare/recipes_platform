@@ -25,6 +25,8 @@ const RecipesPage = () => {
     fetchData();
   }, []);
 
+  
+
   return (
     <div className='recipes-page'>
       {isLoggedIn && (
