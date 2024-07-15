@@ -13,7 +13,7 @@ const Navigation = () => {
     <nav className='navbar navbar-expand-lg'>
       <div className='container-fluid'>
         <NavLink className='navbar-brand text-light' to='/'>
-          Logo
+          <img src='public\code_bakers.png' alt='logo' className='logo' />
         </NavLink>
         <button
           className='navbar-toggler mb-2'
