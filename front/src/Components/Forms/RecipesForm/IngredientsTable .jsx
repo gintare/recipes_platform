@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 
 function IngredientsTable({ ingredients, setIngredients, register }) {
@@ -31,6 +31,20 @@ function IngredientsTable({ ingredients, setIngredients, register }) {
       </tr>
     );
   };
+
+  useEffect(() => {
+     const getIngredients = async () => {
+       try{
+          if(ingredients.length > 0 ) {
+            setIngredientsArray(ingredients);
+          }
+         
+       }catch(error){
+          console.log(error.message);
+       }
+     }
+     getIngredients();
+  }, [ingredients]);
 
   return (
     <Table striped bordered hover>

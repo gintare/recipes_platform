@@ -12,6 +12,7 @@ import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import AdminPage from './pages/AdminPage/AdminPage';
 import { CategoriesProvider } from './Context/CategoriesContext/CategoriesContext';
+import { RecipesProvider } from './Context/RecipesContentxt/RecipesContext';
  
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <ToastContainer autoClose={1000} position="top-center" />
       <UserProvider>
         <CategoriesProvider>
+          <RecipesProvider>
           <Header />
           <Routes>
             <Route path='/' element={<Navigate to='/recipes' />} />
@@ -54,6 +56,7 @@ function App() {
  
             <Route path='*' element={<NotFoundPage />} />
           </Routes>
+          </RecipesProvider>
         </CategoriesProvider>
       </UserProvider>
       <Footer />

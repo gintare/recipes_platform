@@ -1,10 +1,7 @@
 package lt.techin.ovidijus.back.service;
 
 import lt.techin.ovidijus.back.dto.*;
-import lt.techin.ovidijus.back.exceptions.CategoryNotFoundException;
-import lt.techin.ovidijus.back.exceptions.RecipeNotFoundException;
-import lt.techin.ovidijus.back.exceptions.RequiredFieldIsEmptyException;
-import lt.techin.ovidijus.back.exceptions.UserNotFoundException;
+import lt.techin.ovidijus.back.exceptions.*;
 import lt.techin.ovidijus.back.model.Category;
 import lt.techin.ovidijus.back.model.Ingredient;
 import lt.techin.ovidijus.back.model.Recipe;
@@ -90,7 +87,7 @@ public class RecipeService {
         for(Recipe recipe : recipes){
             RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
             recipeResponseDTO.setId(recipe.getId());
-            recipeResponseDTO.setUserId(recipe.getUser().getId());
+           // recipeResponseDTO.setUserId(recipe.getUser().getId());
             recipeResponseDTO.setName(recipe.getName());
             recipeResponseDTO.setDescription(recipe.getDescription());
             recipeResponseDTO.setImage(recipe.getImage());
@@ -108,7 +105,28 @@ public class RecipeService {
         recipe.setDescription(recipeRequestDTO.getDescription());
         recipe.setInstructions(recipeRequestDTO.getInstructions());
         recipe.setTimeInMinutes(recipeRequestDTO.getTimeInMinutes());
+        recipe.setCategory(category);
         this.recipeRepository.save(recipe);
+
+        Set<IngredientResponseDTO> ingredientResponseDTOSet = new LinkedHashSet<>();
+        Set<IngredientRequestDTO> ingredientRequestDTOS = recipeRequestDTO.getIngredients();
+        for(IngredientRequestDTO ingredientRequestDTO : ingredientRequestDTOS) {
+            Ingredient ingredient = null;
+            if(ingredientRequestDTO.getId() != null){
+                ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getId())
+                        .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = "+ingredientRequestDTO.getId()));
+            }else{
+                ingredient = new Ingredient();
+            }
+            ingredient.setTitle(ingredientRequestDTO.getTitle());
+            ingredient.setRecipe(recipe);
+            this.ingredientRepository.save(ingredient);
+
+            IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
+            ingredientResponseDTO.setId(ingredient.getId());
+            ingredientResponseDTO.setTitle(ingredient.getTitle());
+            ingredientResponseDTOSet.add(ingredientResponseDTO);
+        }
 
         RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
         recipeResponseDTO.setId(recipe.getId());
@@ -116,6 +134,10 @@ public class RecipeService {
         recipeResponseDTO.setDescription(recipe.getDescription());
         recipeResponseDTO.setImage(recipe.getImage());
         recipeResponseDTO.setInstructions(recipe.getInstructions());
+        recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
+        recipeResponseDTO.setCategoryId(recipe.getCategory().getId());
+        recipeResponseDTO.setUserId(recipe.getUser().getId());
+        recipeResponseDTO.setIngredients(ingredientResponseDTOSet);
 
         return recipeResponseDTO;
     }
@@ -157,6 +179,16 @@ public class RecipeService {
             recipeResponseDTO.setDescription(recipe.getDescription());
             recipeResponseDTO.setImage(recipe.getImage());
             recipeResponseDTO.setInstructions(recipe.getInstructions());
+            recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
+            recipeResponseDTO.setCategoryId(recipe.getCategory().getId());
+            Set<IngredientResponseDTO> ingredientResponseDTOS = new LinkedHashSet<>();
+            for(Ingredient ingredient : recipe.getIngredients()){
+                IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
+                ingredientResponseDTO.setId(ingredient.getId());
+                ingredientResponseDTO.setTitle(ingredient.getTitle());
+                ingredientResponseDTOS.add(ingredientResponseDTO);
+            }
+            recipeResponseDTO.setIngredients(ingredientResponseDTOS);
             recipeResponseDTOS.add(recipeResponseDTO);
         }
         return recipeResponseDTOS;
