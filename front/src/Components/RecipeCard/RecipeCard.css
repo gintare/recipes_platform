@@ -14,8 +14,4 @@
   object-fit: cover;
   object-position: center;
 }
-.card-body {
-  width: 100%;
-  flex-shrink: 0;
-  /* width: auto; */
-}
+
