@@ -47,9 +47,15 @@ const RecipesForm = ({ recipe }) => {
     return ingredients;
   };
 
-  const formSubmitHandler = async (data) => {
+  const formSubmitHandler = async (data) => {    
     try {
       data.ingredients = deleteEmptyIngredient(data.ingredients);
+
+      const hasEmptyTitle = data.ingredients.some((ingredient) => ingredient.title.trim() === '');
+      if (hasEmptyTitle) {
+        throw new Error('Ingredient titles cannot be empty');
+      }
+
       if (data.ingredients.length == 0) {
         throw new Error('No ingredients found, please add atleast one ingredient');
       } else {
