@@ -97,8 +97,8 @@ public class CategoryService {
     }
 
     public void validateCategory(String name) {
-        int min = 1;
-        int max = 8;
+        int min = 3;
+        int max = 15;
 
         if (name.isEmpty() || name.isBlank()) {
             throw new IllegalArgumentException(String.format("Category name cannot be empty %n"));

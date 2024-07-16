@@ -39,8 +39,8 @@ const CategoriesForm = () => {
 
   const validateFormInput = (data) => {
     const value = data.name;
-    const min = 1;
-    const max = 8;
+    const min = 3;
+    const max = 15;
 
     if (value.length < min) {
       toast.error(`Category name must be at least ${min} character`);

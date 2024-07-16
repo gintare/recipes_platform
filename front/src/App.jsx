@@ -12,6 +12,8 @@ import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import AdminPage from './pages/AdminPage/AdminPage';
 import { CategoriesProvider } from './Context/CategoriesContext/CategoriesContext';
+import { RecipesProvider } from './Context/RecipesContentxt/RecipesContext';
+ 
 import { useContext } from 'react';
 
 function App() {
@@ -21,6 +23,7 @@ function App() {
     <>
       <ToastContainer autoClose={1200} position='top-center' />
       <CategoriesProvider>
+        <RecipesProvider>
         <Header />
         <Routes>
           <Route path='/' element={<Navigate to='/recipes' />} />
@@ -30,7 +33,10 @@ function App() {
               <Route path='/login' element={<LoginPage />} />
             </>
           ) : (
-            <Route path='*' element={<Navigate to='/recipes' replace />} />
+            <>
+              <Route path='/register' element={<Navigate to='/recipes' replace />} />
+              <Route path='/login' element={<Navigate to='/recipes' replace />} />
+            </>
           )}
           <Route path='/recipes' element={<RecipesPage />} />
           <Route
@@ -51,6 +57,7 @@ function App() {
           />
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
+        </RecipesProvider>
       </CategoriesProvider>
       <Footer />
     </>
