@@ -26,7 +26,8 @@
 
 @media screen and (min-width: 1800px) {
   .container-row {
-    gap: 5rem;
+    grid-row-gap: 0rem;
+    grid-column-gap: 6.5rem;
   }
 }
 

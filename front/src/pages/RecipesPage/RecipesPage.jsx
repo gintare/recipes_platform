@@ -7,6 +7,16 @@ import { Button } from 'react-bootstrap';
 import './RecipesPage.css';
 import UserContext from '../../Context/UserContext/UserContext';
 
+// Utility function to shuffle an array
+const shuffleArray = (array) => {
+  let shuffledArray = array.slice(); // Copy the original array
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+};
+
 const RecipesPage = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [recipes, setRecipes] = useState([]);
@@ -16,7 +26,7 @@ const RecipesPage = () => {
     const fetchData = async () => {
       try {
         const data = await getAllRecipes();
-        setRecipes(data);
+        setRecipes(shuffleArray(data)); // Shuffle the recipes array before setting it
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -24,8 +34,6 @@ const RecipesPage = () => {
 
     fetchData();
   }, []);
-
-  
 
   return (
     <div className='recipes-page'>
