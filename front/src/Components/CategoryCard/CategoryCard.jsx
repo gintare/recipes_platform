@@ -24,12 +24,15 @@ const CategoryCard = ({ category, setUpdate }) => {
   const role = getUserRoleFromToken(token);
 
   const validateCategoryInput = (value) => {
-    if (value.length < 1) {
-      toast.error('Category name must be at least 1 character');
+    const min = 3;
+    const max = 15;
+
+    if (value.length < min) {
+      toast.error(`Category name must be at least ${min} character`);
       return false;
     }
-    if (value.length > 8) {
-      toast.error('Category name cannot exceed 8 characters');
+    if (value.length > max) {
+      toast.error(`Category name cannot exceed ${max} characters`);
       return false;
     }
     if (!/^[a-zA-Z]*$/.test(value)) {
