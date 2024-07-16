@@ -1,0 +1,11 @@
+.buttons-content{
+    text-align: center;
+}
+
+.buttons-content button{
+    margin: 20px 10px;
+}
+
+.footer-padding{
+    height: 100px;
+}
