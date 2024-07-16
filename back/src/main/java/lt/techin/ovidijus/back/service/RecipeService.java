@@ -46,6 +46,7 @@ public class RecipeService {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("No category found with an id = "+categoryId));
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("No user found by user id ="+userId));
 
+
         Recipe recipe = new Recipe();
         recipe.setName(recipeRequestDTO.getName());
         recipe.setImage(recipeRequestDTO.getImage());
