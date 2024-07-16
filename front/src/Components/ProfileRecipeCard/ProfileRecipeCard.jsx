@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { deleteRecipe } from "../../services/delete";
 import RecipesContext from "../../Context/RecipesContentxt/RecipesContext";
 import { Upload } from "@mui/icons-material";
+import "./ProfileRecipeCard.css"
 
 function ProfileRecipeCard({recipe, createRecipeIsVisible, setCreateRecipeIsVisible}){
     const[ error, setError] = useState("");
@@ -25,12 +26,12 @@ function ProfileRecipeCard({recipe, createRecipeIsVisible, setCreateRecipeIsVisi
     <div className="card-body">
       <h5 className="card-title">{recipe.name}</h5>
       <p className="card-text">{recipe.description}</p>
-      <a href="#" className="btn btn-primary" onClick={() => {
+      <a href="#" className="edit-button btn btn-primary" onClick={() => {
             setCreateRecipeIsVisible(false);
             setUpdateRecipeFormIsVisible(true);
             setUpdateRecipe(recipe)}}>Edit</a>
 
-      <a href="#" className="btn btn-primary" onClick={() => deleteItem(recipe.id)}>Delete</a>
+      <a href="#" className="delete-button btn btn-primary" onClick={() => deleteItem(recipe.id)}>Delete</a>
     </div>
     </div>
     {error && <div className='alert alert-danger mt-3'>{error}</div>}
