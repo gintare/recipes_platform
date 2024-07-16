@@ -67,11 +67,10 @@ function ProfilePage() {
       )}
 
       <div className="container text-center">
-        <div className="row row-cols-2 row-cols-lg-3 g-2 g-lg-3">
+        <div className="recipe-list">
           {recipes.map((recipe) => {
             return (
-              <div key={recipe.id} className="col">
-
+              <div key={recipe.id} className="recipe-card">
                 <ProfileRecipeCard
                   recipe={recipe}
                   createRecipeIsVisible={createRecipeIsVisible}
@@ -81,11 +80,8 @@ function ProfilePage() {
             );
           })}
         </div>
-        
       </div>
-      <div className="footer-padding">
-
-      </div>
+      <div className="footer-padding"></div>
     </>
   );
 }

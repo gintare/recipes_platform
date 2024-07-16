@@ -7,9 +7,9 @@ import { Button } from 'react-bootstrap';
 import './RecipesPage.css';
 import UserContext from '../../Context/UserContext/UserContext';
 
-// Utility function to shuffle an array
+
 const shuffleArray = (array) => {
-  let shuffledArray = array.slice(); // Copy the original array
+  let shuffledArray = array.slice(); 
   for (let i = shuffledArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
@@ -26,7 +26,7 @@ const RecipesPage = () => {
     const fetchData = async () => {
       try {
         const data = await getAllRecipes();
-        setRecipes(shuffleArray(data)); // Shuffle the recipes array before setting it
+        setRecipes(shuffleArray(data)); 
       } catch (error) {
         console.error('Error fetching data:', error);
       }
