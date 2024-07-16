@@ -9,17 +9,15 @@ function IngredientsTable({ ingredients, setIngredients, register }) {
     setIngredientsArray([...ingredientsArray, newRow]);
   };
 
-  
-
   const renderIngredients = (ingredient, index) => {
     return (
       <tr key={index}>
         <td>
           <input
-            type="text"
-            name="title"
-            placeholder="My ingredient title"
-            className="form-control"
+            type='text'
+            name='title'
+            placeholder='My ingredient title'
+            className='form-control'
             // value={ingredient.title}
             // onChange={(event) => handleFormChange(index, event)}
             {...register(`ingredients.${index}.title`)}
@@ -33,17 +31,16 @@ function IngredientsTable({ ingredients, setIngredients, register }) {
   };
 
   useEffect(() => {
-     const getIngredients = async () => {
-       try{
-          if(ingredients.length > 0 ) {
-            setIngredientsArray(ingredients);
-          }
-         
-       }catch(error){
-          console.log(error.message);
-       }
-     }
-     getIngredients();
+    const getIngredients = async () => {
+      try {
+        if (ingredients.length > 0) {
+          setIngredientsArray(ingredients);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getIngredients();
   }, [ingredients]);
 
   return (
@@ -53,9 +50,7 @@ function IngredientsTable({ ingredients, setIngredients, register }) {
           <th>Ingredients</th>
         </tr>
       </thead>
-      <tbody>
-        {ingredientsArray.map(renderIngredients)}
-      </tbody>
+      <tbody>{ingredientsArray.map(renderIngredients)}</tbody>
     </Table>
   );
 }

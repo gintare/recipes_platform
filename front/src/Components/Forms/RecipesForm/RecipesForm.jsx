@@ -1,23 +1,22 @@
-import { useForm } from "react-hook-form";
-import { useContext, useEffect, useState } from "react";
-import { getAllCategories } from "../../../services/get";
-import IngredientsTable from "./IngredientsTable ";
-import { recipePost } from "../../../services/post";
-import { Controller } from "react-hook-form";
-import { toast } from "react-toastify";
-import UserContext from "../../../Context/UserContext/UserContext";
-import RecipesContext from "../../../Context/RecipesContentxt/RecipesContext";
-import { updateRecipe } from "../../../services/update";
-import { CropLandscapeOutlined } from "@mui/icons-material";
+import { useForm } from 'react-hook-form';
+import { useContext, useEffect, useState } from 'react';
+import { getAllCategories } from '../../../services/get';
+import IngredientsTable from './IngredientsTable ';
+import { recipePost } from '../../../services/post';
+import { Controller } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import UserContext from '../../../Context/UserContext/UserContext';
+import RecipesContext from '../../../Context/RecipesContentxt/RecipesContext';
+import { updateRecipe } from '../../../services/update';
 
 const RecipesForm = ({ recipe }) => {
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const { update, setUpdate } = useContext(RecipesContext);
   const { id } = useContext(UserContext);
-  //console.log(`User id: ${id}`);
+
   const {
     register,
     control,
@@ -40,37 +39,34 @@ const RecipesForm = ({ recipe }) => {
   });
 
   const deleteEmptyIngredient = (ingredients) => {
-    if(ingredients.length == 1){
-      if(ingredients[0].title === ""){
+    if (ingredients.length == 1) {
+      if (ingredients[0].title === '') {
         ingredients.splice(0, 1);
       }
     }
     return ingredients;
-  }
+  };
 
   const formSubmitHandler = async (data) => {
-    console.log(data);
     try {
       data.ingredients = deleteEmptyIngredient(data.ingredients);
-      // console.log(data.ingredients);
-      if(data.ingredients.length == 0) {
-        throw new Error("No ingredients found, please add atleast one ingredient");
+      if (data.ingredients.length == 0) {
+        throw new Error('No ingredients found, please add atleast one ingredient');
       }
-      if(data.categoryId == 0){
+
+      if (data.categoryId == 0) {
         data.categoryId = categories[0].id;
       }
 
       if (recipe) {
         const reci = await updateRecipe(data.categoryId, recipe.id, data);
-        recipe = reci;
         setUpdate((prev) => prev + 1);
         console.log(reci);
-        toast.success("Recipe has been updated");
+        toast.success('Recipe has been updated');
       } else {
         const recipe = await recipePost(data.categoryId, id, data);
         setUpdate((prev) => prev + 1);
-        console.log(recipe);
-        toast.success("Recipe has been created");
+        toast.success('Recipe has been created');
         reset();
         setIngredients([]);
       }
@@ -93,23 +89,19 @@ const RecipesForm = ({ recipe }) => {
           throw new Error('no categories found');
         }
         setCategories(categor);
-        //console.log(categor[0]);
-        //setCategory(categor[0].id);
         if (recipe) {
-          // console.log(recipe);
-          setValue("name", recipe.name, { shouldValidate: true });
-          setValue("image", recipe.image, { shouldValidate: true });
-          setValue("description", recipe.description, { shouldValidate: true });
-          setValue("instructions", recipe.instructions, {
+          setValue('name', recipe.name, { shouldValidate: true });
+          setValue('image', recipe.image, { shouldValidate: true });
+          setValue('description', recipe.description, { shouldValidate: true });
+          setValue('instructions', recipe.instructions, {
             shouldValidate: true,
           });
-          setValue("timeInMinutes", recipe.timeInMinutes, {
+          setValue('timeInMinutes', recipe.timeInMinutes, {
             shouldValidate: true,
           });
-          setValue("categoryId", recipe.categoryId, { shouldValidate: true });
-          setValue("ingredients", recipe.ingredients, { shouldValidate: true });
+          setValue('categoryId', recipe.categoryId, { shouldValidate: true });
+          setValue('ingredients', recipe.ingredients, { shouldValidate: true });
           setIngredients(recipe.ingredients);
-          //console.log(recipe.ingredients);
         }
       } catch (error) {
         setError(error.message);
@@ -148,18 +140,22 @@ const RecipesForm = ({ recipe }) => {
           <input
             type='text'
             id='image'
-            className='form-control'
+            className={`form-control ${errors.image ? 'is-invalid' : ''}`}
             aria-label='image file url'
-            {...register('image')}
+            placeholder='Recipe image url...'
+            {...register('image', {
+              required: 'Recipe image is required',
+              validate: (value) => value.trim() !== '' || 'Recipe image cannot be empty',
+            })}
           />
+          {errors.image && <div className='invalid-feedback'>{errors.image.message}</div>}
         </div>
-
         <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
           <label htmlFor='description' className='form-label'>
             Description
           </label>
           <textarea
-            className='form-control'
+            className={`form-control ${errors.description ? 'is-invalid' : ''}`}
             id='description'
             placeholder='Recipe description here'
             {...register('description', {
@@ -177,7 +173,7 @@ const RecipesForm = ({ recipe }) => {
             Instructions
           </label>
           <textarea
-            className='form-control'
+            className={`form-control ${errors.instructions ? 'is-invalid' : ''}`}
             id='instructions'
             placeholder='Recipe instructions here'
             {...register('instructions', {
@@ -225,6 +221,9 @@ const RecipesForm = ({ recipe }) => {
             setIngredients={setIngredients}
             register={register}
           />
+          {errors.ingredients && (
+            <div className='invalid-feedback'>{errors.ingredients.message}</div>
+          )}
         </div>
 
         <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
@@ -237,13 +236,16 @@ const RecipesForm = ({ recipe }) => {
             id='timeInMinutes'
             {...register('timeInMinutes', {
               required: 'Recipe preparation time is required',
-              pattern: /^[0-9]+$/i,
-              validate: (value) =>
-                value.toString().trim() !== "" ||
-                "Recipe preparation time cannot be empty",
-              validate: (value) =>
-                value.toString().trim() !== "0" ||
-                "Recipe preparation time cannot be 0",
+              pattern: {
+                value: /^[0-9]+$/i,
+                message: 'Preparation time must be a number',
+              },
+              validate: {
+                notEmpty: (value) =>
+                  value.toString().trim() !== '' || 'Recipe preparation time cannot be empty',
+                notZero: (value) =>
+                  value.toString().trim() !== '0' || 'Recipe preparation time cannot be 0',
+              },
             })}
           />
           {errors.timeInMinutes && (
@@ -251,14 +253,13 @@ const RecipesForm = ({ recipe }) => {
           )}
         </div>
 
-        <div className="col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3">
-          <button type="submit" className="btn submit-btn w-100">
-            {recipe ? 'Update recipe' : "Add recipe"}
+        <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
+          <button type='submit' className='btn submit-btn w-100'>
+            {recipe ? 'Update recipe' : 'Add recipe'}
           </button>
           {error && <div className='alert alert-danger mt-3'>{error}</div>}
         </div>
       </form>
-      {/* <Toaster position='top-left' richColors /> */}
     </>
   );
 };

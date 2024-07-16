@@ -5,6 +5,7 @@ import CategoriesForm from '../../Components/Forms/CategoriesForm/CategoriesForm
 import { getAllCategories } from '../../services/get';
 import './AdminPage.css';
 import CategoriesContext from '../../Context/CategoriesContext/CategoriesContext';
+import { NavLink } from 'react-router-dom';
 
 const AdminPage = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -30,14 +31,11 @@ const AdminPage = () => {
     <>
       <div className='row admin-page'>
         <h1 className='text-center mt-3'>Categories</h1>
-        <div className='d-flex flex-column align-items-end mt-3'>
-          <a href="/profile" className="btn btn-primary">Profile</a>
-        </div>
+
         <div className='d-flex flex-column align-items-end mt-3'>
           <CategoriesForm className='col-12 col-md-8 d-flex flex-column' />
         </div>
-        
-        
+
         {isLoading ? (
           <div className='loader'>Loading...</div>
         ) : categories.length === 0 ? (
