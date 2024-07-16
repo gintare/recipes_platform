@@ -52,6 +52,8 @@ const RecipesForm = ({ recipe }) => {
       data.ingredients = deleteEmptyIngredient(data.ingredients);
       if (data.ingredients.length == 0) {
         throw new Error('No ingredients found, please add atleast one ingredient');
+      } else {
+        setError('');
       }
 
       if (data.categoryId == 0) {
