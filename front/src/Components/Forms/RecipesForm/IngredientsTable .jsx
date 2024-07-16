@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { Table, Button } from "react-bootstrap";
 
 function IngredientsTable({ ingredients, setIngredients, register }) {
-  const [ingredientsArray, setIngredientsArray] = useState([{ title: '' }]);
+  const [ingredientsArray, setIngredientsArray] = useState([{ title: "" }]);
 
   const handleAddRow = () => {
-    const newRow = { title: '' };
+    const newRow = { title: "", orderNumber: 0 };
     setIngredientsArray([...ingredientsArray, newRow]);
   };
 
@@ -17,17 +17,22 @@ function IngredientsTable({ ingredients, setIngredients, register }) {
   //     setIngredientsArray(newIngredientsArray);
   //   }
   // }
-  
 
   const renderIngredients = (ingredient, index) => {
     return (
       <tr key={index}>
         <td>
           <input
-            type='text'
-            name='title'
-            placeholder='My ingredient title'
-            className='form-control'
+            type="hidden"
+            {...register(`ingredients.${index}.orderNumber`)}
+            defaultValue={index}
+          />
+
+          <input
+            type="text"
+            name="title"
+            placeholder="My ingredient title"
+            className="form-control"
             // value={ingredient.title}
             // onChange={(event) => handleFormChange(index, event)}
             {...register(`ingredients.${index}.title`)}

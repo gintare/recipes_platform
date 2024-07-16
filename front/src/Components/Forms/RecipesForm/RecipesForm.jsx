@@ -34,7 +34,7 @@ const RecipesForm = ({ recipe }) => {
       timeInMinutes: 0,
       categoryId: 0,
       category: {},
-      ingredients: [{ title: '' }],
+      ingredients: [{ title: '', orderNumber: 0 }],
     },
   });
 
@@ -72,6 +72,7 @@ const RecipesForm = ({ recipe }) => {
         console.log(reci);
         toast.success('Recipe has been updated');
       } else {
+        console.log(data);
         const recipe = await recipePost(data.categoryId, id, data);
         setUpdate((prev) => prev + 1);
         toast.success('Recipe has been created');
