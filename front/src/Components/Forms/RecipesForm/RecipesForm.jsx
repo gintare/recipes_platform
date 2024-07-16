@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import UserContext from "../../../Context/UserContext/UserContext";
 import RecipesContext from "../../../Context/RecipesContentxt/RecipesContext";
 import { updateRecipe } from "../../../services/update";
+import { CropLandscapeOutlined } from "@mui/icons-material";
 
 const RecipesForm = ({ recipe }) => {
   const [error, setError] = useState("");
@@ -38,9 +39,27 @@ const RecipesForm = ({ recipe }) => {
     },
   });
 
+  const deleteEmptyIngredient = (ingredients) => {
+    if(ingredients.length == 1){
+      if(ingredients[0].title === ""){
+        ingredients.splice(0, 1);
+      }
+    }
+    return ingredients;
+  }
+
   const formSubmitHandler = async (data) => {
     console.log(data);
     try {
+      data.ingredients = deleteEmptyIngredient(data.ingredients);
+      // console.log(data.ingredients);
+      if(data.ingredients.length == 0) {
+        throw new Error("No ingredients found, please add atleast one ingredient");
+      }
+      if(data.categoryId == 0){
+        data.categoryId = categories[0].id;
+      }
+
       if (recipe) {
         const reci = await updateRecipe(data.categoryId, recipe.id, data);
         recipe = reci;
@@ -70,11 +89,12 @@ const RecipesForm = ({ recipe }) => {
     const getCategories = async () => {
       try {
         const categor = await getAllCategories();
-        // console.log(categor);
         if (categor.lenght == 0) {
           throw new Error('no categories found');
         }
         setCategories(categor);
+        //console.log(categor[0]);
+        //setCategory(categor[0].id);
         if (recipe) {
           // console.log(recipe);
           setValue("name", recipe.name, { shouldValidate: true });

@@ -45,7 +45,9 @@ public class RecipeService {
         }
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("No category found with an id = "+categoryId));
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("No user found by user id ="+userId));
-
+        if(recipeRequestDTO.getIngredients().isEmpty()) {
+            throw new IngredientNotFoundException("No ingredients found");
+        }
 
         Recipe recipe = new Recipe();
         recipe.setName(recipeRequestDTO.getName());
@@ -77,6 +79,9 @@ public class RecipeService {
         recipeResponseDTO.setDescription(recipe.getDescription());
         recipeResponseDTO.setImage(recipe.getImage());
         recipeResponseDTO.setInstructions(recipe.getInstructions());
+        recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
+        recipeResponseDTO.setCategoryId(recipe.getCategory().getId());
+        recipeResponseDTO.setUserId(recipe.getUser().getId());
         recipeResponseDTO.setIngredients(ingredientResponseDTOSet);
         return recipeResponseDTO;
 
