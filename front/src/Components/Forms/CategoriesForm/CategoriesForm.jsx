@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import CategoriesContext from '../../../Context/CategoriesContext/CategoriesContext';
 import { getAllCategories } from '../../../services/get';
 import './CategoriesForm.css';
+import { NavLink } from 'react-router-dom';
 
 const CategoriesForm = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -86,6 +87,9 @@ const CategoriesForm = () => {
 
   return (
     <div className='d-flex flex-column add-category-container'>
+      <NavLink to='/profile' className='btn btn-success mb-3'>
+        Profile
+      </NavLink>
       <button
         className='add-category-btn btn btn-primary mb-3'
         onClick={() => setIsFormOpen(!isFormOpen)}
