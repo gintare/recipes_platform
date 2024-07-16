@@ -24,3 +24,17 @@ export const updateCategoryAuth = async (id, data) => {
     throw new Error(`Error updating data ${error.message}`);
   }
 };
+
+export const updateRecipe = async (categoryId, recipeId, data) => {
+  try {
+    //console.log(data.ingredients);
+    const resp = await axios.put(`${API_URL}/api/categories/${categoryId}/recipes/${recipeId}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error updating data ${error.message}`);
+  }
+};
