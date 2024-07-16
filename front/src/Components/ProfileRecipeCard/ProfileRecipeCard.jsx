@@ -35,6 +35,8 @@ function ProfileRecipeCard({
      console.log("Dellete recipe "+recipeId);
      try {
       setShow(false);
+      setCreateRecipeIsVisible(false);
+      setUpdateRecipeFormIsVisible(false);
       const rec = await deleteRecipe(recipeId );
       if (rec == null) {
         setError("No records deleted");
