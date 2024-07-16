@@ -5,6 +5,7 @@ import { Upload } from "@mui/icons-material";
 import "./ProfileRecipeCard.css";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { toast } from "react-toastify";
 
 function ProfileRecipeCard({
   recipe,
@@ -41,6 +42,7 @@ function ProfileRecipeCard({
       if (rec == null) {
         setError("No records deleted");
       }
+      toast.success("Recipe has been deleted");
       setUpdate((prev) => prev + 1);
     } catch (error) {
       setError(error.message);

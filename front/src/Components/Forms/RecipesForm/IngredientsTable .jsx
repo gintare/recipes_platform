@@ -9,6 +9,16 @@ function IngredientsTable({ ingredients, setIngredients, register }) {
     setIngredientsArray([...ingredientsArray, newRow]);
   };
 
+  // const handleRemoveRow = (index) => {
+  //   if (ingredientsArray.length > 1) {
+  //     console.log("index = "+index);
+  //     const newIngredientsArray = ingredientsArray.filter((_, i) => i !== index);
+  //     console.log(newIngredientsArray);
+  //     setIngredientsArray(newIngredientsArray);
+  //   }
+  // }
+  
+
   const renderIngredients = (ingredient, index) => {
     return (
       <tr key={index}>
@@ -26,6 +36,9 @@ function IngredientsTable({ ingredients, setIngredients, register }) {
         <td>
           <Button onClick={handleAddRow}>+</Button>
         </td>
+        {/* <td>
+          <Button onClick={() => handleRemoveRow(index)}>-</Button>
+        </td> */}
       </tr>
     );
   };
