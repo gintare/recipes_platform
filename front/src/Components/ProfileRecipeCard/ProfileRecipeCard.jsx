@@ -25,7 +25,7 @@ function ProfileRecipeCard({recipe, createRecipeIsVisible, setCreateRecipeIsVisi
     <img src={recipe.image} className="card-img-top" alt="..."/>
     <div className="card-body">
       <h5 className="card-title">{recipe.name}</h5>
-      <p className="card-text">{recipe.description}</p>
+      {/* <p className="card-text">{recipe.description}</p> */}
       <a href="#" className="edit-button btn btn-primary" onClick={() => {
             setCreateRecipeIsVisible(false);
             setUpdateRecipeFormIsVisible(true);
