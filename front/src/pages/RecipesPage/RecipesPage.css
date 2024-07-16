@@ -1,52 +1,38 @@
-.button-create-content  {
-    text-align: center;
-    margin-top: 10px;
+.button-create-content {
+  text-align: center;
+  margin-top: 10px;
 }
-.recipes-page {
-    padding: 20px;
-  }
-  
-  .button-create-content {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  
+
+.recipe-list {
+  display: grid;
+  grid-template-columns: repeat(4, 15.625rem);
+  column-gap: 20px; 
+  row-gap: 20px; 
+  justify-content: center;
+  justify-items: center; 
+}
+
+.recipe-card {
+  width: 15.625rem;
+}
+
+.recipe-card img {
+  width: 100%; 
+  height: 200px; 
+  object-fit: cover; 
+  object-position: center; 
+}
+
+
+@media (max-width: 992px) {
   .recipe-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Tarpai tarp kortelių */
-    justify-content: center; /* Centruoti korteles horizontaliai */
+    grid-template-columns: repeat(2, 15.625rem); 
   }
-  
-  .recipe-card {
-    flex: 0 0 calc(25% - 20px); /* Kortelės plotis: ketvirtadalis konteinerio pločio, minus tarpai */
-    margin-bottom: 20px; /* Tarpas apačioje */
+}
+
+@media (max-width: 576px) {
+  .recipe-list {
+    grid-template-columns: 1fr; 
   }
-  
-  .recipe-card img {
-    width: 100%; /* Kortelės plotis 100% */
-    height: 200px; /* Fiksuotas aukštis */
-    object-fit: cover; /* Kortelės turinys apkarpytas pagal kortelės dydį */
-    object-position: center; /* Turinio centras */
-  }
-  
-  /* Media queries */
-  @media (max-width: 992px) {
-    .recipe-card {
-      flex: 0 0 calc(50% - 20px); /* Kortelės plotis: pusė konteinerio pločio, minus tarpai */
-    }
-  }
-  
-  @media (max-width: 576px) {
-    .recipe-card {
-      flex: 0 0 calc(100% - 20px); /* Kortelės plotis: visas konteinerio plotis, minus tarpai */
-    }
-  }
-  
-  .see-more-button {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-  }
-  
+}
+
