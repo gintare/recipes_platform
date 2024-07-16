@@ -60,11 +60,14 @@ public class RecipeService {
         this.recipeRepository.save(recipe);
 
         Set<IngredientResponseDTO> ingredientResponseDTOSet = new LinkedHashSet<>();
+        int i = 0;
         for (IngredientRequestDTO ingredientDto : recipeRequestDTO.getIngredients()) {
             Ingredient ingredient = new Ingredient();
             ingredient.setTitle(ingredientDto.getTitle());
             ingredient.addRecipe(recipe);
+            ingredient.setOrderNumber(i);
             ingredientRepository.save(ingredient);
+            i++;
 
             IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
             ingredientResponseDTO.setId(ingredient.getId());

@@ -22,6 +22,9 @@ public class Ingredient {
     @JoinColumn(name = "recipe_id")
     Recipe recipe;
 
+    @Column(name = "order_number")
+    private Integer orderNumber;
+
     public void addRecipe(Recipe recipe) {
         this.recipe = recipe;
         this.recipe.getIngredients().add(this);
