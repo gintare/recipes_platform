@@ -1,0 +1,35 @@
+@media screen and (min-width: 375px) {
+  .profile-card {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+  }
+
+  .profile-img {
+    width: 14rem;
+  }
+}
+
+/* .profile-img {
+  width: 75%;
+} */
+
+/* .profile-card {
+  display: flex;
+  width: 20%;
+} */
+
+/* .username-email {
+  display: flex;
+  flex-direction: column;
+} */
+
+.profile-username,
+.profile-email {
+  border: 1px solid var(--dark-gray);
+  padding: 1rem;
+  border-radius: 5%;
+  text-align: center;
+  font-weight: 600;
+}
