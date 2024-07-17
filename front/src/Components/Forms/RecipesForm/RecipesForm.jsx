@@ -34,7 +34,7 @@ const RecipesForm = ({ recipe }) => {
       timeInMinutes: 0,
       categoryId: 0,
       category: {},
-      ingredients: [{ title: '', orderNumber: 0 }],
+      ingredients: [{ title: '', orderNumber: '0' }],
     },
   });
 
