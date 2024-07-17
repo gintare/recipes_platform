@@ -61,9 +61,9 @@ function ProfilePage() {
         </button>
       </div>
 
-      {createRecipeIsVisible && <RecipesForm setUpdate={setUpdate} />}
+      {createRecipeIsVisible && <RecipesForm setUpdate={setUpdate} setCreateRecipeIsVisible={setCreateRecipeIsVisible}/>}
       {updateRecipeFormIsVisible && (
-        <RecipesForm setUpdate={setUpdate} recipe={updateRecipe} />
+        <RecipesForm setUpdate={setUpdate} recipe={updateRecipe}  setUpdateRecipeFormIsVisible={setUpdateRecipeFormIsVisible}/>
       )}
 
       <div className="container text-center">

@@ -190,7 +190,11 @@ public class RecipeService {
             recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
             recipeResponseDTO.setCategoryId(recipe.getCategory().getId());
             Set<IngredientResponseDTO> ingredientResponseDTOS = new LinkedHashSet<>();
-            List<Ingredient> ingredientsSorted = recipe.getIngredients().stream().sorted((i1, i2) -> i1.getOrderNumber().compareTo(i2.getOrderNumber())).toList();
+            List<Ingredient> ingredientsSorted = recipe.getIngredients().stream().toList();
+            if(recipe.getIngredients().stream().toList().get(0).getOrderNumber() != null){
+                ingredientsSorted = recipe.getIngredients().stream().sorted((i1, i2) -> i1.getOrderNumber().compareTo(i2.getOrderNumber())).toList();
+            }
+            //
             for(Ingredient ingredient : ingredientsSorted){
                 IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
                 ingredientResponseDTO.setId(ingredient.getId());
