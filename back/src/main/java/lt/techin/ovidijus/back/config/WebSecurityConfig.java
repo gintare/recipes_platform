@@ -34,6 +34,7 @@ public class WebSecurityConfig {
         return http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register", "/login", "/", "/error", "/emails").permitAll()
+                        .requestMatchers("/admin/**", "/profile/**").authenticated()
                         .requestMatchers("/api/categories/**").permitAll()
                         .requestMatchers("/api/recipes/**").permitAll()
                         .anyRequest().authenticated())
