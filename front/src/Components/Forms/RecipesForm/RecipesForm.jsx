@@ -134,8 +134,13 @@ const RecipesForm = ({ recipe }) => {
             type='text'
             className={`form-control ${errors.name ? 'is-invalid' : ''}`}
             id='name'
+            maxLength={40}
             {...register('name', {
               required: 'Recipe name is required',
+              maxLength: {
+                value: 40,
+                message: 'Recipe name cannot exceed 40 characters'
+              },
               validate: (value) => value.trim() !== '' || 'Recipe name cannot be empty',
             })}
           />
