@@ -10,14 +10,13 @@
   row-gap: 20px; 
   justify-content: center;
   justify-items: center; 
+  text-align: center;
 }
 
 .card-body {
-  height: 5rem;
+  height: 9rem;
   overflow: hidden; 
-  text-overflow: ellipsis;
-  
-  display: flex; 
+  text-overflow: inherit;
   align-items: center;
   justify-content: center; 
   font-size: calc(1rem + 0.5vw); 
