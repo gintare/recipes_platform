@@ -39,13 +39,12 @@ public class RecipeController {
          return ResponseEntity.ok(this.recipeService.updateRecipe(categoryId, recipeId, recipeRequestDTO));
     }
 
-
-
     @DeleteMapping("/api/recipes/{id}")
     public ResponseEntity<String> deleteRecipe(@PathVariable("id") Long recipeId){
     recipeService.deleteRecipe(recipeId);
     return ResponseEntity.ok("Recipe deleted successfully");
     }
+
     @PutMapping("/api/recipes/{id}")
     public ResponseEntity<String> updateRecipe(@PathVariable("id") Long recipeId,
                                                @RequestBody RecipeUpdateDTO recipeUpdateDTO) {
@@ -56,6 +55,11 @@ public class RecipeController {
     @GetMapping("/api/users/{userId}/recipes")
     public List<RecipeResponseDTO> findARecipesByUserId(@PathVariable Long userId) {
         return this.recipeService.findByUserId(userId);
+    }
+
+    @GetMapping("/api/recipes/{recipeId}")
+    public RecipeResponseDTO findOneRecipe(@PathVariable Long recipeId) {
+        return this.recipeService.findOneRecipe(recipeId);
     }
 
 }
