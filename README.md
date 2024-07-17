@@ -16,16 +16,17 @@ Your name or leave it blank.
 
 The back end is built with Spring Boot. To run the back end, follow these instructions:
 
-1. Install Java jdk if needed.
-2. Check application.properites and make adjustments if needed.
-3. Build the project: `mvn clean install` (optional). I was using intellij. So it builds automatically.
-4. Run the application.
+1. Install Java JDK if needed. You can download it from [Java JDK](https://java.sun.com). Choose the latest LTS version.
+2. Check `application.properties` in the project directory and make adjustments if necessary.
+3. Open the project with IntelliJ (recommended).
+4. Run the application from IntelliJ.
 
 ## Front End
 
 The front end is written in React. To run the front end, follow these steps:
 
-1. Open terminal and install dependencies: `npm install` or `npm i`
-2. Replace .env copy with .env and write your url example : "[localhost://8080](http://localhost:8080)"
-3. Start the development server: `npm run dev`
-4. Click or paste on the link.
+1. Open terminal and install dependencies: `npm install` or `npm i.
+2. If Node.js is not installed, download and install it from "[Node.js](https://nodejs.org/en)"
+3. Replace .env copy with .env and replace your url example : "[localhost://8080](http://localhost:8080)"
+4. Start the development server: `npm run dev`
+5. Click or paste on the link.
