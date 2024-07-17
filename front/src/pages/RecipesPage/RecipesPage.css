@@ -12,6 +12,17 @@
   justify-items: center; 
 }
 
+.card-body {
+  height: 5rem;
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  
+  display: flex; 
+  align-items: center;
+  justify-content: center; 
+  font-size: calc(1rem + 0.5vw); 
+}
+
 .recipe-card {
   width: 15.625rem;
 }
@@ -22,7 +33,6 @@
   object-fit: cover; 
   object-position: center; 
 }
-
 
 @media (max-width: 992px) {
   .recipe-list {
@@ -35,4 +45,3 @@
     grid-template-columns: 1fr; 
   }
 }
-
