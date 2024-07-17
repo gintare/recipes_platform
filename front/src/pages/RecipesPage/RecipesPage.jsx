@@ -6,6 +6,7 @@ import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import { Button } from 'react-bootstrap';
 import './RecipesPage.css';
 import UserContext from '../../Context/UserContext/UserContext';
+import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
 
 
 const shuffleArray = (array) => {
@@ -21,6 +22,7 @@ const RecipesPage = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const { isLoggedIn } = useContext(UserContext);
+  const { update } = useContext(RecipesContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +35,7 @@ const RecipesPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [update]);
 
   return (
     <div className='recipes-page'>
