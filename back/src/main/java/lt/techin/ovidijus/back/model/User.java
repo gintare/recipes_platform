@@ -34,6 +34,10 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Like> likes = new HashSet<>();
+
+
     @Column(name = "role")
     private String role;
 
