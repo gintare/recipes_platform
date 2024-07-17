@@ -9,7 +9,7 @@ import UserContext from '../../../Context/UserContext/UserContext';
 import RecipesContext from '../../../Context/RecipesContentxt/RecipesContext';
 import { updateRecipe } from '../../../services/update';
 
-const RecipesForm = ({ recipe }) => {
+const RecipesForm = ({ recipe, setCreateRecipeIsVisible, setUpdateRecipeFormIsVisible }) => {
   const [error, setError] = useState('');
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('');
@@ -71,6 +71,7 @@ const RecipesForm = ({ recipe }) => {
         setUpdate((prev) => prev + 1);
         console.log(reci);
         toast.success('Recipe has been updated');
+        setUpdateRecipeFormIsVisible(false);
       } else {
         console.log(data);
         const recipe = await recipePost(data.categoryId, id, data);
@@ -78,6 +79,7 @@ const RecipesForm = ({ recipe }) => {
         toast.success('Recipe has been created');
         reset();
         setIngredients([]);
+        setCreateRecipeIsVisible(false);
       }
     } catch (error) {
       setError(error.message);
