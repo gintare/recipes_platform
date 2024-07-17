@@ -5,7 +5,7 @@ function IngredientsTable({ ingredients, setIngredients, register }) {
   const [ingredientsArray, setIngredientsArray] = useState([{ title: "" }]);
 
   const handleAddRow = () => {
-    const newRow = { title: "", orderNumber: 0 };
+    const newRow = { title: "", orderNumber: '0' };
     setIngredientsArray([...ingredientsArray, newRow]);
   };
 

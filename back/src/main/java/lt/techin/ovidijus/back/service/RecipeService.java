@@ -14,6 +14,7 @@ import org.springframework.boot.context.config.ConfigDataResourceNotFoundExcepti
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipeService {
@@ -60,14 +61,12 @@ public class RecipeService {
         this.recipeRepository.save(recipe);
 
         Set<IngredientResponseDTO> ingredientResponseDTOSet = new LinkedHashSet<>();
-        int i = 0;
         for (IngredientRequestDTO ingredientDto : recipeRequestDTO.getIngredients()) {
             Ingredient ingredient = new Ingredient();
             ingredient.setTitle(ingredientDto.getTitle());
             ingredient.addRecipe(recipe);
-            ingredient.setOrderNumber(i);
+            ingredient.setOrderNumber(Integer.parseInt(ingredientDto.getOrderNumber()));
             ingredientRepository.save(ingredient);
-            i++;
 
             IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
             ingredientResponseDTO.setId(ingredient.getId());
@@ -191,7 +190,8 @@ public class RecipeService {
             recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
             recipeResponseDTO.setCategoryId(recipe.getCategory().getId());
             Set<IngredientResponseDTO> ingredientResponseDTOS = new LinkedHashSet<>();
-            for(Ingredient ingredient : recipe.getIngredients()){
+            List<Ingredient> ingredientsSorted = recipe.getIngredients().stream().sorted((i1, i2) -> i1.getOrderNumber().compareTo(i2.getOrderNumber())).toList();
+            for(Ingredient ingredient : ingredientsSorted){
                 IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
                 ingredientResponseDTO.setId(ingredient.getId());
                 ingredientResponseDTO.setTitle(ingredient.getTitle());
