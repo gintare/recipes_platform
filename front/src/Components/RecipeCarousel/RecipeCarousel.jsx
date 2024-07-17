@@ -21,6 +21,13 @@ const RecipeCarousel = () => {
 
   const limitedRecipes = recipes.slice(0, 6);
 
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + '...';
+    }
+    return text;
+  };
+
   return (
     <>
       {recipes.length === 0 ? (
@@ -35,7 +42,7 @@ const RecipeCarousel = () => {
                 className="recipe-carousel-image"
               />
               <Carousel.Caption>
-                <h3>{recipe.name}</h3>
+                <h3>{truncateText(recipe.name, 40)}</h3>
               </Carousel.Caption>
             </Carousel.Item>
           ))}

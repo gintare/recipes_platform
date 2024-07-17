@@ -47,11 +47,19 @@ const RecipesForm = ({ recipe }) => {
     return ingredients;
   };
 
-  const formSubmitHandler = async (data) => {
+  const formSubmitHandler = async (data) => {    
     try {
       data.ingredients = deleteEmptyIngredient(data.ingredients);
+
+      const hasEmptyTitle = data.ingredients.some((ingredient) => ingredient.title.trim() === '');
+      if (hasEmptyTitle) {
+        throw new Error('Ingredient titles cannot be empty');
+      }
+
       if (data.ingredients.length == 0) {
         throw new Error('No ingredients found, please add atleast one ingredient');
+      } else {
+        setError('');
       }
 
       if (data.categoryId == 0) {
@@ -126,8 +134,13 @@ const RecipesForm = ({ recipe }) => {
             type='text'
             className={`form-control ${errors.name ? 'is-invalid' : ''}`}
             id='name'
+            maxLength={40}
             {...register('name', {
               required: 'Recipe name is required',
+              maxLength: {
+                value: 40,
+                message: 'Recipe name cannot exceed 40 characters'
+              },
               validate: (value) => value.trim() !== '' || 'Recipe name cannot be empty',
             })}
           />

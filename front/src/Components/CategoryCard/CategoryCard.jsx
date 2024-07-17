@@ -4,6 +4,8 @@ import { updateCategoryAuth } from '../../services/update';
 import { getUserRoleFromToken } from '../../utils/jwt';
 import { useForm } from 'react-hook-form';
 import { deleteCategory } from '../../services/delete';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 import './CategoryCard.css';
 import { getAllCategories } from '../../services/get';
@@ -11,7 +13,10 @@ import { getAllCategories } from '../../services/get';
 const CategoryCard = ({ category, setUpdate }) => {
   const { name, id } = category;
   const [editName, setEditName] = useState(false);
+  const [categoryId, setCategoryId] = useState('');
+  const [error, setError] = useState('');
   const [existingCategories, setExistingCategories] = useState([]);
+  const [show, setShow] = useState(false);
 
   const {
     register,
@@ -28,7 +33,7 @@ const CategoryCard = ({ category, setUpdate }) => {
     const max = 15;
 
     if (value.length < min) {
-      toast.error(`Category name must be at least ${min} character`);
+      toast.error(`Category name must be at least ${min} characters`);
       return false;
     }
     if (value.length > max) {
@@ -69,13 +74,20 @@ const CategoryCard = ({ category, setUpdate }) => {
     }
   };
 
+  const handleShow = (category_id) => {
+    setCategoryId(category_id);
+    setShow(true);
+  };
+
+  const handleClose = () => setShow(false);
+
   const handleDelete = async () => {
     try {
-      const confirmed = window.confirm(`Are you sure you want to delete category ${name}?`);
-      if (confirmed && role === 'ADMIN') {
-        await deleteCategory(id);
-        setUpdate((update) => update + 1);
+      setShow(false);
+      if (role === 'ADMIN') {
+        await deleteCategory(categoryId);
         toast.success('Category deleted successfully');
+        setUpdate((prev) => prev + 1);
       }
     } catch (error) {
       console.error('Error deleting category:', error.message);
@@ -99,43 +111,61 @@ const CategoryCard = ({ category, setUpdate }) => {
   }, []);
 
   return (
-    <article className='category-card p-2'>
-      {editName && role === 'ADMIN' ? (
-        <form
-          onSubmit={handleSubmit(handleCategoryNameChange)}
-          className='d-flex align-items-center'
-        >
-          <input
-            type='text'
-            defaultValue={name}
-            // {...register('name', {
-            //   required: 'Category name is required',
-            //   minLength: { value: 1, message: 'Category name must be at least 1 character long' },
-            //   maxLength: { value: 10, message: 'Category name cannot exceed 10 characters' },
-            // })}
-            {...register('name')}
-            className={`form-edit-input w-75 ${errors.name ? 'is-invalid' : ''}`}
-          />
-          {errors.name && <div className='invalid-feedback'>{errors.name.message}</div>}
-          <button type='submit' className='btn btn-link p-0'>
-            <i className='bi bi-check-circle-fill accept-category'></i>
-          </button>
-          <button type='button' className='btn btn-link p-0' onClick={() => setEditName(false)}>
-            <i className='bi bi-x-circle-fill cancel-category'></i>
-          </button>
-        </form>
-      ) : (
-        <div className='d-flex justify-content-between align-items-center'>
-          <div className='category-name'>{name}</div>
-          {role === 'ADMIN' && (
-            <div>
-              <i className='bi bi-pen-fill edit-category' onClick={() => setEditName(true)}></i>
-              <i className='bi bi-trash3-fill delete-category' onClick={handleDelete}></i>
-            </div>
-          )}
-        </div>
-      )}
-    </article>
+    <>
+      <article className='category-card p-2'>
+        {editName && role === 'ADMIN' ? (
+          <form
+            onSubmit={handleSubmit(handleCategoryNameChange)}
+            className='d-flex align-items-center'
+          >
+            <input
+              type='text'
+              defaultValue={name}
+              {...register('name')}
+              className={`form-edit-input w-75 ${errors.name ? 'is-invalid' : ''}`}
+            />
+            {errors.name && <div className='invalid-feedback'>{errors.name.message}</div>}
+            <button type='submit' className='btn btn-link p-0'>
+              <i className='bi bi-check-circle-fill accept-category'></i>
+            </button>
+            <button type='button' className='btn btn-link p-0' onClick={() => setEditName(false)}>
+              <i className='bi bi-x-circle-fill cancel-category'></i>
+            </button>
+          </form>
+        ) : (
+          <div className='d-flex justify-content-between align-items-center'>
+            <div className='category-name'>{name}</div>
+            {role === 'ADMIN' && (
+              <div>
+                <i className='bi bi-pen-fill edit-category' onClick={() => setEditName(true)}></i>
+                <i
+                  className='bi bi-trash3-fill delete-category'
+                  onClick={() => handleShow(category.id)}
+                ></i>
+              </div>
+            )}
+          </div>
+        )}
+      </article>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton className='modal-header'></Modal.Header>
+        <Modal.Body>
+          Do you really want to delete category <b>{name}</b>?
+        </Modal.Body>
+        <Modal.Footer className='modal-footer'>
+          <Button variant='secondary' onClick={handleClose}>
+            Close
+          </Button>
+          <Button
+            style={{ backgroundColor: 'var(--tomato)', color: 'white', border: 'none' }}
+            onClick={handleDelete}
+          >
+            Delete Category
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 
