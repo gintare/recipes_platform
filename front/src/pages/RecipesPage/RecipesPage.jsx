@@ -47,7 +47,7 @@ const RecipesPage = () => {
         </div>
       )}
 
-      {isVisible && <RecipesForm />}
+      {isVisible && <RecipesForm setCreateRecipeIsVisible={setIsVisible}/>}
 
       <RecipeCarusele />
       <div className='recipe-list'>

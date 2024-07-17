@@ -6,4 +6,5 @@ import lombok.Data;
 public class IngredientResponseDTO {
     private Long id;
     private String title;
+    private Integer orderNumber;
 }
