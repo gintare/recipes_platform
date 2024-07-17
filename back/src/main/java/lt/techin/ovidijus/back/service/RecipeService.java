@@ -213,4 +213,41 @@ public class RecipeService {
         }
         return recipeResponseDTOS;
     }
+
+    public RecipeResponseDTO findOneRecipe(Long recipeId) {
+        Recipe recipe = this.recipeRepository.findById(recipeId).orElseThrow(() -> new RecipeNotFoundException("No recipe found with an id = "+recipeId));
+
+        RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
+        recipeResponseDTO.setId(recipe.getId());
+        recipeResponseDTO.setUserId(recipe.getUser().getId());
+        recipeResponseDTO.setName(recipe.getName());
+        recipeResponseDTO.setDescription(recipe.getDescription());
+        recipeResponseDTO.setImage(recipe.getImage());
+        recipeResponseDTO.setInstructions(recipe.getInstructions());
+        recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
+        recipeResponseDTO.setCategoryId(recipe.getCategory().getId());
+
+        List<Ingredient> ingredientsSorted = recipe.getIngredients().stream().toList();
+        boolean isNull = false;
+        for(Ingredient ingredient : ingredientsSorted){
+            if(ingredient.getOrderNumber() == null){
+                isNull = true;
+            }
+        }
+
+        if(!isNull){
+            ingredientsSorted = recipe.getIngredients().stream().sorted((i1, i2) -> i1.getOrderNumber().compareTo(i2.getOrderNumber())).toList();
+        }
+        Set<IngredientResponseDTO>  ingredientResponseDTOS = new LinkedHashSet<>();
+        for(Ingredient ingredient : ingredientsSorted){
+            IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
+            ingredientResponseDTO.setId(ingredient.getId());
+            ingredientResponseDTO.setTitle(ingredient.getTitle());
+            ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
+            ingredientResponseDTOS.add(ingredientResponseDTO);
+        }
+        recipeResponseDTO.setIngredients(ingredientResponseDTOS);
+
+        return recipeResponseDTO;
+    }
 }

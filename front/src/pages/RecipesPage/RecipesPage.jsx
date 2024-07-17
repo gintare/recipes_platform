@@ -7,6 +7,7 @@ import { Button } from 'react-bootstrap';
 import './RecipesPage.css';
 import UserContext from '../../Context/UserContext/UserContext';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
+import { Link } from 'react-router-dom';
 
 
 const shuffleArray = (array) => {
@@ -52,7 +53,7 @@ const RecipesPage = () => {
       <RecipeCarusele />
       <div className='recipe-list'>
         {recipes.map((recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
+          <Link to= {`/recipe/${recipe.id}`}  ><RecipeCard key={recipe.id} recipe={recipe} /></Link>
         ))}
       </div>
     </div>
