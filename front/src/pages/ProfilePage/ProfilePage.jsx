@@ -6,6 +6,7 @@ import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
 import './ProfilePage.css';
 import ProfileCard from '../../Components/ProfileCard/ProfileCard';
+import { Link } from 'react-router-dom';
 
 function ProfilePage() {
   //const [recipies, setRecipies] = useState([]);
@@ -23,7 +24,6 @@ function ProfilePage() {
     updateRecipe,
     setUpdateRecipe,
   } = useContext(RecipesContext);
-  console.log(`User id: ${id}`);
 
   useEffect(() => {
     const getRecipes = async () => {
@@ -80,13 +80,15 @@ function ProfilePage() {
         <div className='recipe-list'>
           {recipes.map((recipe) => {
             return (
-              <div key={recipe.id} className='recipe-card'>
-                <ProfileRecipeCard
-                  recipe={recipe}
-                  createRecipeIsVisible={createRecipeIsVisible}
-                  setCreateRecipeIsVisible={setCreateRecipeIsVisible}
-                />
-              </div>
+              <Link key={recipe.id} to={`/recipe/${recipe.id}`}>
+                <div className='recipe-card'>
+                  <ProfileRecipeCard
+                    recipe={recipe}
+                    createRecipeIsVisible={createRecipeIsVisible}
+                    setCreateRecipeIsVisible={setCreateRecipeIsVisible}
+                  />
+                </div>
+              </Link>
             );
           })}
         </div>

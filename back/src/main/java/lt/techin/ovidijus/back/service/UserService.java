@@ -48,6 +48,7 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         validatePassword(userDTO.getPassword());
         user.setPassword(authenticationService.encodePassword(userDTO.getPassword()));
+        user.setImage("https://avatar.iran.liara.run/public/job/chef/male");
         user.setRole("USER");
 
         userRepository.save(user);
