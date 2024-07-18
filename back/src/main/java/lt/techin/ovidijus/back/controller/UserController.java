@@ -1,15 +1,16 @@
 package lt.techin.ovidijus.back.controller;
 
 import lt.techin.ovidijus.back.dto.LoginDTO;
-import lt.techin.ovidijus.back.dto.RegisterResponseDTO;
+import lt.techin.ovidijus.back.dto.UserResponseDTO;
 import lt.techin.ovidijus.back.dto.ResponseLoginDTO;
-import lt.techin.ovidijus.back.dto.UserDTO;
+import lt.techin.ovidijus.back.dto.UserRequestDTO;
 import lt.techin.ovidijus.back.exceptions.UserAlreadyExistsException;
 import lt.techin.ovidijus.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -24,8 +25,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public RegisterResponseDTO registerUser(@RequestBody UserDTO userDTO) throws UserAlreadyExistsException {
-        return userService.registerUser(userDTO);
+    public UserResponseDTO registerUser(@RequestBody UserRequestDTO userRequestDTO) throws UserAlreadyExistsException {
+        return userService.registerUser(userRequestDTO);
     }
 
     @PostMapping("/login")
@@ -35,6 +36,11 @@ public class UserController {
             return ResponseEntity.badRequest().body(loggedUser);
         }
         return ResponseEntity.ok(loggedUser);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public UserResponseDTO deleteAccount(@PathVariable long id) throws AccessDeniedException {
+        return userService.deleteAccount(id);
     }
 
     @GetMapping("/emails")
