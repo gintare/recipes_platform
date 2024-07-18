@@ -2,7 +2,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './Components/Header/Header';
 import Footer from './Components/Footer/Footer';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import RecipesPage from './pages/RecipesPage/RecipesPage';
@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import AdminPage from './pages/AdminPage/AdminPage';
 import { CategoriesProvider } from './Context/CategoriesContext/CategoriesContext';
 import { RecipesProvider } from './Context/RecipesContentxt/RecipesContext';
+import RecipeDetailsPage from './pages/RecipeDetailsPage/RecipeDetailsPage';
  
 import { useContext } from 'react';
 
@@ -54,6 +55,11 @@ function App() {
                 <ProfilePage />
               </ProtectedRoute>
             }
+          />
+          <Route
+            path='/recipe/:id'
+            element={<RecipeDetailsPage />}
+            
           />
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
