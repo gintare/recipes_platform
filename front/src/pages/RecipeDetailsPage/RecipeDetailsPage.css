@@ -1,3 +1,11 @@
 .image-content img{
   height:300px;
 }
+
+.follow_button {
+  border: 1px solid gray;
+}
+
+.follow_button_active{
+  border: 1px solid red;
+}
