@@ -3,8 +3,7 @@ import UserContext from '../../Context/UserContext/UserContext';
 import './ProfileCard.css';
 
 const ProfileCard = () => {
-  const { userName, email, image } = useContext(UserContext);
-  console.log('image ===', image);
+  const { userName, email, image } = useContext(UserContext);  
 
   return (
     <>

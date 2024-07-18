@@ -6,7 +6,6 @@
 .profile-email {
   border: 1px solid var(--dark-gray);
   padding: 1rem;
-  border-radius: 5%;
   text-align: center;
   font-weight: 600;
 }
