@@ -114,4 +114,13 @@ public class CategoryService {
             throw new IllegalArgumentException("Category name can only contain letters");
         }
     }
+
+    public CategoryResponseDTO getOneCategory(long id) {
+        Category category = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("No category found with an id = "+id));
+
+        CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
+        categoryResponseDTO.setId(category.getId());
+        categoryResponseDTO.setName(category.getName());
+        return categoryResponseDTO;
+    }
 }

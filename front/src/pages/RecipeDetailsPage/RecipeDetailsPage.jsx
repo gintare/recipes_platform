@@ -1,24 +1,25 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getOneRecipe } from "../../services/get";
+import { getOneCategory, getOneRecipe } from "../../services/get";
 import "./RecipeDetailsPage.css";
 
 function RecipeDetailsPage() {
   const { id: recipeId } = useParams();
   const [recipe, setRecipe] = useState({});
+  const [category, setCategory] = useState({});
   const [error, setError] = useState("");
-  console.log("recipe Id = " + recipeId);
+  //console.log("recipe Id = " + recipeId);
 
   useEffect(() => {
     const getRecipe = async () => {
       try {
         const rec = await getOneRecipe(recipeId);
-        // console.log(rec);
-        console.log(rec.ingredients);
-        // for(ingred in rec.ingredients){
-        //   console.log(ingred);
-        // }
+        //console.log(rec);
+        //console.log(rec.ingredients);
         setRecipe(rec);
+        const cat = await getOneCategory(rec.categoryId);
+        //console.log(cat);
+        setCategory(cat);
       } catch (error) {
         setError(error.message);
       }
@@ -38,22 +39,26 @@ function RecipeDetailsPage() {
           <div className="col">
             {recipe.name}
             <br />
-            {recipe.description}
+            Descrption: {recipe.description}
             <br />
-            {recipe.instructions}
+            Instructions: {recipe.instructions}
             <br />
+            Recipe category: {category.name}
+            <br />
+            Ingredients:
             <ul>
               {recipe.ingredients &&
                 recipe.ingredients.map((ingredient) => (
                   <li key={ingredient.id}>{ingredient.title}</li>
                 ))}
             </ul>
+            Preparation time : {recipe.timeInMinutes}
           </div>
         </div>
         <div className="row">
-          <div className="col-sm-2">1 of 3</div>
-          <div className="col-sm-2">2 of 3</div>
-          <div className="col">3 of 3</div>
+          <div className="col-sm-2">Like Likes button</div>
+          <div className="col-sm-2">Add to favorites</div>
+          <div className="col">Author :  follow authors</div>
         </div>
       </div>
     </>

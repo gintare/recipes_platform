@@ -40,6 +40,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Recipe> recipes = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Follower> followers = new LinkedHashSet<>();
+
     public User(String userName, String email, String password, String role) {
         this.userName = userName;
         this.email = email;
