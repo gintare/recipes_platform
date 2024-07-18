@@ -9,9 +9,8 @@ import UserContext from '../../Context/UserContext/UserContext';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
 import { Link } from 'react-router-dom';
 
-
 const shuffleArray = (array) => {
-  let shuffledArray = array.slice(); 
+  let shuffledArray = array.slice();
   for (let i = shuffledArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
@@ -29,7 +28,7 @@ const RecipesPage = () => {
     const fetchData = async () => {
       try {
         const data = await getAllRecipes();
-        setRecipes(shuffleArray(data)); 
+        setRecipes(shuffleArray(data));
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -48,12 +47,14 @@ const RecipesPage = () => {
         </div>
       )}
 
-      {isVisible && <RecipesForm setCreateRecipeIsVisible={setIsVisible}/>}
+      {isVisible && <RecipesForm setCreateRecipeIsVisible={setIsVisible} />}
 
       <RecipeCarusele />
       <div className='recipe-list'>
         {recipes.map((recipe) => (
-          <Link to= {`/recipe/${recipe.id}`}  ><RecipeCard key={recipe.id} recipe={recipe} /></Link>
+          <Link to={`/recipe/${recipe.id}`} key={recipe.id}>
+            <RecipeCard recipe={recipe} />
+          </Link>
         ))}
       </div>
     </div>
