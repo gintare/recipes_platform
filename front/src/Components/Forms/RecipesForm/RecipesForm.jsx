@@ -144,6 +144,7 @@ const RecipesForm = ({ recipe, setCreateRecipeIsVisible, setUpdateRecipeFormIsVi
                 message: 'Recipe name cannot exceed 40 characters'
               },
               validate: (value) => value.trim() !== '' || 'Recipe name cannot be empty',
+              maxLength: (value) => value.length <= 40 || 'Email cannot exceed 40 characters',
             })}
           />
           {errors.name && <div className='invalid-feedback'>{errors.name.message}</div>}
