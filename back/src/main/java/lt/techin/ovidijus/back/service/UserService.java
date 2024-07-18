@@ -1,10 +1,11 @@
 package lt.techin.ovidijus.back.service;
 
 import lt.techin.ovidijus.back.dto.LoginDTO;
-import lt.techin.ovidijus.back.dto.RegisterResponseDTO;
+import lt.techin.ovidijus.back.dto.UserResponseDTO;
 import lt.techin.ovidijus.back.dto.ResponseLoginDTO;
-import lt.techin.ovidijus.back.dto.UserDTO;
+import lt.techin.ovidijus.back.dto.UserRequestDTO;
 import lt.techin.ovidijus.back.exceptions.UserAlreadyExistsException;
+import lt.techin.ovidijus.back.exceptions.UserNotFoundException;
 import lt.techin.ovidijus.back.model.User;
 import lt.techin.ovidijus.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -34,25 +36,25 @@ public class UserService {
         this.jwtService = jwtService;
     }
 
-    public RegisterResponseDTO registerUser(UserDTO userDTO) throws UserAlreadyExistsException {
-        if (userRepository.existsByEmail(userDTO.getEmail())) {
+    public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) throws UserAlreadyExistsException {
+        if (userRepository.existsByEmail(userRequestDTO.getEmail())) {
             throw new UserAlreadyExistsException("Email already exists!");
         }
-        if (userRepository.existsByUserName(userDTO.getUserName())) {
+        if (userRepository.existsByUserName(userRequestDTO.getUserName())) {
             throw new UserAlreadyExistsException("This username already exists!");
         }
 
         User user = new User();
-        user.setUserName(userDTO.getUserName());
-        validateEmail(userDTO.getEmail());
-        user.setEmail(userDTO.getEmail());
-        validatePassword(userDTO.getPassword());
-        user.setPassword(authenticationService.encodePassword(userDTO.getPassword()));
+        user.setUserName(userRequestDTO.getUserName());
+        validateEmail(userRequestDTO.getEmail());
+        user.setEmail(userRequestDTO.getEmail());
+        validatePassword(userRequestDTO.getPassword());
+        user.setPassword(authenticationService.encodePassword(userRequestDTO.getPassword()));
         user.setImage("https://avatar.iran.liara.run/public/job/chef/male");
         user.setRole("USER");
 
         userRepository.save(user);
-        return new RegisterResponseDTO(user.getId(), "User registered successfully!");
+        return new UserResponseDTO(user.getId(), "User registered successfully!");
     }
 
     public ResponseLoginDTO loginUser(LoginDTO loginDTO) {
@@ -69,6 +71,20 @@ public class UserService {
         response.setToken(null);
         response.setMessage("Email or password is incorrect");
         return response;
+    }
+
+    public UserResponseDTO deleteAccount(Long id) throws AccessDeniedException {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
+
+        User currentUser = getCurrentUser().orElseThrow(() -> new AccessDeniedException("Current user not authenticated"));
+
+        if (!currentUser.getRole().equals("ADMIN") && !currentUser.getId().equals(id)) {
+            throw new AccessDeniedException("Current user does not have permission to delete this user");
+        } else {
+            userRepository.deleteById(id);
+        }
+        return new UserResponseDTO(existingUser.getId(), String.format("User with id %d, was deleted", existingUser.getId()));
     }
 
     public List<String> getAllUserEmails() {
@@ -119,3 +135,4 @@ public class UserService {
         }
     }
 }
+
