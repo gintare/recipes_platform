@@ -101,3 +101,16 @@ export const getOneCategory = async (categoryId) => {
   }
 };
 
+export const getIsFollower = async (whoUserId, whatUserId) => {
+  try {
+    const resp = await axios.get(`${API_URL}/api/follower/${whoUserId}/${whatUserId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error fetching all recipes: ${error.message}`);
+  }
+};
+

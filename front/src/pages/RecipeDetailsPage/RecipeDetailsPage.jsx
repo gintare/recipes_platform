@@ -1,14 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { getOneCategory, getOneRecipe } from "../../services/get";
+import { getIsFollower, getOneCategory, getOneRecipe } from "../../services/get";
 import "./RecipeDetailsPage.css";
+import UserContext from "../../Context/UserContext/UserContext";
+import { followerPost } from "../../services/post";
 
 function RecipeDetailsPage() {
   const { id: recipeId } = useParams();
   const [recipe, setRecipe] = useState({});
   const [category, setCategory] = useState({});
   const [error, setError] = useState("");
+  const { id } = useContext(UserContext);
+  const [follow, setFollow] = useState(true);
+
   //console.log("recipe Id = " + recipeId);
+
+  const followUser = async () => {
+    //console.log("follow me");
+    setFollow((follow) => !follow);
+    console.log("follow me follow = "+follow);
+    if(!follow == true){
+       const fol = await followerPost(id, recipe.userId);
+    }
+  }
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -20,6 +34,9 @@ function RecipeDetailsPage() {
         const cat = await getOneCategory(rec.categoryId);
         //console.log(cat);
         setCategory(cat);
+        const is = await getIsFollower(id, rec.userId);
+        console.log(is);
+        setFollow(is);
       } catch (error) {
         setError(error.message);
       }
@@ -58,7 +75,7 @@ function RecipeDetailsPage() {
         <div className="row">
           <div className="col-sm-2">Like Likes button</div>
           <div className="col-sm-2">Add to favorites</div>
-          <div className="col">Author :  follow authors</div>
+          <div className="col">Author :  follow authors + {recipe.userId} + {id} <button className={follow? "follow_button_active" : "follow_button"} onClick={followUser}>Follow user</button></div>
         </div>
       </div>
     </>
