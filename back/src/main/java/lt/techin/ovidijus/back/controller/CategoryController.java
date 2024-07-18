@@ -61,4 +61,10 @@ public class CategoryController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/api/categories/{id}")
+    public ResponseEntity<?> getOneCategory(@PathVariable long id){
+        return ResponseEntity.ok(this.categoryService.getOneCategory(id));
+    }
+
 }

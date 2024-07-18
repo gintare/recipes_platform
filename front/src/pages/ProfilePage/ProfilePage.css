@@ -20,8 +20,9 @@
 }
 
 .card-body {
-  height: 9rem;
-  overflow: hidden;
+  height: 13rem;
+  overflow: hidden; 
+
   text-overflow: inherit;
   align-items: center;
   justify-content: center;
