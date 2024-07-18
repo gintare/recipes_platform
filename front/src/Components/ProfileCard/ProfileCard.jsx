@@ -3,21 +3,18 @@ import UserContext from '../../Context/UserContext/UserContext';
 import './ProfileCard.css';
 
 const ProfileCard = () => {
-  const { userName, email } = useContext(UserContext);
+  const { userName, email, image } = useContext(UserContext);
+  console.log('image ===', image);
 
   return (
     <>
       <article className='profile-card'>
         <div>
-          <img
-            className='profile-img'
-            src='https://i.ebayimg.com/images/g/Vs8AAOSwI-BWPj3R/s-l1600.jpg'
-            alt='profile-image'
-          />
+          <img className='profile-img' src={image} alt='profile-image' />
         </div>
         <div className='username-email'>
-          <p className='profile-username'>{userName}</p>
-          <p className='profile-email'>{email}</p>
+          <p className='profile-username'>Username: {userName}</p>
+          <p className='profile-email'>Email:{email}</p>
         </div>
       </article>
     </>

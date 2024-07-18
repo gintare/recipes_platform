@@ -2,6 +2,7 @@ import { createContext, useState } from 'react';
 import {
   getUserEmailFromToken,
   getUserIdFromToken,
+  getUserImageFromToken,
   getUserNameFromToken,
   getUserRoleFromToken,
 } from '../../utils/jwt';
@@ -21,6 +22,7 @@ export const UserProvider = ({ children }) => {
   const userName = isLoggedIn ? getUserNameFromToken(token) : null;
   const email = isLoggedIn ? getUserEmailFromToken(token) : null;
   const role = isLoggedIn ? getUserRoleFromToken(token) : null;
+  const image = isLoggedIn ? getUserImageFromToken(token) : null;
   const id = isLoggedIn ? getUserIdFromToken(token) : null;
 
   const navigate = useNavigate();
@@ -39,7 +41,18 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, isLoggedIn, updateUser, logoutHandler, userName, role, id, email }}
+      value={{
+        user,
+        setUser,
+        isLoggedIn,
+        updateUser,
+        logoutHandler,
+        userName,
+        role,
+        id,
+        email,
+        image,
+      }}
     >
       {children}
     </UserContext.Provider>
