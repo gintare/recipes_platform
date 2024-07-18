@@ -29,3 +29,23 @@ export const getUserIdFromToken = (token) => {
     return null;
   }
 };
+
+export const getUserEmailFromToken = (token) => {
+  try {
+    const decodedToken = jwtDecode(token);
+    return decodedToken.email;
+  } catch (error) {
+    console.error('Invalid token', error);
+    return null;
+  }
+};
+
+export const getUserImageFromToken = (token) => {
+  try {
+    const decodedToken = jwtDecode(token);
+    return decodedToken.image;
+  } catch (error) {
+    console.error('Invalid token', error);
+    return null;
+  }
+};

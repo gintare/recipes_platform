@@ -1,14 +1,16 @@
-import { useContext, useEffect, useState } from "react";
-import UserContext from "../../Context/UserContext/UserContext";
-import { getRecipesByUserId } from "../../services/get";
-import ProfileRecipeCard from "../../Components/ProfileRecipeCard/ProfileRecipeCard";
-import RecipesForm from "../../Components/Forms/RecipesForm/RecipesForm";
-import RecipesContext from "../../Context/RecipesContentxt/RecipesContext";
-import "./ProfilePage.css";
+import { useContext, useEffect, useState } from 'react';
+import UserContext from '../../Context/UserContext/UserContext';
+import { getRecipesByUserId } from '../../services/get';
+import ProfileRecipeCard from '../../Components/ProfileRecipeCard/ProfileRecipeCard';
+import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
+import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
+import './ProfilePage.css';
+import ProfileCard from '../../Components/ProfileCard/ProfileCard';
+import { Link } from 'react-router-dom';
 
 function ProfilePage() {
   //const [recipies, setRecipies] = useState([]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   //const [update, setUpdate] = useState(0);
   const [createRecipeIsVisible, setCreateRecipeIsVisible] = useState(false);
   const { id } = useContext(UserContext);
@@ -22,14 +24,12 @@ function ProfilePage() {
     updateRecipe,
     setUpdateRecipe,
   } = useContext(RecipesContext);
-  console.log(`User id: ${id}`);
 
   useEffect(() => {
     const getRecipes = async () => {
       try {
         const rec = await getRecipesByUserId(id);
         setRecipes(rec);
-        console.log(rec);
       } catch (error) {}
     };
     getRecipes();
@@ -37,10 +37,14 @@ function ProfilePage() {
 
   return (
     <>
-      <div className="buttons-content">
+      <h1 className='profile-title'>Profile info</h1>
+      <div className='profile-info'>
+        <ProfileCard />
+      </div>
+      <div className='buttons-content'>
         <button
-          type="button"
-          className="btn btn-primary"
+          type='button'
+          className='btn btn-primary'
           onClick={() => {
             setCreateRecipeIsVisible(!createRecipeIsVisible);
             setUpdateRecipeFormIsVisible(false);
@@ -49,8 +53,8 @@ function ProfilePage() {
           Create New Recipe
         </button>
         <button
-          type="button"
-          className="btn btn-primary"
+          type='button'
+          className='btn btn-primary'
           onClick={() => {
             setCreateRecipeIsVisible(false);
             setUpdateRecipeFormIsVisible(false);
@@ -61,27 +65,35 @@ function ProfilePage() {
         </button>
       </div>
 
-      {createRecipeIsVisible && <RecipesForm setUpdate={setUpdate} setCreateRecipeIsVisible={setCreateRecipeIsVisible}/>}
+      {createRecipeIsVisible && (
+        <RecipesForm setUpdate={setUpdate} setCreateRecipeIsVisible={setCreateRecipeIsVisible} />
+      )}
       {updateRecipeFormIsVisible && (
-        <RecipesForm setUpdate={setUpdate} recipe={updateRecipe}  setUpdateRecipeFormIsVisible={setUpdateRecipeFormIsVisible}/>
+        <RecipesForm
+          setUpdate={setUpdate}
+          recipe={updateRecipe}
+          setUpdateRecipeFormIsVisible={setUpdateRecipeFormIsVisible}
+        />
       )}
 
-      <div className="container text-center">
-        <div className="recipe-list">
+      <div className='container text-center'>
+        <div className='recipe-list'>
           {recipes.map((recipe) => {
             return (
-              <div key={recipe.id} className="recipe-card">
-                <ProfileRecipeCard
-                  recipe={recipe}
-                  createRecipeIsVisible={createRecipeIsVisible}
-                  setCreateRecipeIsVisible={setCreateRecipeIsVisible}
-                />
-              </div>
+              <Link key={recipe.id} to={`/recipe/${recipe.id}`}>
+                <div className='recipe-card'>
+                  <ProfileRecipeCard
+                    recipe={recipe}
+                    createRecipeIsVisible={createRecipeIsVisible}
+                    setCreateRecipeIsVisible={setCreateRecipeIsVisible}
+                  />
+                </div>
+              </Link>
             );
           })}
         </div>
       </div>
-      <div className="footer-padding"></div>
+      <div className='footer-padding'></div>
     </>
   );
 }

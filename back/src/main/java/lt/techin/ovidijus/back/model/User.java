@@ -41,6 +41,9 @@ public class User implements UserDetails {
     @Column(name = "role")
     private String role;
 
+    @Column(name = "profile_image", columnDefinition = "text")
+    private String image;
+
     @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Recipe> recipes = new LinkedHashSet<>();
 

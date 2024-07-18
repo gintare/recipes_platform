@@ -1,8 +1,10 @@
 package lt.techin.ovidijus.back.controller;
 
 import lt.techin.ovidijus.back.dto.LoginDTO;
+import lt.techin.ovidijus.back.dto.RegisterResponseDTO;
 import lt.techin.ovidijus.back.dto.ResponseLoginDTO;
 import lt.techin.ovidijus.back.dto.UserDTO;
+import lt.techin.ovidijus.back.exceptions.UserAlreadyExistsException;
 import lt.techin.ovidijus.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody UserDTO userDTO) {
+    public RegisterResponseDTO registerUser(@RequestBody UserDTO userDTO) throws UserAlreadyExistsException {
         return userService.registerUser(userDTO);
     }
 

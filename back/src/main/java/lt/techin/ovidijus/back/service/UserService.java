@@ -1,8 +1,10 @@
 package lt.techin.ovidijus.back.service;
 
 import lt.techin.ovidijus.back.dto.LoginDTO;
+import lt.techin.ovidijus.back.dto.RegisterResponseDTO;
 import lt.techin.ovidijus.back.dto.ResponseLoginDTO;
 import lt.techin.ovidijus.back.dto.UserDTO;
+import lt.techin.ovidijus.back.exceptions.UserAlreadyExistsException;
 import lt.techin.ovidijus.back.model.User;
 import lt.techin.ovidijus.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,12 @@ public class UserService {
         this.jwtService = jwtService;
     }
 
-    public String registerUser(UserDTO userDTO) {
+    public RegisterResponseDTO registerUser(UserDTO userDTO) throws UserAlreadyExistsException {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
-            return "Email already exists!";
+            throw new UserAlreadyExistsException("Email already exists!");
         }
         if (userRepository.existsByUserName(userDTO.getUserName())) {
-            return "This username already exists!";
+            throw new UserAlreadyExistsException("This username already exists!");
         }
 
         User user = new User();
@@ -46,10 +48,11 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         validatePassword(userDTO.getPassword());
         user.setPassword(authenticationService.encodePassword(userDTO.getPassword()));
+        user.setImage("https://avatar.iran.liara.run/public/job/chef/male");
         user.setRole("USER");
 
         userRepository.save(user);
-        return "User registered successfully!";
+        return new RegisterResponseDTO(user.getId(), "User registered successfully!");
     }
 
     public ResponseLoginDTO loginUser(LoginDTO loginDTO) {
