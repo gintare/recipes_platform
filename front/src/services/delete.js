@@ -37,3 +37,17 @@ export const deleteRecipe = async (id) => {
     throw new Error(`Error deleting recipe ${error.message}`);
   }
 };
+
+export const deleteAccount = async (id) => {
+  try {
+    const resp = await axios.delete(`${API_URL}/users/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Cache-Control': 'no-cache',
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error deleting user ${error.message}`);
+  }
+};

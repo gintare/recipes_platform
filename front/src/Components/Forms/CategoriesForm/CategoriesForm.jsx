@@ -39,7 +39,7 @@ const CategoriesForm = () => {
   }, []);
 
   const validateFormInput = (data) => {
-    const value = data.name;
+    const value = data.name.trim();
     const min = 3;
     const max = 15;
 
@@ -51,8 +51,8 @@ const CategoriesForm = () => {
       toast.error(`Category name cannot exceed ${max} characters`);
       return false;
     }
-    if (!/^[a-zA-Z]*$/.test(value)) {
-      toast.error('Category name can only contain letters');
+    if (!/^[a-zA-Z]+( [a-zA-Z]+)*$/.test(value)) {
+      toast.error('Category name can only contain letters and a single space between words');
       return false;
     }
     return true;
