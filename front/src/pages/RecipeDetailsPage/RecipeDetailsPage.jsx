@@ -1,16 +1,24 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { getIsFollower, getOneCategory, getOneRecipe } from "../../services/get";
+import {
+  getIsFavorite,
+  getIsFollower,
+  getOneCategory,
+  getOneRecipe,
+} from "../../services/get";
 import "./RecipeDetailsPage.css";
 import UserContext from "../../Context/UserContext/UserContext";
-import { followerPost } from "../../services/post";
+import { favoritePost, followerPost } from "../../services/post";
+import { deleteFavorite, deleteFollower } from "../../services/delete";
+import { BarChartLineFill, HeartFill, Heart } from "react-bootstrap-icons";
 
 function RecipeDetailsPage() {
   const { id: recipeId } = useParams();
   const [recipe, setRecipe] = useState({});
   const [category, setCategory] = useState({});
   const [error, setError] = useState("");
-  const { id } = useContext(UserContext);
+  const [favorite, setFavorite] = useState(false);
+  const { id, userName } = useContext(UserContext);
   const [follow, setFollow] = useState(true);
 
   //console.log("recipe Id = " + recipeId);
@@ -18,9 +26,22 @@ function RecipeDetailsPage() {
   const followUser = async () => {
     //console.log("follow me");
     setFollow((follow) => !follow);
-    console.log("follow me follow = "+follow);
-    if(!follow == true){
-       const fol = await followerPost(id, recipe.userId);
+    console.log("follow me follow = " + follow);
+    if (!follow == true) {
+      const fol = await followerPost(id, recipe.userId);
+    } else {
+      await deleteFollower(id, recipe.userId);
+    }
+  };
+
+  const clickFavoriteHandler = () => {
+    console.log("favorite me");
+    setFavorite((favorite) => !favorite);
+
+    if(!favorite){
+      const fav = favoritePost(id, recipe.id);
+    }else{
+      deleteFavorite(id, recipe.id);
     }
   }
 
@@ -37,6 +58,10 @@ function RecipeDetailsPage() {
         const is = await getIsFollower(id, rec.userId);
         console.log(is);
         setFollow(is);
+
+        const isFav = await getIsFavorite(id, rec.id);
+        console.log("isFav = "+isFav);
+        setFavorite(isFav);
       } catch (error) {
         setError(error.message);
       }
@@ -46,23 +71,40 @@ function RecipeDetailsPage() {
 
   return (
     <>
-      <h1>Hello Recipe = {recipeId}</h1>
+      {/* <h1>Hello Recipe = {recipeId}</h1> */}
       <div className="container-lg">container</div>
-      <div className="container text-center">
-        <div className="row">
-          <div className="col-sm-2 image-content">
-            <img src={recipe.image} alt="recipe_photo" />
+      <div className="container">
+      <div className="row">
+          <div className="col-sm-2">Like Likes button</div>
+          <div className="col-sm-2">
+            {favorite? <HeartFill color="red" size="36" onClick={clickFavoriteHandler} /> :
+            <Heart color="red" size="36" onClick={clickFavoriteHandler}/>}
           </div>
           <div className="col">
-            {recipe.name}
+            Author : {userName}
+            <button
+              className={follow ? "follow_button_active" : "follow_button"}
+              onClick={followUser}
+            >
+              {follow ? "You are following author" : "Follow author"}
+            </button>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-2 image-content">
+            <img src={recipe.image} alt="recipe_photo" />
+          </div>
+          <div className="col recipe-info-content">
+            <h5 className="card-title">{recipe.name}</h5 >
             <br />
-            Descrption: {recipe.description}
-            <br />
-            Instructions: {recipe.instructions}
-            <br />
-            Recipe category: {category.name}
-            <br />
-            Ingredients:
+            <label for="description" class="col col-form-label">Description:</label> 
+            <div class="col ">{recipe.description}</div>
+            <label for="instructions" class="col col-form-label">Instructions:</label> 
+            <div class="col ">{recipe.instructions}</div>
+            <label for="categoryName" class="col col-form-label">Recipe category:</label> 
+            <div class="col ">{category.name}</div>
+            <label for="ingredients" class="col col-form-label">Ingredients:</label> 
+            
             <ul>
               {recipe.ingredients &&
                 recipe.ingredients.map((ingredient) => (
@@ -72,11 +114,7 @@ function RecipeDetailsPage() {
             Preparation time : {recipe.timeInMinutes}
           </div>
         </div>
-        <div className="row">
-          <div className="col-sm-2">Like Likes button</div>
-          <div className="col-sm-2">Add to favorites</div>
-          <div className="col">Author :  follow authors + {recipe.userId} + {id} <button className={follow? "follow_button_active" : "follow_button"} onClick={followUser}>Follow user</button></div>
-        </div>
+
       </div>
     </>
   );
