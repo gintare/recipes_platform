@@ -40,8 +40,8 @@ const CategoryCard = ({ category, setUpdate }) => {
       toast.error(`Category name cannot exceed ${max} characters`);
       return false;
     }
-    if (!/^[a-zA-Z]*$/.test(value)) {
-      toast.error('Category name can only contain letters');
+    if (!/^[a-zA-Z]+( [a-zA-Z]+)*$/.test(value)) {
+      toast.error('Category name can only contain letters and a single space between words');
       return false;
     }
     return true;
