@@ -73,3 +73,18 @@ export const followerPost = async (followerWhoId, followerWhatId) => {
     throw new Error(`Failed to save data: ${error.message}`);
   }
 };
+
+export const favoritePost = async (userId, recipeId) => {
+  try {
+    const userToken = getDefaultToken();
+    const response = await axios.post(`${API_URL}/api/users/${userId}/recipes/${recipeId}/favorites`, null, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    throw new Error(`Failed to save data: ${error.message}`);
+  }
+};

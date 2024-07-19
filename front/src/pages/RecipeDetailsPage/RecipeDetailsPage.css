@@ -1,5 +1,10 @@
 .image-content img{
-  height:300px;
+  width: 100%;
+}
+
+.image-content{
+  min-width: 400px;
+  padding: 30px 0px;
 }
 
 .follow_button {
@@ -8,4 +13,8 @@
 
 .follow_button_active{
   border: 1px solid red;
+}
+
+.recipe-info-content {
+   padding: 30px;
 }

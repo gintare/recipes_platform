@@ -41,4 +41,14 @@ public class FollowerService {
         List<Follower> followers = this.followerRepository.getByFollowWhoAndFollowWhat(userWho, userWhat);
         return !followers.isEmpty();
     }
+
+    public void deleteFollower(Long idWho, Long idWhat) {
+        User userWho = this.userRepository.findById(idWho).orElseThrow(() -> new UserNotFoundException("Not found user by id = "+idWho));
+        User userWhat = this.userRepository.findById(idWhat).orElseThrow(() -> new UserNotFoundException("Not found user by id = "+idWhat));
+
+        List<Follower> followers = this.followerRepository.getByFollowWhoAndFollowWhat(userWho, userWhat);
+        for(Follower follower: followers){
+            this.followerRepository.delete(follower);
+        }
+    }
 }

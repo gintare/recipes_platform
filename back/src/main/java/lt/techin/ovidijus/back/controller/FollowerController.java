@@ -23,4 +23,9 @@ public class FollowerController {
         return ResponseEntity.ok(followerService.isFollowing(IdWho, IdWhat));
     }
 
+    @DeleteMapping("api/follower/{IdWho}/{IdWhat}")
+    public void deleteFollower(@PathVariable Long IdWho, @PathVariable Long IdWhat){
+        followerService.deleteFollower(IdWho, IdWhat);
+    }
+
 }
