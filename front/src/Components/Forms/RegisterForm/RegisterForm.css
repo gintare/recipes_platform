@@ -17,3 +17,12 @@
 .register-form > input {
   margin-bottom: -1rem;
 }
+
+.input-group-text {
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+.password-input {
+  border-right: 0;
+}
