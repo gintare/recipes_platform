@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import UserContext from '../../Context/UserContext/UserContext';
+import { toast } from 'react-toastify';
 
 import './Navigation.css';
 
@@ -39,7 +40,13 @@ const Navigation = () => {
                 >
                   Recipes
                 </NavLink>
-                <button className='logout' onClick={logoutHandler}>
+                <button
+                  className='logout'
+                  onClick={() => {
+                    logoutHandler();
+                    toast.success('You have been logged out successfully.');
+                  }}
+                >
                   Logout
                 </button>
               </>

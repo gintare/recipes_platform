@@ -5,7 +5,6 @@ import CategoriesForm from '../../Components/Forms/CategoriesForm/CategoriesForm
 import { getAllCategories } from '../../services/get';
 import './AdminPage.css';
 import CategoriesContext from '../../Context/CategoriesContext/CategoriesContext';
-import { NavLink } from 'react-router-dom';
 
 const AdminPage = () => {
   const [isLoading, setIsLoading] = useState(true);

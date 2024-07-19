@@ -9,9 +9,7 @@ import ProfileCard from '../../Components/ProfileCard/ProfileCard';
 import { Link } from 'react-router-dom';
 
 function ProfilePage() {
-  //const [recipies, setRecipies] = useState([]);
   const [error, setError] = useState('');
-  //const [update, setUpdate] = useState(0);
   const [createRecipeIsVisible, setCreateRecipeIsVisible] = useState(false);
   const { id } = useContext(UserContext);
   const {
@@ -30,10 +28,14 @@ function ProfilePage() {
       try {
         const rec = await getRecipesByUserId(id);
         setRecipes(rec);
-      } catch (error) {}
+      } catch (error) {
+        setError('Failed to fetch recipes.');
+        console.error('Error fetching recipes:', error);
+      }
     };
+
     getRecipes();
-  }, [update]);
+  }, [setRecipes, update, id]);
 
   return (
     <>
