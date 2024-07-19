@@ -110,8 +110,8 @@ public class CategoryService {
         if (name.length() > max) {
             throw new IllegalArgumentException(String.format("Category name cannot exceed %d characters", max));
         }
-        if (!Pattern.matches("^[a-zA-Z]+$", name)) {
-            throw new IllegalArgumentException("Category name can only contain letters");
+        if (!Pattern.matches("^[a-zA-Z]+( [a-zA-Z]+)*$", name)) {
+            throw new IllegalArgumentException("Category name can only contain letters and a single space between words");
         }
     }
 

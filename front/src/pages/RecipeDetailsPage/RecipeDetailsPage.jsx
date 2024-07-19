@@ -35,7 +35,7 @@ function RecipeDetailsPage() {
   };
 
   const clickFavoriteHandler = () => {
-    console.log("favorite me");
+    //console.log("favorite me");
     setFavorite((favorite) => !favorite);
 
     if(!favorite){
@@ -56,11 +56,11 @@ function RecipeDetailsPage() {
         //console.log(cat);
         setCategory(cat);
         const is = await getIsFollower(id, rec.userId);
-        console.log(is);
+        //console.log(is);
         setFollow(is);
 
         const isFav = await getIsFavorite(id, rec.id);
-        console.log("isFav = "+isFav);
+        //console.log("isFav = "+isFav);
         setFavorite(isFav);
       } catch (error) {
         setError(error.message);
@@ -97,13 +97,13 @@ function RecipeDetailsPage() {
           <div className="col recipe-info-content">
             <h5 className="card-title">{recipe.name}</h5 >
             <br />
-            <label for="description" class="col col-form-label">Description:</label> 
-            <div class="col ">{recipe.description}</div>
-            <label for="instructions" class="col col-form-label">Instructions:</label> 
-            <div class="col ">{recipe.instructions}</div>
-            <label for="categoryName" class="col col-form-label">Recipe category:</label> 
-            <div class="col ">{category.name}</div>
-            <label for="ingredients" class="col col-form-label">Ingredients:</label> 
+            <label htmlFor="description" className="col col-form-label">Description:</label> 
+            <div className="col ">{recipe.description}</div>
+            <label htmlFor="instructions" className="col col-form-label">Instructions:</label> 
+            <div className="col ">{recipe.instructions}</div>
+            <label htmlFor="categoryName" className="col col-form-label">Recipe category:</label> 
+            <div className="col ">{category.name}</div>
+            <label htmlFor="ingredients" className="col col-form-label">Ingredients:</label> 
             
             <ul>
               {recipe.ingredients &&
