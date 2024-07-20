@@ -9,7 +9,18 @@ export const RecipesProvider = ({ children }) => {
   const [updateRecipe, setUpdateRecipe] = useState({});
 
   return (
-    <RecipesContext.Provider value={{ recipes, setRecipes, update, setUpdate, updateRecipeFormIsVisible,  setUpdateRecipeFormIsVisible, updateRecipe, setUpdateRecipe}}>
+    <RecipesContext.Provider
+      value={{
+        recipes,
+        setRecipes,
+        update,
+        setUpdate,
+        updateRecipeFormIsVisible,
+        setUpdateRecipeFormIsVisible,
+        updateRecipe,
+        setUpdateRecipe,
+      }}
+    >
       {children}
     </RecipesContext.Provider>
   );

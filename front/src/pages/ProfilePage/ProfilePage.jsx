@@ -6,7 +6,7 @@ import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
 import './ProfilePage.css';
 import ProfileCard from '../../Components/ProfileCard/ProfileCard';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import PulseLoader from 'react-spinners/PulseLoader';
 
 function ProfilePage() {
@@ -14,6 +14,7 @@ function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [createRecipeIsVisible, setCreateRecipeIsVisible] = useState(false);
   const { id } = useContext(UserContext);
+  const { recipeId } = useParams();
   const {
     recipes,
     setRecipes,
@@ -45,7 +46,7 @@ function ProfilePage() {
     };
 
     fetchRecipes();
-  }, [id, setRecipes, update]);
+  }, [id, recipeId, update]);
 
   return (
     <>
