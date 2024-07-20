@@ -76,11 +76,7 @@ const LoginForm = () => {
               validate: (value) => value.length >= 8 || 'Password must have at least 8 characters',
             })}
           />
-          <span
-            className='input-group-text'
-            onClick={togglePasswordVisibility}
-            style={{ cursor: 'pointer' }}
-          >
+          <span className='input-group-text' onClick={togglePasswordVisibility}>
             <i className={passwordVisible ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'}></i>
           </span>
           {errors.password && <div className='invalid-feedback'>{errors.password.message}</div>}

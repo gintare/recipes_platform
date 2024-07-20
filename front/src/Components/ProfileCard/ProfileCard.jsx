@@ -1,15 +1,45 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../Context/UserContext/UserContext';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './ProfileCard.css';
 import { deleteAccount } from '../../services/delete';
 import { toast } from 'react-toastify';
+import { updateUserAuth } from '../../services/update';
+import { useForm } from 'react-hook-form';
+import { getUserNames } from '../../services/get';
 
 const ProfileCard = () => {
   const [show, setShow] = useState(false);
   const [userId, setUserId] = useState('');
-  const { userName, email, image, role, id, logoutHandler } = useContext(UserContext);
+  const { userName, email, image, role, id, logoutHandler, updateUser } = useContext(UserContext);
+  const [editUsername, setEditUsername] = useState(false);
+  const [existingUsernames, setExistingUsernames] = useState([]);
+
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  useEffect(() => {
+    if (userName) {
+      setValue('userName', userName);
+    }
+  }, [userName, setValue]);
+
+  useEffect(() => {
+    const fetchUsernames = async () => {
+      try {
+        const usernames = await getUserNames();
+        setExistingUsernames(usernames);
+      } catch (error) {
+        console.error('Error fetching usernames:', error);
+      }
+    };
+    fetchUsernames();
+  }, []);
 
   const handleShow = (user_id) => {
     setUserId(user_id);
@@ -34,6 +64,26 @@ const ProfileCard = () => {
     }
   };
 
+  const handleUsernameChange = async (data) => {
+    if (existingUsernames.includes(data.username)) {
+      toast.error('A user with this username already exists!');
+      return;
+    }
+    try {
+      if (role === 'ADMIN' || userId === id) {
+        await updateUserAuth(userId, { userName: data.username });
+        updateUser();
+        setEditUsername(false);
+        logoutHandler();
+        toast.success('Username updated successfully! Please re-login');
+      } else {
+        toast.error('Unauthorized action');
+      }
+    } catch (error) {
+      toast.error(`Error updating username: ${error.message}`);
+    }
+  };
+
   return (
     <div className='profile-card-container'>
       <article className='profile-card'>
@@ -48,7 +98,37 @@ const ProfileCard = () => {
           </button>
         </div>
         <div className='username-email'>
-          <p className='profile-username'>Username: {userName}</p>
+          {editUsername ? (
+            <form onSubmit={handleSubmit(handleUsernameChange)}>
+              <input
+                {...register('username', { required: 'Username is required' })}
+                defaultValue={userName}
+                className={`form-edit-input w-75 ${errors.username ? 'is-invalid' : ''}`}
+              />
+              {errors.username && <div className='invalid-feedback'>{errors.username.message}</div>}
+              <button type='submit' className='btn btn-link p-0'>
+                <i className='bi bi-check-circle-fill accept-username'></i>
+              </button>
+              <button
+                type='button'
+                className='btn btn-link p-0'
+                onClick={() => setEditUsername(false)}
+              >
+                <i className='bi bi-x-circle-fill cancel-username'></i>
+              </button>
+            </form>
+          ) : (
+            <p className='profile-username'>
+              Username: {userName}{' '}
+              <i
+                className='bi bi-pencil-fill edit-username'
+                onClick={() => {
+                  setUserId(id);
+                  setEditUsername(true);
+                }}
+              ></i>
+            </p>
+          )}
           <p className='profile-email'>Email: {email}</p>
         </div>
       </article>

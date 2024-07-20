@@ -7,9 +7,11 @@ import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
 import './ProfilePage.css';
 import ProfileCard from '../../Components/ProfileCard/ProfileCard';
 import { Link } from 'react-router-dom';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 function ProfilePage() {
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [createRecipeIsVisible, setCreateRecipeIsVisible] = useState(false);
   const { id } = useContext(UserContext);
   const {
@@ -23,19 +25,27 @@ function ProfilePage() {
     setUpdateRecipe,
   } = useContext(RecipesContext);
 
+  if (recipes.length === 0 && !sessionStorage.getItem('pageRefreshed')) {
+    sessionStorage.setItem('pageRefreshed', 'true');
+    window.location.reload();
+  }
+
   useEffect(() => {
-    const getRecipes = async () => {
+    const fetchRecipes = async () => {
+      setIsLoading(true);
       try {
         const rec = await getRecipesByUserId(id);
         setRecipes(rec);
       } catch (error) {
         setError('Failed to fetch recipes.');
         console.error('Error fetching recipes:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    getRecipes();
-  }, [setRecipes, update, id]);
+    fetchRecipes();
+  }, [id, setRecipes, update]);
 
   return (
     <>
@@ -80,8 +90,15 @@ function ProfilePage() {
 
       <div className='container text-center'>
         <div className='recipe-list'>
-          {recipes.map((recipe) => {
-            return (
+          {isLoading ? (
+            <div className='profile-loader'>
+              <p className='profile-loading-text'>Loading...</p>
+              <PulseLoader color='var(--primary-blue)' size={20} />
+            </div>
+          ) : recipes.length === 0 ? (
+            <div className='no-recipes'>No recipes found</div>
+          ) : (
+            recipes.map((recipe) => (
               <Link key={recipe.id} to={`/recipe/${recipe.id}`}>
                 <div className='recipe-card'>
                   <ProfileRecipeCard
@@ -91,8 +108,8 @@ function ProfilePage() {
                   />
                 </div>
               </Link>
-            );
-          })}
+            ))
+          )}
         </div>
       </div>
       <div className='footer-padding'></div>

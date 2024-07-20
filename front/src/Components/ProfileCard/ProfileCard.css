@@ -29,6 +29,19 @@
   gap: 1rem;
 }
 
+.edit-username {
+  cursor: pointer;
+}
+
+.accept-username {
+  color: var(--light-green);
+  margin-right: 0.2rem;
+}
+
+.cancel-username {
+  color: var(--tomato);
+}
+
 @media screen and (min-width: 577px) {
   .profile-card {
     flex-direction: row;

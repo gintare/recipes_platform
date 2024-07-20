@@ -1,20 +1,15 @@
-import { useContext, useState } from "react";
-import { deleteRecipe } from "../../services/delete";
-import RecipesContext from "../../Context/RecipesContentxt/RecipesContext";
-import { Upload } from "@mui/icons-material";
-import "./ProfileRecipeCard.css";
+import { useContext, useState } from 'react';
+import { deleteRecipe } from '../../services/delete';
+import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
+import './ProfileRecipeCard.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
-function ProfileRecipeCard({
-  recipe,
-  createRecipeIsVisible,
-  setCreateRecipeIsVisible,
-}) {
+function ProfileRecipeCard({ recipe, createRecipeIsVisible, setCreateRecipeIsVisible }) {
   const [show, setShow] = useState(false);
-  const [error, setError] = useState("");
-  const [recipeId, setRecipeId] = useState("");
+  const [error, setError] = useState('');
+  const [recipeId, setRecipeId] = useState('');
   const {
     setUpdate,
     updateRecipeFormIsVisible,
@@ -33,16 +28,15 @@ function ProfileRecipeCard({
   };
 
   const deleteItem = async () => {
-     console.log("Dellete recipe "+recipeId);
-     try {
+    try {
       setShow(false);
       setCreateRecipeIsVisible(false);
       setUpdateRecipeFormIsVisible(false);
-      const rec = await deleteRecipe(recipeId );
+      const rec = await deleteRecipe(recipeId);
       if (rec == null) {
-        setError("No records deleted");
+        setError('No records deleted');
       }
-      toast.success("Recipe has been deleted");
+      toast.success('Recipe has been deleted');
       setUpdate((prev) => prev + 1);
     } catch (error) {
       setError(error.message);
@@ -52,14 +46,14 @@ function ProfileRecipeCard({
 
   return (
     <>
-      <div className="card">
-        <img src={recipe.image} className="card-img-top" alt="..." />
-        <div className="card-body">
-          <h5 className="card-title">{recipe.name}</h5>
+      <div className='card'>
+        <img src={recipe.image} className='card-img-top' alt='...' />
+        <div className='card-body'>
+          <h5 className='card-title'>{recipe.name}</h5>
           {/* <p className="card-text">{recipe.description}</p> */}
           <a
-            href="#"
-            className="edit-button btn btn-primary"
+            href='#'
+            className='edit-button btn btn-primary'
             onClick={() => {
               setCreateRecipeIsVisible(false);
               setUpdateRecipeFormIsVisible(true);
@@ -69,14 +63,12 @@ function ProfileRecipeCard({
             Edit
           </a>
 
-          <Button variant="primary" onClick={() => handleShow(recipe.id)}>
-               Delete
-           </Button>
+          <Button variant='primary' onClick={() => handleShow(recipe.id)}>
+            Delete
+          </Button>
         </div>
       </div>
-      {error && <div className="alert alert-danger mt-3">{error}</div>}
-
-      
+      {error && <div className='alert alert-danger mt-3'>{error}</div>}
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -84,10 +76,10 @@ function ProfileRecipeCard({
         </Modal.Header>
         <Modal.Body>Do you really want to delete this recipe?</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant='secondary' onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={deleteItem}>
+          <Button variant='primary' onClick={deleteItem}>
             Delete Recipe
           </Button>
         </Modal.Footer>
