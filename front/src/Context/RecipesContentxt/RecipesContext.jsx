@@ -4,6 +4,7 @@ const RecipesContext = createContext();
 
 export const RecipesProvider = ({ children }) => {
   const [recipes, setRecipes] = useState([]);
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [update, setUpdate] = useState(0);
   const [updateRecipeFormIsVisible, setUpdateRecipeFormIsVisible] = useState(false);
   const [updateRecipe, setUpdateRecipe] = useState({});
@@ -13,6 +14,8 @@ export const RecipesProvider = ({ children }) => {
       value={{
         recipes,
         setRecipes,
+        filteredRecipes,
+        setFilteredRecipes,
         update,
         setUpdate,
         updateRecipeFormIsVisible,

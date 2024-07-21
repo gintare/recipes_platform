@@ -24,7 +24,7 @@ export const getOne = async (id) => {
 
 export const getOneUser = async (id) => {
   try {
-    const resp = await axios.get(`${API_URL}/user/${id}`);
+    const resp = await axios.get(`${API_URL}/users/${id}`);
     return resp.data;
   } catch (error) {
     console.error(`Error fetching data for ID ${id}: ${error.message}`);

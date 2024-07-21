@@ -7,6 +7,8 @@ import lt.techin.ovidijus.back.dto.UserRequestDTO;
 import lt.techin.ovidijus.back.exceptions.NotAdminException;
 import lt.techin.ovidijus.back.exceptions.UserAlreadyExistsException;
 import lt.techin.ovidijus.back.exceptions.UserNotFoundException;
+import lt.techin.ovidijus.back.model.User;
+import lt.techin.ovidijus.back.repository.UserRepository;
 import lt.techin.ovidijus.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,17 +17,20 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping
 public class UserController {
 
+    private final UserRepository userRepository;
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/register")
@@ -78,8 +83,9 @@ public class UserController {
         return ResponseEntity.ok(usernames);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     public UserResponseDTO getOneUser(@PathVariable long id) {
         return userService.getOneUser(id);
     }
+
 }

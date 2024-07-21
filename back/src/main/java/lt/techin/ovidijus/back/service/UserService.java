@@ -106,9 +106,7 @@ public class UserService {
             validateEmail(userRequestDTO.getEmail());
             existingUser.setEmail(userRequestDTO.getEmail());
         }
-
         userRepository.save(existingUser);
-
         return new UserResponseDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getEmail(), String.format("User with id %d was updated", existingUser.getId()));
     }
 
@@ -129,7 +127,6 @@ public class UserService {
     public UserResponseDTO getOneUser(Long id) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
-
         return new UserResponseDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getEmail());
     }
 
@@ -177,13 +174,6 @@ public class UserService {
         if (password.length() < 8) {
             throw new IllegalArgumentException("Password must be at least 8 characters long");
         }
-    }
-
-    public UserResponseDTO validateUserName(String userName) {
-        if (userRepository.existsByUserName(userName)) {
-            return new UserResponseDTO("This username already exists");
-        }
-        return new UserResponseDTO("Username is available");
     }
 }
 

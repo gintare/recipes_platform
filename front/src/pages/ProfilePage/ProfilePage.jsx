@@ -23,7 +23,7 @@ function ProfilePage() {
     updateRecipeFormIsVisible,
     setUpdateRecipeFormIsVisible,
     updateRecipe,
-    setUpdateRecipe,
+    filteredRecipes,
   } = useContext(RecipesContext);
 
   if (recipes.length === 0 && !sessionStorage.getItem('pageRefreshed')) {
@@ -46,7 +46,7 @@ function ProfilePage() {
     };
 
     fetchRecipes();
-  }, [id, recipeId, update]);
+  }, [id, recipeId, update, setRecipes]);
 
   return (
     <>
@@ -96,10 +96,10 @@ function ProfilePage() {
               <p className='profile-loading-text'>Loading...</p>
               <PulseLoader color='var(--primary-blue)' size={20} />
             </div>
-          ) : recipes.length === 0 ? (
+          ) : filteredRecipes.length === 0 ? (
             <div className='no-recipes'>No recipes found</div>
           ) : (
-            recipes.map((recipe) => (
+            filteredRecipes.map((recipe) => (
               <Link key={recipe.id} to={`/recipe/${recipe.id}`}>
                 <div className='recipe-card'>
                   <ProfileRecipeCard

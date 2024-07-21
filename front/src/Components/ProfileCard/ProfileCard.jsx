@@ -7,13 +7,16 @@ import { deleteAccount } from '../../services/delete';
 import { toast } from 'react-toastify';
 import { updateUserAuth } from '../../services/update';
 import { useForm } from 'react-hook-form';
-import { getUserEmails, getUserNames } from '../../services/get';
+import { getOneUser, getUserEmails, getUserNames } from '../../services/get';
 
 const ProfileCard = () => {
   const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null);
   const [userId, setUserId] = useState('');
   console.log('userId ===', userId);
   const { userName, email, image, role, id, logoutHandler, updateUser } = useContext(UserContext);
+  console.log('user ===', user);
   const [editUsername, setEditUsername] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
   const [existingUsernames, setExistingUsernames] = useState([]);
@@ -27,17 +30,30 @@ const ProfileCard = () => {
     formState: { errors },
   } = useForm();
 
+  const fetchUser = async (id) => {
+    try {
+      const data = await getOneUser(id);
+      console.log('data ===', data);
+      setUser(data);
+    } catch (error) {
+      toast.error('Error fetching user details');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   fetchUser(id);
+  // }, [id]);
+
   useEffect(() => {
-    if (userName) {
-      setValue('userName', userName);
+    fetchUser(id);
+    if (user) {
+      setValue('userName', user.userName);
+      setValue('image', user.image);
+      setValue('email', user.email);
     }
-    if (email) {
-      setValue('email', email);
-    }
-    if (image) {
-      setValue('image', image);
-    }
-  }, [userName, email, setValue, image]);
+  }, [id, setValue]);
 
   useEffect(() => {
     const fetchUsernames = async () => {
