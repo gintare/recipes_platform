@@ -10,6 +10,7 @@ import lt.techin.ovidijus.back.repository.CategoryRepository;
 import lt.techin.ovidijus.back.repository.IngredientRepository;
 import lt.techin.ovidijus.back.repository.RecipeRepository;
 import lt.techin.ovidijus.back.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class RecipeService {
     IngredientRepository ingredientRepository;
     UserRepository userRepository;
 
+    @Autowired
     public RecipeService(RecipeRepository recipeRepository, CategoryRepository categoryRepository, IngredientRepository ingredientRepository, UserRepository userRepository) {
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;

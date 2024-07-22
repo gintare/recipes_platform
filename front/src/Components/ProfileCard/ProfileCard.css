@@ -1,5 +1,6 @@
 .profile-img {
   width: 14rem;
+  object-fit: cover;
 }
 
 .profile-username,
@@ -11,6 +12,8 @@
 }
 
 .username-email {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 3rem;
 }
 
@@ -27,6 +30,54 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+}
+
+.edit-username,
+.edit-email {
+  cursor: pointer;
+}
+
+.accept-username,
+.accept-email,
+.accept-image {
+  color: var(--light-green);
+  margin-right: 0.2rem;
+}
+
+.cancel-username,
+.cancel-email,
+.cancel-image {
+  color: var(--tomato);
+}
+
+.active-edit-username,
+.active-edit-email {
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.error-email,
+.error-username {
+  margin-top: -1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.edit-image-btn {
+  margin-top: 0.5rem;
+  border: none;
+  background-color: var(--lime-green);
+  padding: 0.3rem 1.5rem;
+  color: var(--light-black);
+}
+
+.input-image {
+  margin-right: 0.2rem;
+}
+
+.faded-image {
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
 }
 
 @media screen and (min-width: 577px) {
