@@ -51,6 +51,12 @@ public class Recipe {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Favorite> favorites = new HashSet<>();
+
     public void addCategory(Category category) {
         this.category = category;
         this.category.getRecipes().add(this);

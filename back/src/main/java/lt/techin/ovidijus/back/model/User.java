@@ -52,6 +52,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "followWhat", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Follower> followers = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Favorite> favorites = new HashSet<>();
+
     public User(String userName, String email, String password, String role) {
         this.userName = userName;
         this.email = email;
