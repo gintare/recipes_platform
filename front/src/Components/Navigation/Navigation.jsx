@@ -49,7 +49,7 @@ const Navigation = () => {
         </button>
 
         <div className='collapse navbar-collapse' id='navbarNavAltMarkup'>
-          <form className='d-flex mt-3 mb-2 align-items-center' role='search'>
+          <form className='d-flex mt-2 mb-2 align-items-center' role='search'>
             <input
               className='form-control'
               type='search'
