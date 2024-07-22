@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "user_name")
-    @Length()
+//    @Length(min = 4, max = 20)
     private String userName;
 
     @Column(name = "email")
