@@ -1,6 +1,7 @@
 package lt.techin.ovidijus.back.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,7 +43,7 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Like> likes = new HashSet<>();
 
-
+    @NotNull
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Ingredient> ingredients = new LinkedHashSet<>();
 
@@ -55,17 +56,17 @@ public class Recipe {
         this.category.getRecipes().add(this);
     }
 
-    public void removeCategory(){
+    public void removeCategory() {
         this.category.getRecipes().remove(this);
         this.category = null;
     }
 
-    public void addUser(User user){
+    public void addUser(User user) {
         this.user = user;
         this.user.getRecipes().add(this);
     }
 
-    public void removeUser(){
+    public void removeUser() {
         this.user.getRecipes().remove(this);
         this.user = null;
     }

@@ -44,6 +44,12 @@ public class RecipeService {
         if(recipeRequestDTO.getTimeInMinutes() == 0){
             throw new RequiredFieldIsEmptyException("Required timeInMinutes field is 0");
         }
+        if(recipeRequestDTO.getIngredients() == null){
+            throw new IngredientNotFoundException("No input ingredients found");
+        }
+        if(recipeRequestDTO.getIngredients().isEmpty()){
+            throw new IngredientNotFoundException("No input ingredients found");
+        }
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("No category found with an id = "+categoryId));
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("No user found by user id ="+userId));
         if(recipeRequestDTO.getIngredients().isEmpty()) {
@@ -71,6 +77,7 @@ public class RecipeService {
             IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
             ingredientResponseDTO.setId(ingredient.getId());
             ingredientResponseDTO.setTitle(ingredient.getTitle());
+            ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
             ingredientResponseDTOSet.add(ingredientResponseDTO);
 
         }
@@ -133,6 +140,7 @@ public class RecipeService {
             IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
             ingredientResponseDTO.setId(ingredient.getId());
             ingredientResponseDTO.setTitle(ingredient.getTitle());
+            ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
             ingredientResponseDTOSet.add(ingredientResponseDTO);
         }
 
@@ -151,7 +159,7 @@ public class RecipeService {
     }
 
     public void deleteRecipe (Long recipeId){
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(()->new RecipeNotFoundException("Recipe not found"));
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(()->new RecipeNotFoundException("Recipe not found with an id = "+recipeId));
         recipeRepository.deleteById(recipeId);
     }
     public void updateRecipe(Long recipeId, RecipeUpdateDTO recipeUpdateDTO) {

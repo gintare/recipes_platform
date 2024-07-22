@@ -11,6 +11,7 @@ import UserContext from "../../Context/UserContext/UserContext";
 import { favoritePost, followerPost } from "../../services/post";
 import { deleteFavorite, deleteFollower } from "../../services/delete";
 import { BarChartLineFill, HeartFill, Heart } from "react-bootstrap-icons";
+import { useForm } from 'react-hook-form';
 
 function RecipeDetailsPage() {
   const { id: recipeId } = useParams();
@@ -20,6 +21,19 @@ function RecipeDetailsPage() {
   const [favorite, setFavorite] = useState(false);
   const { id, userName } = useContext(UserContext);
   const [follow, setFollow] = useState(true);
+  const {
+    register,
+    control,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+    watch,
+  } = useForm({
+    defaultValues: {
+      text: ''
+    },
+  });
 
   //console.log("recipe Id = " + recipeId);
 
@@ -38,11 +52,15 @@ function RecipeDetailsPage() {
     //console.log("favorite me");
     setFavorite((favorite) => !favorite);
 
-    if(!favorite){
+    if (!favorite) {
       const fav = favoritePost(id, recipe.id);
-    }else{
+    } else {
       deleteFavorite(id, recipe.id);
     }
+  };
+
+  const onCommentsSubmitClickHandler = (data) => {
+    console.log(data);
   }
 
   useEffect(() => {
@@ -74,11 +92,14 @@ function RecipeDetailsPage() {
       {/* <h1>Hello Recipe = {recipeId}</h1> */}
       <div className="container-lg">container</div>
       <div className="container">
-      <div className="row">
+        <div className="row">
           <div className="col-sm-2">Like Likes button</div>
           <div className="col-sm-2">
-            {favorite? <HeartFill color="red" size="36" onClick={clickFavoriteHandler} /> :
-            <Heart color="red" size="36" onClick={clickFavoriteHandler}/>}
+            {favorite ? (
+              <HeartFill color="red" size="36" onClick={clickFavoriteHandler} />
+            ) : (
+              <Heart color="red" size="36" onClick={clickFavoriteHandler} />
+            )}
           </div>
           <div className="col">
             Author : {userName}
@@ -95,16 +116,23 @@ function RecipeDetailsPage() {
             <img src={recipe.image} alt="recipe_photo" />
           </div>
           <div className="col recipe-info-content">
-            <h5 className="card-title">{recipe.name}</h5 >
+            <h5 className="card-title">{recipe.name}</h5>
             <br />
-            <label htmlFor="description" className="col col-form-label">Description:</label> 
+            <label htmlFor="description" className="col col-form-label">
+              Description:
+            </label>
             <div className="col ">{recipe.description}</div>
-            <label htmlFor="instructions" className="col col-form-label">Instructions:</label> 
+            <label htmlFor="instructions" className="col col-form-label">
+              Instructions:
+            </label>
             <div className="col ">{recipe.instructions}</div>
-            <label htmlFor="categoryName" className="col col-form-label">Recipe category:</label> 
+            <label htmlFor="categoryName" className="col col-form-label">
+              Recipe category:
+            </label>
             <div className="col ">{category.name}</div>
-            <label htmlFor="ingredients" className="col col-form-label">Ingredients:</label> 
-            
+            <label htmlFor="ingredients" className="col col-form-label">
+              Ingredients:
+            </label>
             <ul>
               {recipe.ingredients &&
                 recipe.ingredients.map((ingredient) => (
@@ -114,7 +142,26 @@ function RecipeDetailsPage() {
             Preparation time : {recipe.timeInMinutes}
           </div>
         </div>
-
+        <div className="row">
+          <form noValidate onSubmit={handleSubmit(onCommentsSubmitClickHandler)} >
+          <div className="mb-3">
+            <label htmlFor="exampleFormControlTextarea1" className="form-label">
+              Comment text
+            </label>
+            <textarea
+              className="form-control"
+              id="exampleFormControlTextarea1"
+              rows="3"
+              {...register("text", {
+                required: 'Comment text is required',
+              })}
+            ></textarea>
+          </div>
+          <div className="col-auto">
+            <button type="submit" className="btn btn-primary mb-3">Comment</button>
+          </div>
+          </form>
+        </div>
       </div>
     </>
   );
