@@ -11,11 +11,9 @@ import lt.techin.ovidijus.back.repository.IngredientRepository;
 import lt.techin.ovidijus.back.repository.RecipeRepository;
 import lt.techin.ovidijus.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class RecipeService {
@@ -77,7 +75,7 @@ public class RecipeService {
             ingredientRepository.save(ingredient);
 
             IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
-            ingredientResponseDTO.setId(ingredient.getId());
+            ingredientResponseDTO.setIngredientId(ingredient.getId());
             ingredientResponseDTO.setTitle(ingredient.getTitle());
             ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
             ingredientResponseDTOSet.add(ingredientResponseDTO);
@@ -141,7 +139,7 @@ public class RecipeService {
             this.ingredientRepository.save(ingredient);
 
             IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
-            ingredientResponseDTO.setId(ingredient.getId());
+            ingredientResponseDTO.setIngredientId(ingredient.getId());
             ingredientResponseDTO.setTitle(ingredient.getTitle());
             ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
             ingredientResponseDTOSet.add(ingredientResponseDTO);
@@ -214,7 +212,7 @@ public class RecipeService {
             }
             for(Ingredient ingredient : ingredientsSorted){
                 IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
-                ingredientResponseDTO.setId(ingredient.getId());
+                ingredientResponseDTO.setIngredientId(ingredient.getId());
                 ingredientResponseDTO.setTitle(ingredient.getTitle());
                 ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
                 ingredientResponseDTOS.add(ingredientResponseDTO);
@@ -252,7 +250,7 @@ public class RecipeService {
         Set<IngredientResponseDTO>  ingredientResponseDTOS = new LinkedHashSet<>();
         for(Ingredient ingredient : ingredientsSorted){
             IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
-            ingredientResponseDTO.setId(ingredient.getId());
+            ingredientResponseDTO.setIngredientId(ingredient.getId());
             ingredientResponseDTO.setTitle(ingredient.getTitle());
             ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
             ingredientResponseDTOS.add(ingredientResponseDTO);
