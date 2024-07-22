@@ -74,6 +74,7 @@ function RecipeDetailsPage() {
     //console.log(data);
     const postData = commentPost(id, recipe.id, data);
     //console.log(postData);
+    reset();
     setUpdate((prev) => prev + 1);
   };
 
@@ -159,11 +160,11 @@ function RecipeDetailsPage() {
             <div className="col ">{category.name}</div>
             <label htmlFor="ingredients" className="col col-form-label">
               Ingredients:
-            </label>
-            <ul>
+            </label>  
+            <ul id="ingredients">
               {recipe.ingredients &&
-                recipe.ingredients.map((ingredient) => (
-                  <li key={ingredient.id}>{ingredient.title}</li>
+                recipe.ingredients.map((ingredient, index) => (
+                  <li key={index} value={ingredient.id}>{ingredient.title}</li>
                 ))}
             </ul>
             Preparation time : {recipe.timeInMinutes}
@@ -198,7 +199,7 @@ function RecipeDetailsPage() {
         {comments.map((comment) => {
           return (
             <div key={comment.id} className="row">
-              <div className="mb-3">
+              <div key={comment.id} className="mb-3">
                 &#62; {comment.text}{" "}
                 {id == comment.userId && (
                   <button
