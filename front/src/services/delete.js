@@ -77,3 +77,16 @@ export const deleteFavorite = async (userId, recipeId) => {
     throw new Error(`Error deleting recipe ${error.message}`);
   }
 };
+
+export const deleteComment = async (commentId) => {
+  try {
+    const resp = await axios.delete(`${API_URL}/api/comments/${commentId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error deleting recipe ${error.message}`);
+  }
+};

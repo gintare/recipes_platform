@@ -1,17 +1,23 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import {
+  getCommentsByRecipe,
   getIsFavorite,
   getIsFollower,
   getOneCategory,
   getOneRecipe,
+  getOneUser,
 } from "../../services/get";
 import "./RecipeDetailsPage.css";
 import UserContext from "../../Context/UserContext/UserContext";
-import { favoritePost, followerPost } from "../../services/post";
-import { deleteFavorite, deleteFollower } from "../../services/delete";
+import { commentPost, favoritePost, followerPost } from "../../services/post";
+import {
+  deleteComment,
+  deleteFavorite,
+  deleteFollower,
+} from "../../services/delete";
 import { BarChartLineFill, HeartFill, Heart } from "react-bootstrap-icons";
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 
 function RecipeDetailsPage() {
   const { id: recipeId } = useParams();
@@ -19,6 +25,9 @@ function RecipeDetailsPage() {
   const [category, setCategory] = useState({});
   const [error, setError] = useState("");
   const [favorite, setFavorite] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [recipeCreatorUserName, setRecipeCreatorUserName] = useState("");
+  const [update, setUpdate] = useState(0);
   const { id, userName } = useContext(UserContext);
   const [follow, setFollow] = useState(true);
   const {
@@ -31,16 +40,17 @@ function RecipeDetailsPage() {
     watch,
   } = useForm({
     defaultValues: {
-      text: ''
+      text: "",
     },
   });
 
+  // console.log("user id = "+id);
   //console.log("recipe Id = " + recipeId);
 
   const followUser = async () => {
     //console.log("follow me");
     setFollow((follow) => !follow);
-    console.log("follow me follow = " + follow);
+    //console.log("follow me follow = " + follow);
     if (!follow == true) {
       const fol = await followerPost(id, recipe.userId);
     } else {
@@ -60,8 +70,18 @@ function RecipeDetailsPage() {
   };
 
   const onCommentsSubmitClickHandler = (data) => {
-    console.log(data);
-  }
+    //console.log(recipe.id)
+    //console.log(data);
+    const postData = commentPost(id, recipe.id, data);
+    //console.log(postData);
+    setUpdate((prev) => prev + 1);
+  };
+
+  const deleteCommentClickHandler = (commentId) => {
+    //console.log("commentId = "+commentId);
+    deleteComment(commentId);
+    setUpdate((prev) => prev + 1);
+  };
 
   useEffect(() => {
     const getRecipe = async () => {
@@ -80,12 +100,19 @@ function RecipeDetailsPage() {
         const isFav = await getIsFavorite(id, rec.id);
         //console.log("isFav = "+isFav);
         setFavorite(isFav);
+
+        const comm = await getCommentsByRecipe(rec.id);
+        setComments(comm);
+
+        const userCreator = await getOneUser(rec.userId);
+        //console.log(userCreator);
+        setRecipeCreatorUserName(userCreator.userName);
       } catch (error) {
         setError(error.message);
       }
     };
     getRecipe();
-  }, []);
+  }, [update]);
 
   return (
     <>
@@ -102,7 +129,7 @@ function RecipeDetailsPage() {
             )}
           </div>
           <div className="col">
-            Author : {userName}
+            Author : {recipeCreatorUserName}
             <button
               className={follow ? "follow_button_active" : "follow_button"}
               onClick={followUser}
@@ -143,25 +170,53 @@ function RecipeDetailsPage() {
           </div>
         </div>
         <div className="row">
-          <form noValidate onSubmit={handleSubmit(onCommentsSubmitClickHandler)} >
-          <div className="mb-3">
-            <label htmlFor="exampleFormControlTextarea1" className="form-label">
-              Comment text
-            </label>
-            <textarea
-              className="form-control"
-              id="exampleFormControlTextarea1"
-              rows="3"
-              {...register("text", {
-                required: 'Comment text is required',
-              })}
-            ></textarea>
-          </div>
-          <div className="col-auto">
-            <button type="submit" className="btn btn-primary mb-3">Comment</button>
-          </div>
+          <form
+            noValidate
+            onSubmit={handleSubmit(onCommentsSubmitClickHandler)}
+          >
+            <div className="mb-3">
+              <label htmlFor="commentsTextarea" className="form-label">
+                Comment text
+              </label>
+              <textarea
+                className="form-control"
+                id="commentsTextarea"
+                rows="3"
+                {...register("text", {
+                  required: "Comment text is required",
+                })}
+              ></textarea>
+            </div>
+            <div className="col-auto">
+              <button type="submit" className="btn btn-primary mb-3">
+                Comment
+              </button>
+            </div>
           </form>
         </div>
+        {comments.length > 0 ? "Comments:" : ""}
+        {comments.map((comment) => {
+          return (
+            <div key={comment.id} className="row">
+              <div className="mb-3">
+                &#62; {comment.text}{" "}
+                {id == comment.userId && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteCommentClickHandler(comment.id);
+                    }}
+                    className="btn btn-primary mb-3"
+                  >
+                    Delete 🗑️
+                  </button>
+                )}
+              </div>
+              <div></div>
+            </div>
+          );
+        })}
+        <div className="footer_padding"></div>
       </div>
     </>
   );
