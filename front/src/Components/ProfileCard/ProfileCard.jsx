@@ -58,7 +58,7 @@ const ProfileCard = () => {
       setValue('image', user.image);
       setValue('email', user.email);
     }
-  }, [id, setValue]);
+  }, [id, setValue, token]);
 
   useEffect(() => {
     const fetchUsernames = async () => {
@@ -106,7 +106,6 @@ const ProfileCard = () => {
   };
 
   const handleUsernameChange = async (data) => {
-    console.log('data ===', data);
     if (existingUsernames.includes(data.userName)) {
       toast.error('A user with this username already exists!');
       return;
@@ -114,16 +113,12 @@ const ProfileCard = () => {
     try {
       if (role === 'ADMIN' || userId === id) {
         const response = await updateUserAuth(userId, { userName: data.userName });
-        console.log('response ===', response);
         updateUser();
         setEditUsername(false);
-        console.log('response ===', response);
-        console.log(`Resp username ${response.userName}`);
         if (response.token) {
           updateUserAuthContext(response.token);
         }
-        // updateUserAuthContext(response.newToken);
-
+        setUser((prevUser) => ({ ...prevUser, userName: data.userName }));
         toast.success('Username updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -143,11 +138,10 @@ const ProfileCard = () => {
         const response = await updateUserAuth(userId, { email: data.email });
         updateUser();
         setEditEmail(false);
-
-        if (response.newToken) {
-          updateUserAuthContext(response.newToken);
+        if (response.token) {
+          updateUserAuthContext(response.token);
         }
-
+        setUser((prevUser) => ({ ...prevUser, email: data.email }));
         toast.success('Email updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -163,11 +157,10 @@ const ProfileCard = () => {
         const response = await updateUserAuth(userId, { image: data.image });
         updateUser();
         setEditImage(false);
-
-        if (response.newToken) {
-          updateUserAuthContext(response.newToken);
+        if (response.token) {
+          updateUserAuthContext(response.token);
         }
-
+        setUser((prevUser) => ({ ...prevUser, image: data.image }));
         toast.success('Image updated successfully!');
       } else {
         toast.error('Unauthorized action');

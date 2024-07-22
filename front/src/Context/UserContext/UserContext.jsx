@@ -41,7 +41,6 @@ export const UserProvider = ({ children }) => {
     // localStorage.clear();
     // sessionStorage.clear();
     localStorage.setItem('token', newToken);
-    console.log('newToken ===', newToken);
     updateUser();
   };
 
