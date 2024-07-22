@@ -34,9 +34,17 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public UserResponseDTO registerUser(@RequestBody UserRequestDTO userRequestDTO) throws UserAlreadyExistsException {
-        return userService.registerUser(userRequestDTO);
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequestDTO userRequestDTO) {
+        try {
+            UserResponseDTO response = userService.registerUser(userRequestDTO);
+            return ResponseEntity.ok(response);
+        } catch (UserAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new UserResponseDTO(e.getMessage()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserResponseDTO(e.getMessage()));
+        }
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<ResponseLoginDTO> login(@RequestBody LoginDTO loginDTO) {

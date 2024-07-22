@@ -45,11 +45,13 @@ public class UserService {
             throw new UserAlreadyExistsException("This username already exists!");
         }
 
+        validateUserName(userRequestDTO.getUserName());
+        validateEmail(userRequestDTO.getEmail());
+        validatePassword(userRequestDTO.getPassword());
+
         User user = new User();
         user.setUserName(userRequestDTO.getUserName());
-        validateEmail(userRequestDTO.getEmail());
         user.setEmail(userRequestDTO.getEmail());
-        validatePassword(userRequestDTO.getPassword());
         user.setPassword(authenticationService.encodePassword(userRequestDTO.getPassword()));
         user.setImage("https://avatar.iran.liara.run/public/job/chef/male");
         user.setRole("USER");
@@ -173,6 +175,24 @@ public class UserService {
         }
         if (password.length() < 8) {
             throw new IllegalArgumentException("Password must be at least 8 characters long");
+        }
+    }
+
+    public void validateUserName(String userName) throws IllegalArgumentException {
+        int min = 4;
+        int max = 20;
+
+        if (userName == null || userName.isEmpty() || userName.isBlank()) {
+            throw new IllegalArgumentException("Username cannot be empty!");
+        }
+        if (userName.length() < min) {
+            throw new IllegalArgumentException("Username must be at least 4 characters");
+        }
+        if (userName.length() > max) {
+            throw new IllegalArgumentException("Username cannot be longer than 20 characters");
+        }
+        if (userName.startsWith(" ") || userName.endsWith(" ")) {
+            throw new IllegalArgumentException("Username cannot start or end with a space");
         }
     }
 }

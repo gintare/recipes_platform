@@ -41,6 +41,26 @@ const RegisterForm = () => {
     fetchUsersEmail();
   }, []);
 
+  const validateUsername = (data) => {
+    const value = data.name.trim();
+    const min = 3;
+    const max = 15;
+
+    if (value.length < min) {
+      toast.error(`Category name must be at least ${min} character`);
+      return false;
+    }
+    if (value.length > max) {
+      toast.error(`Category name cannot exceed ${max} characters`);
+      return false;
+    }
+    if (!/^[a-zA-Z]+( [a-zA-Z]+)*$/.test(value)) {
+      toast.error('Category name can only contain letters and a single space between words');
+      return false;
+    }
+    return true;
+  };
+
   const formSubmitHandler = async (data) => {
     if (existingUserEmail.includes(data.email)) {
       toast.error('A user with this email already exists!');
@@ -78,10 +98,14 @@ const RegisterForm = () => {
           id='userName'
           {...register('userName', {
             required: 'User name is required',
-            validate: (value) => value.trim() !== '' || 'User name cannot be empty',
-            maxLength: {
-              value: 255,
-              message: 'Username cannot exceed 255 characters',
+            validate: {
+              notEmpty: (value) => value.trim() !== '' || 'User name cannot be empty',
+              minLength: (value) => value.length >= 4 || 'Username must be at least 4 characters',
+              maxLength: (value) =>
+                value.length <= 20 || 'Username cannot be longer than 20 characters',
+              noWhitespace: (value) =>
+                (!value.startsWith(' ') && !value.endsWith(' ')) ||
+                'Username cannot start or end with a space',
             },
           })}
         />

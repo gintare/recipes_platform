@@ -14,9 +14,10 @@ const ProfileCard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState('');
-  console.log('userId ===', userId);
-  const { userName, email, image, role, id, logoutHandler, updateUser } = useContext(UserContext);
-  console.log('user ===', user);
+
+  const { userName, email, image, role, id, logoutHandler, updateUser, token } =
+    useContext(UserContext);
+
   const [editUsername, setEditUsername] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
   const [existingUsernames, setExistingUsernames] = useState([]);
