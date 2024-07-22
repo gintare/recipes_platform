@@ -22,10 +22,14 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(commentService.createComment(userId, recipeId, commentRequestDTO));
     }
 
-    @GetMapping("/api/recipe/{recipeId}/comments")
+    @GetMapping("/api/recipes/{recipeId}/comments")
     public List<CommentResponseDTO> findCommentsByRecipe(@PathVariable Long recipeId){
         return commentService.findByRecipe(recipeId);
     }
 
+    @DeleteMapping("/api/comments/{commentId}")
+    public ResponseEntity<?> deleteComment(@PathVariable Long commentId){
+        return ResponseEntity.ok(commentService.deleteComment(commentId));
+    }
 
 }
