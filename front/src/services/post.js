@@ -58,3 +58,47 @@ export const recipePost = async (categoryId, userId, data) => {
     throw new Error(`Failed to save data: ${error.message}`);
   }
 };
+
+export const followerPost = async (followerWhoId, followerWhatId) => {
+  try {
+    const userToken = getDefaultToken();
+    const response = await axios.post(`${API_URL}/api/follower/${followerWhoId}/${followerWhatId}`, null, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    throw new Error(`Failed to save data: ${error.message}`);
+  }
+};
+
+export const favoritePost = async (userId, recipeId) => {
+  try {
+    const userToken = getDefaultToken();
+    const response = await axios.post(`${API_URL}/api/users/${userId}/recipes/${recipeId}/favorites`, null, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    throw new Error(`Failed to save data: ${error.message}`);
+  }
+};
+
+export const commentPost = async (userId, recipeId, data) => {
+  try {
+    const userToken = getDefaultToken();
+    const response = await axios.post(`${API_URL}/api/users/${userId}/recipes/${recipeId}/comments`, data, {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(`Failed to save data: ${error.message}`);
+  }
+};

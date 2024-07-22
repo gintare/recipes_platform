@@ -70,13 +70,14 @@ public class CategoryService {
         validateCategory(categoryRequestDTO.getName());
 
         if (categoryRequestDTO.getName() != null) {
+            if (categoryRepository.existsByName(categoryRequestDTO.getName())){
+                return new CategoryResponseDTO(existingCategory.getId(), "Category already exists!");
+            }
             existingCategory.setName(categoryRequestDTO.getName());
         }
-        Category updatedCategory = categoryRepository.save(existingCategory);
+        categoryRepository.save(existingCategory);
 
-        CategoryResponseDTO responseDTO = new CategoryResponseDTO();
-        responseDTO.setName(updatedCategory.getName());
-        return responseDTO;
+        return new CategoryResponseDTO(existingCategory.getId(), existingCategory.getName(), "Category updated!");
     }
 
     public void deleteCategory(long id) throws CategoryNotFoundException, NotAdminException {
@@ -105,13 +106,22 @@ public class CategoryService {
         }
         if (name.length() < min) {
             String minMessage = min == 1 ? "character" : "characters";
-           throw new IllegalArgumentException(String.format("Category name must be at least %d %s %n", min, minMessage));
+            throw new IllegalArgumentException(String.format("Category name must be at least %d %s %n", min, minMessage));
         }
         if (name.length() > max) {
             throw new IllegalArgumentException(String.format("Category name cannot exceed %d characters", max));
         }
-        if (!Pattern.matches("^[a-zA-Z]+$", name)) {
-            throw new IllegalArgumentException("Category name can only contain letters");
+        if (!Pattern.matches("^[a-zA-Z]+( [a-zA-Z]+)*$", name)) {
+            throw new IllegalArgumentException("Category name can only contain letters and a single space between words");
         }
+    }
+
+    public CategoryResponseDTO getOneCategory(long id) {
+        Category category = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("No category found with an id = " + id));
+
+        CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
+        categoryResponseDTO.setId(category.getId());
+        categoryResponseDTO.setName(category.getName());
+        return categoryResponseDTO;
     }
 }

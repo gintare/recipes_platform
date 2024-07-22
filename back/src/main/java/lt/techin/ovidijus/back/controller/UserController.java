@@ -1,32 +1,50 @@
 package lt.techin.ovidijus.back.controller;
 
 import lt.techin.ovidijus.back.dto.LoginDTO;
-import lt.techin.ovidijus.back.dto.RegisterResponseDTO;
+import lt.techin.ovidijus.back.dto.UserResponseDTO;
 import lt.techin.ovidijus.back.dto.ResponseLoginDTO;
-import lt.techin.ovidijus.back.dto.UserDTO;
+import lt.techin.ovidijus.back.dto.UserRequestDTO;
+import lt.techin.ovidijus.back.exceptions.NotAdminException;
 import lt.techin.ovidijus.back.exceptions.UserAlreadyExistsException;
+import lt.techin.ovidijus.back.exceptions.UserNotFoundException;
+import lt.techin.ovidijus.back.model.User;
+import lt.techin.ovidijus.back.repository.UserRepository;
 import lt.techin.ovidijus.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping
 public class UserController {
 
+    private final UserRepository userRepository;
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/register")
-    public RegisterResponseDTO registerUser(@RequestBody UserDTO userDTO) throws UserAlreadyExistsException {
-        return userService.registerUser(userDTO);
+    public ResponseEntity<UserResponseDTO> registerUser(@RequestBody UserRequestDTO userRequestDTO) {
+        try {
+            UserResponseDTO response = userService.registerUser(userRequestDTO);
+            return ResponseEntity.ok(response);
+        } catch (UserAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new UserResponseDTO(e.getMessage()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserResponseDTO(e.getMessage()));
+        }
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<ResponseLoginDTO> login(@RequestBody LoginDTO loginDTO) {
@@ -37,9 +55,45 @@ public class UserController {
         return ResponseEntity.ok(loggedUser);
     }
 
-    @GetMapping("/emails")
+    @PatchMapping("/users/{id}")
+    public ResponseEntity<UserResponseDTO> updateAccount(@PathVariable long id, @RequestBody UserRequestDTO userRequestDTO) {
+        try {
+            UserResponseDTO updatedAccount = userService.updateAccount(id, userRequestDTO);
+            if (updatedAccount == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (AccessDeniedException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/users/{id}")
+    public UserResponseDTO deleteAccount(@PathVariable long id) throws AccessDeniedException {
+        return userService.deleteAccount(id);
+    }
+
+    @GetMapping("/users/emails")
     public ResponseEntity<List<String>> getAllUserEmails() {
         List<String> emails = userService.getAllUserEmails();
         return ResponseEntity.ok(emails);
     }
+
+    @GetMapping("/users/usernames")
+    public ResponseEntity<List<String>> getAllUserNames() {
+        List<String> usernames = userService.getAllUserNames();
+        return ResponseEntity.ok(usernames);
+    }
+
+    @GetMapping("/users/{id}")
+    public UserResponseDTO getOneUser(@PathVariable long id) {
+        return userService.getOneUser(id);
+    }
+
 }

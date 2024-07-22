@@ -5,12 +5,13 @@ import { postRegister } from '../../../services/post';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import UserContext from '../../../Context/UserContext/UserContext';
-import { getUserEmail } from '../../../services/get';
+import { getUserEmails } from '../../../services/get';
 
 const RegisterForm = () => {
   const [error, setError] = useState('');
   const { updateUser } = useContext(UserContext);
   const [existingUserEmail, setExistingUserEmail] = useState([]);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const {
     register,
@@ -33,12 +34,32 @@ const RegisterForm = () => {
 
   useEffect(() => {
     const fetchUsersEmail = async () => {
-      const userEmail = await getUserEmail();
+      const userEmail = await getUserEmails();
       setExistingUserEmail(userEmail);
     };
 
     fetchUsersEmail();
   }, []);
+
+  const validateUsername = (data) => {
+    const value = data.name.trim();
+    const min = 3;
+    const max = 15;
+
+    if (value.length < min) {
+      toast.error(`Category name must be at least ${min} character`);
+      return false;
+    }
+    if (value.length > max) {
+      toast.error(`Category name cannot exceed ${max} characters`);
+      return false;
+    }
+    if (!/^[a-zA-Z]+( [a-zA-Z]+)*$/.test(value)) {
+      toast.error('Category name can only contain letters and a single space between words');
+      return false;
+    }
+    return true;
+  };
 
   const formSubmitHandler = async (data) => {
     if (existingUserEmail.includes(data.email)) {
@@ -59,6 +80,10 @@ const RegisterForm = () => {
     }
   };
 
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
   return (
     <form
       className='row g-3 needs-validation register-form mt-2 d-flex flex-column align-items-stretch'
@@ -73,10 +98,14 @@ const RegisterForm = () => {
           id='userName'
           {...register('userName', {
             required: 'User name is required',
-            validate: (value) => value.trim() !== '' || 'User name cannot be empty',
-            maxLength: {
-              value: 255,
-              message: 'Username cannot exceed 255 characters',
+            validate: {
+              notEmpty: (value) => value.trim() !== '' || 'User name cannot be empty',
+              minLength: (value) => value.length >= 4 || 'Username must be at least 4 characters',
+              maxLength: (value) =>
+                value.length <= 20 || 'Username cannot be longer than 20 characters',
+              noWhitespace: (value) =>
+                (!value.startsWith(' ') && !value.endsWith(' ')) ||
+                'Username cannot start or end with a space',
             },
           })}
         />
@@ -103,48 +132,59 @@ const RegisterForm = () => {
         {errors.email && <div className='invalid-feedback'>{errors.email.message}</div>}
       </div>
       <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
-        <input
-          placeholder='Password'
-          type='password'
-          className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-          id='password'
-          {...register('password', {
-            required: 'Password is required',
-            validate: {
-              hasUpperCase: (value) =>
-                /[A-Z]/.test(value) || 'Password must include at least one uppercase letter.',
-              hasLowerCase: (value) =>
-                /[a-z]/.test(value) || 'Password must include at least one lowercase letter.',
-              hasNumber: (value) =>
-                /\d/.test(value) || 'Password must include at least one number.',
-              minLength: (value) =>
-                value.length >= 8 || 'Password must have at least 8 characters.',
-              maxLength: (value) => value.length <= 255 || 'Password cannot exceed 255 characters',
-            },
-          })}
-        />
-        {errors.password && <div className='invalid-feedback'>{errors.password.message}</div>}
+        <div className='input-group'>
+          <input
+            placeholder='Password'
+            type={passwordVisible ? 'text' : 'password'}
+            className={`form-control password-input ${errors.password ? 'is-invalid' : ''}`}
+            id='password'
+            {...register('password', {
+              required: 'Password is required',
+              validate: {
+                hasUpperCase: (value) =>
+                  /[A-Z]/.test(value) || 'Password must include at least one uppercase letter.',
+                hasLowerCase: (value) =>
+                  /[a-z]/.test(value) || 'Password must include at least one lowercase letter.',
+                hasNumber: (value) =>
+                  /\d/.test(value) || 'Password must include at least one number.',
+                minLength: (value) =>
+                  value.length >= 8 || 'Password must have at least 8 characters.',
+                maxLength: (value) =>
+                  value.length <= 255 || 'Password cannot exceed 255 characters',
+              },
+            })}
+          />
+          <span className='input-group-text' onClick={togglePasswordVisibility}>
+            <i className={passwordVisible ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'}></i>
+          </span>
+          {errors.password && <div className='invalid-feedback'>{errors.password.message}</div>}
+        </div>
       </div>
       <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
-        <input
-          placeholder='Repeat password'
-          type='password'
-          className={`form-control ${errors.repeatPassword ? 'is-invalid' : ''}`}
-          id='repeatPassword'
-          {...register('repeatPassword', {
-            required: 'Repeat your password',
-            validate: {
-              matchesOriginal: (value) => value === password.current || 'Passwords do not match',
-            },
-            maxLength: {
-              value: 255,
-              message: 'Repeat password cannot exceed 255 characters',
-            },
-          })}
-        />
-        {errors.repeatPassword && (
-          <div className='invalid-feedback'>{errors.repeatPassword.message}</div>
-        )}
+        <div className='input-group'>
+          <input
+            placeholder='Repeat password'
+            type={passwordVisible ? 'text' : 'password'}
+            className={`form-control password-input ${errors.password ? 'is-invalid' : ''}`}
+            id='repeatPassword'
+            {...register('repeatPassword', {
+              required: 'Repeat your password',
+              validate: {
+                matchesOriginal: (value) => value === password.current || 'Passwords do not match',
+              },
+              maxLength: {
+                value: 255,
+                message: 'Repeat password cannot exceed 255 characters',
+              },
+            })}
+          />
+          <span className='input-group-text' onClick={togglePasswordVisibility}>
+            <i className={passwordVisible ? 'bi bi-eye-slash-fill' : 'bi bi-eye-fill'}></i>
+          </span>
+          {errors.repeatPassword && (
+            <div className='invalid-feedback'>{errors.repeatPassword.message}</div>
+          )}
+        </div>
       </div>
       <div className='col-12 col-md-6 col-xl-4 offset-md-3 offset-xl-4 mb-3'>
         <button type='submit' className='btn submit-btn w-100'>

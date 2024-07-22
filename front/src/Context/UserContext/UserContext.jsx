@@ -6,7 +6,6 @@ import {
   getUserNameFromToken,
   getUserRoleFromToken,
 } from '../../utils/jwt';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const UserContext = createContext();
@@ -30,7 +29,6 @@ export const UserProvider = ({ children }) => {
   const logoutHandler = () => {
     localStorage.clear();
     sessionStorage.clear();
-    toast.success('You have been logged out successfully.');
     updateUser();
     navigate('/', { replace: true });
   };
@@ -52,6 +50,7 @@ export const UserProvider = ({ children }) => {
         id,
         email,
         image,
+        token,
       }}
     >
       {children}
