@@ -37,6 +37,14 @@ export const UserProvider = ({ children }) => {
     setUpdate((prev) => prev + 1);
   };
 
+  const updateUserAuthContext = (newToken) => {
+    // localStorage.clear();
+    // sessionStorage.clear();
+    localStorage.setItem('token', newToken);
+    console.log('newToken ===', newToken);
+    updateUser();
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -51,6 +59,7 @@ export const UserProvider = ({ children }) => {
         email,
         image,
         token,
+        updateUserAuthContext,
       }}
     >
       {children}

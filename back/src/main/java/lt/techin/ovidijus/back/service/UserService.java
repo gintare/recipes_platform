@@ -88,8 +88,11 @@ public class UserService {
             throw new AccessDeniedException("Current user does not have permission to update this user");
         }
 
+        boolean tokenShouldBeRegenerated = false;
+
         if (userRequestDTO.getImage() != null) {
             existingUser.setImage(userRequestDTO.getImage());
+            tokenShouldBeRegenerated = true;
         }
 
         if (userRequestDTO.getUserName() != null) {
@@ -98,6 +101,7 @@ public class UserService {
                 return new UserResponseDTO("This username already exists!");
             }
             existingUser.setUserName(userRequestDTO.getUserName());
+            tokenShouldBeRegenerated = true;
         }
 
         if (userRequestDTO.getEmail() != null) {
@@ -107,10 +111,24 @@ public class UserService {
             }
             validateEmail(userRequestDTO.getEmail());
             existingUser.setEmail(userRequestDTO.getEmail());
+            tokenShouldBeRegenerated = true;
         }
+
         userRepository.save(existingUser);
-        return new UserResponseDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getEmail(), String.format("User with id %d was updated", existingUser.getId()));
+
+        String newToken = null;
+        if (tokenShouldBeRegenerated) {
+            newToken = jwtService.generateToken(existingUser);
+        }
+
+        UserResponseDTO response = new UserResponseDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getEmail(), newToken, String.format("User with id %d was updated", existingUser.getId()));
+        if (newToken != null) {
+            response.setToken(newToken);
+        }
+
+        return response;
     }
+
 
     public UserResponseDTO deleteAccount(Long id) throws AccessDeniedException {
         User existingUser = userRepository.findById(id)
