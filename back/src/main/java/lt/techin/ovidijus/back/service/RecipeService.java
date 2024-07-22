@@ -136,6 +136,7 @@ public class RecipeService {
                 ingredient = new Ingredient();
             }
             ingredient.setTitle(ingredientRequestDTO.getTitle());
+            ingredient.setOrderNumber(Integer.valueOf(ingredientRequestDTO.getOrderNumber()));
             ingredient.setRecipe(recipe);
             this.ingredientRepository.save(ingredient);
 

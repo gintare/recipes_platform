@@ -144,3 +144,16 @@ export const getIsFavorite = async (userId, recipeId) => {
     throw new Error(`Error fetching all recipes: ${error.message}`);
   }
 };
+
+export const getCommentsByRecipe = async (recipeId) => {
+  try {
+    const resp = await axios.get(`${API_URL}/api/recipes/${recipeId}/comments`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error fetching all recipes: ${error.message}`);
+  }
+};
