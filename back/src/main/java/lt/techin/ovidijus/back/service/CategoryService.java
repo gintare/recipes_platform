@@ -70,13 +70,14 @@ public class CategoryService {
         validateCategory(categoryRequestDTO.getName());
 
         if (categoryRequestDTO.getName() != null) {
+            if (categoryRepository.existsByName(categoryRequestDTO.getName())){
+                return new CategoryResponseDTO(existingCategory.getId(), "Category already exists!");
+            }
             existingCategory.setName(categoryRequestDTO.getName());
         }
-        Category updatedCategory = categoryRepository.save(existingCategory);
+        categoryRepository.save(existingCategory);
 
-        CategoryResponseDTO responseDTO = new CategoryResponseDTO();
-        responseDTO.setName(updatedCategory.getName());
-        return responseDTO;
+        return new CategoryResponseDTO(existingCategory.getId(), existingCategory.getName(), "Category updated!");
     }
 
     public void deleteCategory(long id) throws CategoryNotFoundException, NotAdminException {

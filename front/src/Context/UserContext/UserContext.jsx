@@ -50,6 +50,7 @@ export const UserProvider = ({ children }) => {
         id,
         email,
         image,
+        token,
       }}
     >
       {children}
