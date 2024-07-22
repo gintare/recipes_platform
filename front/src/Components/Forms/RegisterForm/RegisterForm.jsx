@@ -5,7 +5,7 @@ import { postRegister } from '../../../services/post';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import UserContext from '../../../Context/UserContext/UserContext';
-import { getUserEmail } from '../../../services/get';
+import { getUserEmails } from '../../../services/get';
 
 const RegisterForm = () => {
   const [error, setError] = useState('');
@@ -34,7 +34,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     const fetchUsersEmail = async () => {
-      const userEmail = await getUserEmail();
+      const userEmail = await getUserEmails();
       setExistingUserEmail(userEmail);
     };
 

@@ -21,7 +21,7 @@
 
 .card-body {
   height: 13rem;
-  overflow: hidden; 
+  overflow: hidden;
 
   text-overflow: inherit;
   align-items: center;
@@ -47,6 +47,24 @@
 
 .profile-info {
   margin: 4rem 0;
+}
+
+.no-recipes {
+  position: absolute;
+  font-weight: 600;
+}
+
+.profile-loader {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-loading-text {
+  font-size: 2rem;
+  font-weight: 600;
+  font-style: italic;
 }
 
 @media (max-width: 992px) {

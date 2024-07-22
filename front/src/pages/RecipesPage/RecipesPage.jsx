@@ -1,5 +1,6 @@
 import RecipeCarusele from '../../Components/RecipeCarousel/RecipeCarousel';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { getAllRecipes } from '../../services/get';
 import RecipeCard from '../../Components/RecipeCard/RecipeCard';
 import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
@@ -19,21 +20,24 @@ const shuffleArray = (array) => {
 };
 
 const RecipesPage = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
-  const [recipes, setRecipes] = useState([]);
   const { isLoggedIn } = useContext(UserContext);
-  const { update } = useContext(RecipesContext);
+  const { update, filteredRecipes, setRecipes } = useContext(RecipesContext);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const data = await getAllRecipes();
+      setRecipes(shuffleArray(data));
+    } catch (error) {
+      toast.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getAllRecipes();
-        setRecipes(shuffleArray(data));
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
     fetchData();
   }, [update]);
 
@@ -51,7 +55,7 @@ const RecipesPage = () => {
 
       <RecipeCarusele />
       <div className='recipe-list'>
-        {recipes.map((recipe) => (
+        {filteredRecipes.map((recipe) => (
           <Link to={`/recipe/${recipe.id}`} key={recipe.id}>
             <RecipeCard recipe={recipe} />
           </Link>

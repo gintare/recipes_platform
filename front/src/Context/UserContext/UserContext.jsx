@@ -6,7 +6,6 @@ import {
   getUserNameFromToken,
   getUserRoleFromToken,
 } from '../../utils/jwt';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const UserContext = createContext();

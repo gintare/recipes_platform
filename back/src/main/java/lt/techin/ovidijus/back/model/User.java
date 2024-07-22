@@ -37,15 +37,20 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Like> likes = new HashSet<>();
 
-
     @Column(name = "role")
     private String role;
 
     @Column(name = "profile_image", columnDefinition = "text")
     private String image;
 
-    @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Recipe> recipes = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "followWho", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Follower> following = new HashSet<>();
+
+    @OneToMany(mappedBy = "followWhat", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Follower> followers = new HashSet<>();
 
     public User(String userName, String email, String password, String role) {
         this.userName = userName;

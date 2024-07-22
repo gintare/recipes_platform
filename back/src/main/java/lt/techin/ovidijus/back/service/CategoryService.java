@@ -105,7 +105,7 @@ public class CategoryService {
         }
         if (name.length() < min) {
             String minMessage = min == 1 ? "character" : "characters";
-           throw new IllegalArgumentException(String.format("Category name must be at least %d %s %n", min, minMessage));
+            throw new IllegalArgumentException(String.format("Category name must be at least %d %s %n", min, minMessage));
         }
         if (name.length() > max) {
             throw new IllegalArgumentException(String.format("Category name cannot exceed %d characters", max));
@@ -116,7 +116,7 @@ public class CategoryService {
     }
 
     public CategoryResponseDTO getOneCategory(long id) {
-        Category category = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("No category found with an id = "+id));
+        Category category = this.categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException("No category found with an id = " + id));
 
         CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
         categoryResponseDTO.setId(category.getId());
