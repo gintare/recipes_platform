@@ -100,15 +100,13 @@ function ProfilePage() {
             <div className='no-recipes'>No recipes found</div>
           ) : (
             filteredRecipes.map((recipe) => (
-              <Link key={recipe.id} to={`/recipe/${recipe.id}`}>
-                <div className='recipe-card'>
+                <div key={recipe.id} className='recipe-card'>
                   <ProfileRecipeCard
                     recipe={recipe}
                     createRecipeIsVisible={createRecipeIsVisible}
                     setCreateRecipeIsVisible={setCreateRecipeIsVisible}
                   />
                 </div>
-              </Link>
             ))
           )}
         </div>
