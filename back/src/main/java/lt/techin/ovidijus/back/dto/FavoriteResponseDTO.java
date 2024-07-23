@@ -10,4 +10,8 @@ public class FavoriteResponseDTO {
     private Long userId;
     private Long recipeId;
     private Date createdAt;
+    private String recipeImage;
+    private String recipeName;
+    private Integer recipeTimeInMinutes;
+    private int recipeAmountOfLikes;
 }

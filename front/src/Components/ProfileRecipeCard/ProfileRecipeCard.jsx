@@ -5,6 +5,7 @@ import './ProfileRecipeCard.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 function ProfileRecipeCard({ recipe, createRecipeIsVisible, setCreateRecipeIsVisible }) {
   const [show, setShow] = useState(false);
@@ -47,7 +48,9 @@ function ProfileRecipeCard({ recipe, createRecipeIsVisible, setCreateRecipeIsVis
   return (
     <>
       <div className='card'>
-        <img src={recipe.image} className='card-img-top' alt='...' />
+        <Link to={`/recipe/${recipe.id}`}>
+        <img src={recipe.image} className='card-img-top' alt='recipe image' />
+        </Link>
         <div className='card-body'>
           <h5 className='card-title'>{recipe.name}</h5>
           {/* <p className="card-text">{recipe.description}</p> */}
