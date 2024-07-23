@@ -18,6 +18,7 @@ import {
 } from "../../services/delete";
 import { BarChartLineFill, HeartFill, Heart } from "react-bootstrap-icons";
 import { useForm } from "react-hook-form";
+import NotFoundPage from "../NotFoundPage/NotFoundPage";
 
 function RecipeDetailsPage() {
   const { id: recipeId } = useParams();
@@ -28,7 +29,7 @@ function RecipeDetailsPage() {
   const [comments, setComments] = useState([]);
   const [recipeCreatorUserName, setRecipeCreatorUserName] = useState("");
   const [update, setUpdate] = useState(0);
-  const { id, userName } = useContext(UserContext);
+  const { id, userName, isLoggedIn } = useContext(UserContext);
   const [follow, setFollow] = useState(true);
   const {
     register,
@@ -94,20 +95,20 @@ function RecipeDetailsPage() {
         const cat = await getOneCategory(rec.categoryId);
         //console.log(cat);
         setCategory(cat);
-        const is = await getIsFollower(id, rec.userId);
-        //console.log(is);
-        setFollow(is);
-
-        const isFav = await getIsFavorite(id, rec.id);
-        //console.log("isFav = "+isFav);
-        setFavorite(isFav);
-
-        const comm = await getCommentsByRecipe(rec.id);
-        setComments(comm);
-
         const userCreator = await getOneUser(rec.userId);
         //console.log(userCreator);
         setRecipeCreatorUserName(userCreator.userName);
+
+        if(id){
+          const is = await getIsFollower(id, rec.userId);
+          //console.log(is);
+          setFollow(is);
+          const isFav = await getIsFavorite(id, rec.id);
+          //console.log("isFav = "+isFav);
+          setFavorite(isFav);
+          const comm = await getCommentsByRecipe(rec.id);
+          setComments(comm);
+        }
       } catch (error) {
         setError(error.message);
       }
@@ -117,27 +118,34 @@ function RecipeDetailsPage() {
 
   return (
     <>
-      {/* <h1>Hello Recipe = {recipeId}</h1> */}
-      <div className="container-lg">container</div>
+      <div className="container-lg"></div>
       <div className="container">
-        <div className="row">
-          <div className="col-sm-2">Like Likes button</div>
-          <div className="col-sm-2">
-            {favorite ? (
-              <HeartFill color="red" size="36" onClick={clickFavoriteHandler} />
-            ) : (
-              <Heart color="red" size="36" onClick={clickFavoriteHandler} />
-            )}
-          </div>
-          <div className="col">
-            Author : {recipeCreatorUserName}
-            <button
-              className={follow ? "follow_button_active" : "follow_button"}
-              onClick={followUser}
-            >
-              {follow ? "You are following author" : "Follow author"}
-            </button>
-          </div>
+        <div className="favorites-row-content row">
+          {isLoggedIn && (
+            <>
+              <div className="col-sm-2">Like Likes button</div>
+              <div className="col-sm-2">
+                {favorite ? (
+                  <HeartFill
+                    color="red"
+                    size="36"
+                    onClick={clickFavoriteHandler}
+                  />
+                ) : (
+                  <Heart color="red" size="36" onClick={clickFavoriteHandler} />
+                )}
+              </div>
+              <div className="col">
+                Author : {recipeCreatorUserName}
+                <button
+                  className={follow ? "follow_button_active" : "follow_button"}
+                  onClick={followUser}
+                >
+                  {follow ? "You are following author" : "Follow author"}
+                </button>
+              </div>
+            </>
+          )}
         </div>
         <div className="row">
           <div className="col-md-2 image-content">
@@ -160,16 +168,20 @@ function RecipeDetailsPage() {
             <div className="col ">{category.name}</div>
             <label htmlFor="ingredients" className="col col-form-label">
               Ingredients:
-            </label>  
+            </label>
             <ul id="ingredients">
               {recipe.ingredients &&
                 recipe.ingredients.map((ingredient, index) => (
-                  <li key={index} value={ingredient.id}>{ingredient.title}</li>
+                  <li key={index} value={ingredient.id}>
+                    {ingredient.title}
+                  </li>
                 ))}
             </ul>
             Preparation time : {recipe.timeInMinutes}
           </div>
         </div>
+        {isLoggedIn && 
+        <>
         <div className="row">
           <form
             noValidate
@@ -217,6 +229,9 @@ function RecipeDetailsPage() {
             </div>
           );
         })}
+        </>
+        }
+        
         <div className="footer_padding"></div>
       </div>
     </>
