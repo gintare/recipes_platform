@@ -1,5 +1,6 @@
 package lt.techin.ovidijus.back.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lt.techin.ovidijus.back.dto.LoginRequestDTO;
 import lt.techin.ovidijus.back.dto.UserResponseDTO;
 import lt.techin.ovidijus.back.dto.LoginResponseDTO;
@@ -27,13 +28,15 @@ public class UserService {
     private final AuthenticationService authenticationService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final HttpServletRequest request;
 
     @Autowired
-    public UserService(UserRepository userRepository, AuthenticationService authenticationService, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public UserService(UserRepository userRepository, AuthenticationService authenticationService, PasswordEncoder passwordEncoder, JwtService jwtService, HttpServletRequest request) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.request = request;
     }
 
     public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) throws UserAlreadyExistsException {
@@ -140,6 +143,8 @@ public class UserService {
         } else {
             userRepository.deleteById(id);
         }
+        clearToken();
+
         return new UserResponseDTO(existingUser.getId(), String.format("User with id %d, was deleted", existingUser.getId()));
     }
 
@@ -211,6 +216,19 @@ public class UserService {
         if (userName.startsWith(" ") || userName.endsWith(" ")) {
             throw new IllegalArgumentException("Username cannot start or end with a space");
         }
+    }
+
+    public String getCurrentToken() {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        } else {
+            throw new IllegalArgumentException("No JWT token found in the request headers");
+        }
+    }
+
+    public void clearToken() {
+        SecurityContextHolder.clearContext();
     }
 }
 
