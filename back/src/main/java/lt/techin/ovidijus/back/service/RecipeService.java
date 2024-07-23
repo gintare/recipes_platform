@@ -34,13 +34,13 @@ public class RecipeService {
 
     public RecipeResponseDTO createRecipe(Long categoryId, Long userId, RecipeRequestDTO recipeRequestDTO) {
         validateCharCount(recipeRequestDTO.getTimeInMinutes());
-        if(recipeRequestDTO.getName().isEmpty()){
+        if(recipeRequestDTO.getName().trim().isEmpty()){
             throw new RequiredFieldIsEmptyException("Required name field is empty");
         }
-        if(recipeRequestDTO.getDescription().isEmpty()){
+        if(recipeRequestDTO.getDescription().trim().isEmpty()){
             throw new RequiredFieldIsEmptyException("Required description field is empty");
         }
-        if(recipeRequestDTO.getInstructions().isEmpty()){
+        if(recipeRequestDTO.getInstructions().trim().isEmpty()){
             throw new RequiredFieldIsEmptyException("Required instructions field is empty");
         }
         if(recipeRequestDTO.getTimeInMinutes() == 0){
@@ -70,17 +70,19 @@ public class RecipeService {
 
         Set<IngredientResponseDTO> ingredientResponseDTOSet = new LinkedHashSet<>();
         for (IngredientRequestDTO ingredientDto : recipeRequestDTO.getIngredients()) {
-            Ingredient ingredient = new Ingredient();
-            ingredient.setTitle(ingredientDto.getTitle());
-            ingredient.addRecipe(recipe);
-            ingredient.setOrderNumber(Integer.parseInt(ingredientDto.getOrderNumber()));
-            ingredientRepository.save(ingredient);
+            if(!ingredientDto.getTitle().trim().isEmpty()) {
+                Ingredient ingredient = new Ingredient();
+                ingredient.setTitle(ingredientDto.getTitle());
+                ingredient.addRecipe(recipe);
+                ingredient.setOrderNumber(Integer.parseInt(ingredientDto.getOrderNumber()));
+                ingredientRepository.save(ingredient);
 
-            IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
-            ingredientResponseDTO.setIngredientId(ingredient.getId());
-            ingredientResponseDTO.setTitle(ingredient.getTitle());
-            ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
-            ingredientResponseDTOSet.add(ingredientResponseDTO);
+                IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
+                ingredientResponseDTO.setIngredientId(ingredient.getId());
+                ingredientResponseDTO.setTitle(ingredient.getTitle());
+                ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
+                ingredientResponseDTOSet.add(ingredientResponseDTO);
+            }
 
         }
 
@@ -129,23 +131,31 @@ public class RecipeService {
         Set<IngredientResponseDTO> ingredientResponseDTOSet = new LinkedHashSet<>();
         Set<IngredientRequestDTO> ingredientRequestDTOS = recipeRequestDTO.getIngredients();
         for(IngredientRequestDTO ingredientRequestDTO : ingredientRequestDTOS) {
-            Ingredient ingredient = null;
-            if(ingredientRequestDTO.getId() != null){
-                ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getId())
-                        .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = "+ingredientRequestDTO.getId()));
-            }else{
-                ingredient = new Ingredient();
-            }
-            ingredient.setTitle(ingredientRequestDTO.getTitle());
-            ingredient.setOrderNumber(Integer.valueOf(ingredientRequestDTO.getOrderNumber()));
-            ingredient.setRecipe(recipe);
-            this.ingredientRepository.save(ingredient);
+            if(ingredientRequestDTO.getTitle().trim().isEmpty()) {
+                if(ingredientRequestDTO.getId() != null){
+                    Ingredient ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getId())
+                            .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = " + ingredientRequestDTO.getId()));
+                    this.ingredientRepository.delete(ingredient);
+                }
+            } else {
+                Ingredient ingredient = null;
+                if (ingredientRequestDTO.getId() != null) {
+                    ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getId())
+                            .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = " + ingredientRequestDTO.getId()));
+                } else {
+                    ingredient = new Ingredient();
+                }
+                ingredient.setTitle(ingredientRequestDTO.getTitle());
+                ingredient.setOrderNumber(Integer.valueOf(ingredientRequestDTO.getOrderNumber()));
+                ingredient.setRecipe(recipe);
+                this.ingredientRepository.save(ingredient);
 
-            IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
-            ingredientResponseDTO.setIngredientId(ingredient.getId());
-            ingredientResponseDTO.setTitle(ingredient.getTitle());
-            ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
-            ingredientResponseDTOSet.add(ingredientResponseDTO);
+                IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
+                ingredientResponseDTO.setIngredientId(ingredient.getId());
+                ingredientResponseDTO.setTitle(ingredient.getTitle());
+                ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
+                ingredientResponseDTOSet.add(ingredientResponseDTO);
+            }
         }
 
         RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
