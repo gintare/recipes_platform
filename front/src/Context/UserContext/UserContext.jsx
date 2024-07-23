@@ -38,8 +38,6 @@ export const UserProvider = ({ children }) => {
   };
 
   const updateUserAuthContext = (newToken) => {
-    // localStorage.clear();
-    // sessionStorage.clear();
     localStorage.setItem('token', newToken);
     updateUser();
   };
