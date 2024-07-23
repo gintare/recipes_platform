@@ -11,14 +11,17 @@ import lt.techin.ovidijus.back.repository.IngredientRepository;
 import lt.techin.ovidijus.back.repository.RecipeRepository;
 import lt.techin.ovidijus.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.*;
 
 @Service
 public class RecipeService {
 
     private static final int TIME_IN_MINUTES_MAX_CHARS = 5;
+    private static final int RECORDS_PER_PAGE = 12;
     RecipeRepository recipeRepository;
     CategoryRepository categoryRepository;
     IngredientRepository ingredientRepository;
@@ -111,6 +114,7 @@ public class RecipeService {
             recipeResponseDTO.setDescription(recipe.getDescription());
             recipeResponseDTO.setImage(recipe.getImage());
             recipeResponseDTO.setInstructions(recipe.getInstructions());
+            recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
             recipeResponseDTOS.add(recipeResponseDTO);
         }
         return recipeResponseDTOS;
@@ -277,5 +281,12 @@ public class RecipeService {
         recipeResponseDTO.setIngredients(ingredientResponseDTOS);
 
         return recipeResponseDTO;
+    }
+
+    public List<RecipeResponseDTO> findAllByPageNumber(Integer pageNumber) {
+//        Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
+//        Pageable page = (Pageable) PageRequest.of(pageNumber, RECORDS_PER_PAGE);
+//        Page<Recipe> recipePage = this.recipeRepository.findAll(page);
+        return null;
     }
 }

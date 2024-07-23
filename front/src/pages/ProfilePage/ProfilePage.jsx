@@ -55,6 +55,7 @@ function ProfilePage() {
 
   return (
     <>
+    <div className="profile-page-content">
       <h1 className="profile-title">Profile info</h1>
       <div className="profile-info">
         <ProfileCard />
@@ -146,7 +147,9 @@ function ProfilePage() {
         </div>
       </div>
       <div className="footer-padding"></div>
+      </div>
     </>
+    
   );
 }
 
