@@ -17,7 +17,7 @@ export const updateDataAuth = async (id, data) => {
     const resp = await axios.patch(`${API_URL}/${id}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        'Cache-control': 'no-cache',
+        'Cache-Control': 'no-cache',
       },
     });
     return resp.data;
@@ -31,6 +31,7 @@ export const updateUserAuth = async (id, data) => {
     const resp = await axios.patch(`${API_URL}/users/${id}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Cache-Control': 'no-cache',
       },
     });
     return resp.data;
