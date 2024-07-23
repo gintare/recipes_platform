@@ -262,6 +262,8 @@ const RecipesForm = ({ recipe, setCreateRecipeIsVisible, setUpdateRecipeFormIsVi
                   value.toString().trim() !== '' || 'Recipe preparation time cannot be empty',
                 notZero: (value) =>
                   value.toString().trim() !== '0' || 'Recipe preparation time cannot be 0',
+                maxLength: (value) => 
+                  value.toString().length <= 5 || 'Recipe preparation time cannot be longer than 5 characters',
               },
             })}
           />
