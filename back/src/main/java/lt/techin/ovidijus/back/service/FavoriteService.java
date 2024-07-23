@@ -13,8 +13,7 @@ import lt.techin.ovidijus.back.repository.RecipeRepository;
 import lt.techin.ovidijus.back.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,5 +60,25 @@ public class FavoriteService {
         for(Favorite favorite: favorites){
             favoriteRepository.delete(favorite);
         }
+    }
+
+    public List<FavoriteResponseDTO> findFavoritesByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("No user found by id = "+userId));
+        List<Favorite> favorites = this.favoriteRepository.findByUser(user);
+
+        List<FavoriteResponseDTO> favoriteResponseDTOS = new ArrayList<>();
+        for(Favorite favorite: favorites){
+            FavoriteResponseDTO favoriteResponseDTO = new FavoriteResponseDTO();
+            favoriteResponseDTO.setId(favorite.getId());
+            favoriteResponseDTO.setUserId(favorite.getUser().getId());
+            favoriteResponseDTO.setRecipeId(favorite.getRecipe().getId());
+            favoriteResponseDTO.setCreatedAt(favorite.getCreatedAt());
+            favoriteResponseDTO.setRecipeImage(favorite.getRecipe().getImage());
+            favoriteResponseDTO.setRecipeName(favorite.getRecipe().getName());
+            favoriteResponseDTO.setRecipeTimeInMinutes(favorite.getRecipe().getTimeInMinutes());
+            favoriteResponseDTO.setRecipeAmountOfLikes((int)favorite.getRecipe().getLikes().stream().count());
+            favoriteResponseDTOS.add(favoriteResponseDTO);
+        }
+        return favoriteResponseDTOS;
     }
 }

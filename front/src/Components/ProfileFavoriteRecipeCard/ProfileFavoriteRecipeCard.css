@@ -1,0 +1,10 @@
+.favorites-card-content{
+    width: 16rem;
+}
+
+.favorites-card-content img {
+    width: 16rem;
+    height: 19rem;
+    object-fit: cover;
+    object-position: center;
+  }
