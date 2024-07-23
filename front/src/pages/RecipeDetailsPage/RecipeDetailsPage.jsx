@@ -88,7 +88,7 @@ function RecipeDetailsPage() {
     const getRecipe = async () => {
       try {
         const rec = await getOneRecipe(recipeId);
-        //console.log(rec);
+        // console.log(rec);
         //console.log(rec.ingredients);
         setRecipe(rec);
         const cat = await getOneCategory(rec.categoryId);

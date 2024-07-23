@@ -18,6 +18,7 @@ import java.util.*;
 @Service
 public class RecipeService {
 
+    private static final int TIME_IN_MINUTES_MAX_CHARS = 5;
     RecipeRepository recipeRepository;
     CategoryRepository categoryRepository;
     IngredientRepository ingredientRepository;
@@ -32,6 +33,7 @@ public class RecipeService {
     }
 
     public RecipeResponseDTO createRecipe(Long categoryId, Long userId, RecipeRequestDTO recipeRequestDTO) {
+        validateCharCount(recipeRequestDTO.getTimeInMinutes());
         if(recipeRequestDTO.getName().isEmpty()){
             throw new RequiredFieldIsEmptyException("Required name field is empty");
         }
@@ -113,6 +115,7 @@ public class RecipeService {
     }
 
     public RecipeResponseDTO updateRecipe(Long categoryId, Long recipeId, RecipeRequestDTO recipeRequestDTO) {
+        validateCharCount(recipeRequestDTO.getTimeInMinutes());
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("No category found by id = "+categoryId));
         Recipe recipe = this.recipeRepository.findById(recipeId).orElseThrow(() -> new RecipeNotFoundException("No recipe found with an id = "+recipeId));
         recipe.setName(recipeRequestDTO.getName());
@@ -157,6 +160,12 @@ public class RecipeService {
         recipeResponseDTO.setIngredients(ingredientResponseDTOSet);
 
         return recipeResponseDTO;
+    }
+
+    private void validateCharCount(int timeInMinutes) {
+        if(String.valueOf(timeInMinutes).length() > TIME_IN_MINUTES_MAX_CHARS){
+            throw new SymbolLimitException("Symbols limit out of range for timeInMinutes "+timeInMinutes+", should be "+TIME_IN_MINUTES_MAX_CHARS+" or less.");
+        }
     }
 
     public void deleteRecipe (Long recipeId){
