@@ -6,13 +6,15 @@ import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
 import './ProfilePage.css';
 import ProfileCard from '../../Components/ProfileCard/ProfileCard';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PulseLoader from 'react-spinners/PulseLoader';
+import { toast } from 'react-toastify';
 
 function ProfilePage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [createRecipeIsVisible, setCreateRecipeIsVisible] = useState(false);
+
   const { id } = useContext(UserContext);
   const { recipeId } = useParams();
   const {
@@ -26,11 +28,6 @@ function ProfilePage() {
     filteredRecipes,
   } = useContext(RecipesContext);
 
-  if (recipes.length === 0 && !sessionStorage.getItem('pageRefreshed')) {
-    sessionStorage.setItem('pageRefreshed', 'true');
-    window.location.reload();
-  }
-
   useEffect(() => {
     const fetchRecipes = async () => {
       setIsLoading(true);
@@ -39,7 +36,7 @@ function ProfilePage() {
         setRecipes(rec);
       } catch (error) {
         setError('Failed to fetch recipes.');
-        console.error('Error fetching recipes:', error);
+        toast.error('Error fetching recipes:', error);
       } finally {
         setIsLoading(false);
       }
@@ -100,13 +97,13 @@ function ProfilePage() {
             <div className='no-recipes'>No recipes found</div>
           ) : (
             filteredRecipes.map((recipe) => (
-                <div key={recipe.id} className='recipe-card'>
-                  <ProfileRecipeCard
-                    recipe={recipe}
-                    createRecipeIsVisible={createRecipeIsVisible}
-                    setCreateRecipeIsVisible={setCreateRecipeIsVisible}
-                  />
-                </div>
+              <div key={recipe.id} className='recipe-card'>
+                <ProfileRecipeCard
+                  recipe={recipe}
+                  createRecipeIsVisible={createRecipeIsVisible}
+                  setCreateRecipeIsVisible={setCreateRecipeIsVisible}
+                />
+              </div>
             ))
           )}
         </div>
