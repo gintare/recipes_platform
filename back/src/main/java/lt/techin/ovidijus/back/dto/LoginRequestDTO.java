@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
-public class LoginDTO {
+public class LoginRequestDTO {
 
     @NotEmpty(message = "Email can't be empty")
     @Email(message = "Email should be valid")

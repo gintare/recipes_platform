@@ -1,8 +1,8 @@
 package lt.techin.ovidijus.back.service;
 
-import lt.techin.ovidijus.back.dto.LoginDTO;
+import lt.techin.ovidijus.back.dto.LoginRequestDTO;
 import lt.techin.ovidijus.back.dto.UserResponseDTO;
-import lt.techin.ovidijus.back.dto.ResponseLoginDTO;
+import lt.techin.ovidijus.back.dto.LoginResponseDTO;
 import lt.techin.ovidijus.back.dto.UserRequestDTO;
 import lt.techin.ovidijus.back.exceptions.UserAlreadyExistsException;
 import lt.techin.ovidijus.back.exceptions.UserNotFoundException;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -60,12 +59,12 @@ public class UserService {
         return new UserResponseDTO(user.getId(), "User registered successfully!");
     }
 
-    public ResponseLoginDTO loginUser(LoginDTO loginDTO) {
-        ResponseLoginDTO response = new ResponseLoginDTO();
-        Optional<User> optionalUser = userRepository.findByEmail(loginDTO.getEmail());
+    public LoginResponseDTO loginUser(LoginRequestDTO loginRequestDTO) {
+        LoginResponseDTO response = new LoginResponseDTO();
+        Optional<User> optionalUser = userRepository.findByEmail(loginRequestDTO.getEmail());
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            if (passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+            if (passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
                 response.setToken(jwtService.generateToken(user));
                 response.setMessage("Login success");
                 return response;
@@ -88,8 +87,11 @@ public class UserService {
             throw new AccessDeniedException("Current user does not have permission to update this user");
         }
 
+        boolean tokenShouldBeRegenerated = false;
+
         if (userRequestDTO.getImage() != null) {
             existingUser.setImage(userRequestDTO.getImage());
+            tokenShouldBeRegenerated = true;
         }
 
         if (userRequestDTO.getUserName() != null) {
@@ -98,6 +100,7 @@ public class UserService {
                 return new UserResponseDTO("This username already exists!");
             }
             existingUser.setUserName(userRequestDTO.getUserName());
+            tokenShouldBeRegenerated = true;
         }
 
         if (userRequestDTO.getEmail() != null) {
@@ -107,10 +110,24 @@ public class UserService {
             }
             validateEmail(userRequestDTO.getEmail());
             existingUser.setEmail(userRequestDTO.getEmail());
+            tokenShouldBeRegenerated = true;
         }
+
         userRepository.save(existingUser);
-        return new UserResponseDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getEmail(), String.format("User with id %d was updated", existingUser.getId()));
+
+        String newToken = null;
+        if (tokenShouldBeRegenerated) {
+            newToken = jwtService.generateToken(existingUser);
+        }
+
+        UserResponseDTO response = new UserResponseDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getEmail(), newToken, String.format("User with id %d was updated", existingUser.getId()));
+        if (newToken != null) {
+            response.setToken(newToken);
+        }
+
+        return response;
     }
+
 
     public UserResponseDTO deleteAccount(Long id) throws AccessDeniedException {
         User existingUser = userRepository.findById(id)
