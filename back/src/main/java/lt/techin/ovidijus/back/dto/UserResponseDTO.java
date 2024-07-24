@@ -14,10 +14,7 @@ public class UserResponseDTO {
     private Long userId;
     private String userName;
     private String email;
-<<<<<<< HEAD
     private String token;
-=======
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
     private String message;
 
     public UserResponseDTO(String message) {
@@ -34,7 +31,6 @@ public class UserResponseDTO {
         this.userName = userName;
         this.email = email;
     }
-<<<<<<< HEAD
 
     public UserResponseDTO(Long userId, String userName, String email, String message) {
         this.userId = userId;
@@ -42,6 +38,5 @@ public class UserResponseDTO {
         this.email = email;
         this.message = message;
     }
-=======
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
+
 }

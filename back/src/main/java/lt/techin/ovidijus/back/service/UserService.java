@@ -1,14 +1,9 @@
 package lt.techin.ovidijus.back.service;
 
-<<<<<<< HEAD
+import jakarta.servlet.http.HttpServletRequest;
 import lt.techin.ovidijus.back.dto.LoginRequestDTO;
 import lt.techin.ovidijus.back.dto.UserResponseDTO;
 import lt.techin.ovidijus.back.dto.LoginResponseDTO;
-=======
-import lt.techin.ovidijus.back.dto.LoginDTO;
-import lt.techin.ovidijus.back.dto.UserResponseDTO;
-import lt.techin.ovidijus.back.dto.ResponseLoginDTO;
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
 import lt.techin.ovidijus.back.dto.UserRequestDTO;
 import lt.techin.ovidijus.back.exceptions.UserAlreadyExistsException;
 import lt.techin.ovidijus.back.exceptions.UserNotFoundException;
@@ -23,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -96,16 +90,11 @@ public class UserService {
             throw new AccessDeniedException("Current user does not have permission to update this user");
         }
 
-<<<<<<< HEAD
         boolean tokenShouldBeRegenerated = false;
 
         if (userRequestDTO.getImage() != null) {
             existingUser.setImage(userRequestDTO.getImage());
             tokenShouldBeRegenerated = true;
-=======
-        if (userRequestDTO.getImage() != null) {
-            existingUser.setImage(userRequestDTO.getImage());
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
         }
 
         if (userRequestDTO.getUserName() != null) {
@@ -114,10 +103,7 @@ public class UserService {
                 return new UserResponseDTO("This username already exists!");
             }
             existingUser.setUserName(userRequestDTO.getUserName());
-<<<<<<< HEAD
             tokenShouldBeRegenerated = true;
-=======
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
         }
 
         if (userRequestDTO.getEmail() != null) {
@@ -127,7 +113,6 @@ public class UserService {
             }
             validateEmail(userRequestDTO.getEmail());
             existingUser.setEmail(userRequestDTO.getEmail());
-<<<<<<< HEAD
             tokenShouldBeRegenerated = true;
         }
 
@@ -147,13 +132,6 @@ public class UserService {
     }
 
 
-=======
-        }
-        userRepository.save(existingUser);
-        return new UserResponseDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getEmail(), String.format("User with id %d was updated", existingUser.getId()));
-    }
-
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
     public UserResponseDTO deleteAccount(Long id) throws AccessDeniedException {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
@@ -165,6 +143,8 @@ public class UserService {
         } else {
             userRepository.deleteById(id);
         }
+        clearToken();
+
         return new UserResponseDTO(existingUser.getId(), String.format("User with id %d, was deleted", existingUser.getId()));
     }
 
@@ -237,5 +217,17 @@ public class UserService {
             throw new IllegalArgumentException("Username cannot start or end with a space");
         }
     }
-}
 
+    public String getCurrentToken() {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
+        } else {
+            throw new IllegalArgumentException("No JWT token found in the request headers");
+        }
+    }
+
+    public void clearToken() {
+        SecurityContextHolder.clearContext();
+    }
+}

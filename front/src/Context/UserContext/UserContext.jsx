@@ -56,10 +56,7 @@ export const UserProvider = ({ children }) => {
         email,
         image,
         token,
-<<<<<<< HEAD
         updateUserAuthContext,
-=======
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
       }}
     >
       {children}

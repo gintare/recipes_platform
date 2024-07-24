@@ -17,11 +17,7 @@ export const updateDataAuth = async (id, data) => {
     const resp = await axios.patch(`${API_URL}/${id}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
-<<<<<<< HEAD
         'Cache-Control': 'no-cache',
-=======
-        'Cache-control': 'no-cache',
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
       },
     });
     return resp.data;
@@ -58,11 +54,7 @@ export const updateCategoryAuth = async (id, data) => {
 };
 
 export const updateRecipe = async (categoryId, recipeId, data) => {
-<<<<<<< HEAD
   try {
-=======
-  try {    
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
     const resp = await axios.put(
       `${API_URL}/api/categories/${categoryId}/recipes/${recipeId}`,
       data,

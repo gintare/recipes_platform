@@ -111,18 +111,7 @@ export const getOneCategory = async (categoryId) => {
   }
 };
 
-export const getIsFollower = async (whoUserId, whatUserId) => {
-  try {
-    const resp = await axios.get(`${API_URL}/api/follower/${whoUserId}/${whatUserId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return resp.data;
-  } catch (error) {
-    throw new Error(`Error fetching all recipes: ${error.message}`);
-  }
-};
+
 
 export const getIsFavorite = async (userId, recipeId) => {
   try {
@@ -150,18 +139,6 @@ export const getCommentsByRecipe = async (recipeId) => {
   }
 };
 
-export const getOneCategory = async (categoryId) => {
-  try {
-    const resp = await axios.get(`${API_URL}/api/categories/${categoryId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return resp.data;
-  } catch (error) {
-    throw new Error(`Error fetching all recipes: ${error.message}`);
-  }
-};
 
 export const getIsFollower = async (whoUserId, whatUserId) => {
   try {
@@ -176,28 +153,3 @@ export const getIsFollower = async (whoUserId, whatUserId) => {
   }
 };
 
-export const getIsFavorite = async (userId, recipeId) => {
-  try {
-    const resp = await axios.get(`${API_URL}/api/users/${userId}/recipes/${recipeId}/favorites`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return resp.data;
-  } catch (error) {
-    throw new Error(`Error fetching all recipes: ${error.message}`);
-  }
-};
-
-export const getCommentsByRecipe = async (recipeId) => {
-  try {
-    const resp = await axios.get(`${API_URL}/api/recipes/${recipeId}/comments`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return resp.data;
-  } catch (error) {
-    throw new Error(`Error fetching all recipes: ${error.message}`);
-  }
-};

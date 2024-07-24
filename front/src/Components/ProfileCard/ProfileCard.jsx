@@ -15,7 +15,6 @@ const ProfileCard = () => {
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState('');
 
-<<<<<<< HEAD
   const {
     userName,
     email,
@@ -27,10 +26,6 @@ const ProfileCard = () => {
     token,
     updateUserAuthContext,
   } = useContext(UserContext);
-=======
-  const { userName, email, image, role, id, logoutHandler, updateUser, token } =
-    useContext(UserContext);
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
 
   const [editUsername, setEditUsername] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
@@ -48,10 +43,6 @@ const ProfileCard = () => {
   const fetchUser = async (id) => {
     try {
       const data = await getOneUser(id);
-<<<<<<< HEAD
-=======
-      console.log('data ===', data);
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
       setUser(data);
     } catch (error) {
       toast.error('Error fetching user details');
@@ -60,13 +51,6 @@ const ProfileCard = () => {
     }
   };
 
-<<<<<<< HEAD
-=======
-  // useEffect(() => {
-  //   fetchUser(id);
-  // }, [id]);
-
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
   useEffect(() => {
     fetchUser(id);
     if (user) {
@@ -74,11 +58,7 @@ const ProfileCard = () => {
       setValue('image', user.image);
       setValue('email', user.email);
     }
-<<<<<<< HEAD
   }, [id, setValue, token]);
-=======
-  }, [id, setValue]);
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
 
   useEffect(() => {
     const fetchUsernames = async () => {
@@ -132,7 +112,6 @@ const ProfileCard = () => {
     }
     try {
       if (role === 'ADMIN' || userId === id) {
-<<<<<<< HEAD
         const response = await updateUserAuth(userId, { userName: data.userName });
         updateUser();
         setEditUsername(false);
@@ -140,11 +119,6 @@ const ProfileCard = () => {
           updateUserAuthContext(response.token);
         }
         setUser((prevUser) => ({ ...prevUser, userName: data.userName }));
-=======
-        await updateUserAuth(userId, { userName: data.userName });
-        updateUser();
-        setEditUsername(false);
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
         toast.success('Username updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -161,7 +135,6 @@ const ProfileCard = () => {
     }
     try {
       if (role === 'ADMIN' || userId === id) {
-<<<<<<< HEAD
         const response = await updateUserAuth(userId, { email: data.email });
         updateUser();
         setEditEmail(false);
@@ -169,11 +142,6 @@ const ProfileCard = () => {
           updateUserAuthContext(response.token);
         }
         setUser((prevUser) => ({ ...prevUser, email: data.email }));
-=======
-        await updateUserAuth(userId, { email: data.email });
-        updateUser();
-        setEditEmail(false);
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
         toast.success('Email updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -186,7 +154,6 @@ const ProfileCard = () => {
   const handleImageChange = async (data) => {
     try {
       if (role === 'ADMIN' || userId === id) {
-<<<<<<< HEAD
         const response = await updateUserAuth(userId, { image: data.image });
         updateUser();
         setEditImage(false);
@@ -194,11 +161,6 @@ const ProfileCard = () => {
           updateUserAuthContext(response.token);
         }
         setUser((prevUser) => ({ ...prevUser, image: data.image }));
-=======
-        await updateUserAuth(userId, { image: data.image });
-        updateUser();
-        setEditImage(false);
->>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
         toast.success('Image updated successfully!');
       } else {
         toast.error('Unauthorized action');
