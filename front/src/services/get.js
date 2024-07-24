@@ -153,3 +153,24 @@ export const getIsFollower = async (whoUserId, whatUserId) => {
   }
 };
 
+export const getAllRecipesByPage = async (pageNo) => {
+  try {
+    const resp = await axios.get(`${API_URL}/api/recipes/pages/${pageNo}`);
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error fetching all recipes: ${error.message}`);
+  }
+};
+
+export const getFavoritesByUser = async (userId) => {
+  try {
+    const resp = await axios.get(`${API_URL}/api/users/${userId}/favorites`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error fetching all recipes: ${error.message}`);
+  }
+};

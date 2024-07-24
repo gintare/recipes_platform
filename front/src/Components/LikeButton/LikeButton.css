@@ -1,0 +1,10 @@
+.like-button-container {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+  }
+  
+  .like-button {
+    margin-right: 1rem; 
+    
+}
