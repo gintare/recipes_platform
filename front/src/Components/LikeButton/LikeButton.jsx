@@ -11,9 +11,9 @@ const LikeButton = ({ recipeId, userId }) => {
   
   useEffect(() => {
     const fetchLikes = async () => {
-      //console.log('Fetching likes');
-      //console.log('User ID:', userId);
-      //console.log('Is Logged In:', isLoggedIn);
+      console.log('Fetching likes');
+      console.log('User ID:', userId);
+      console.log('Is Logged In:', isLoggedIn);
 
       try {
         if (!recipeId) {
