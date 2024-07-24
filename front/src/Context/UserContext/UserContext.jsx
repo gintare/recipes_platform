@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import {
   getUserEmailFromToken,
   getUserIdFromToken,
@@ -7,6 +7,7 @@ import {
   getUserRoleFromToken,
 } from '../../utils/jwt';
 import { useNavigate } from 'react-router-dom';
+import { getOneUser, getUserNames } from '../../services/get';
 
 const UserContext = createContext();
 
@@ -41,6 +42,16 @@ export const UserProvider = ({ children }) => {
     localStorage.setItem('token', newToken);
     updateUser();
   };
+
+  useEffect(() => {
+    const isUserPresent = async () => {
+      const userNames = await getUserNames();
+      if (!userNames.includes(userName) || !isLoggedIn) {
+        logoutHandler();
+      }
+    };
+    isUserPresent();
+  }, [userName, isLoggedIn]);
 
   return (
     <UserContext.Provider

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../Context/UserContext/UserContext';
-import { getRecipesByUserId } from '../../services/get';
+import { getOneUser, getRecipesByUserId } from '../../services/get';
 import ProfileRecipeCard from '../../Components/ProfileRecipeCard/ProfileRecipeCard';
 import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
@@ -15,7 +15,7 @@ function ProfilePage() {
   const [createRecipeIsVisible, setCreateRecipeIsVisible] = useState(false);
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [myRecipesIsVisible, setMyRecipesIsVisible] = useState(true);
-  const { id } = useContext(UserContext);
+  const { id, setUser } = useContext(UserContext);
   const { recipeId } = useParams();
   const {
     recipes,
@@ -28,10 +28,24 @@ function ProfilePage() {
     filteredRecipes,
   } = useContext(RecipesContext);
 
-  if (recipes.length === 0 && !sessionStorage.getItem("pageRefreshed")) {
-    sessionStorage.setItem("pageRefreshed", "true");
+  if (recipes.length === 0 && !sessionStorage.getItem('pageRefreshed')) {
+    sessionStorage.setItem('pageRefreshed', 'true');
     window.location.reload();
   }
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getOneUser(id);
+        setUser(user);
+      } catch (error) {
+        setError('Failed to fetch user info.');
+        console.error('Error fetching user info:', error);
+      }
+    };
+
+    fetchUser();
+  }, [id, setUser]);
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -39,11 +53,11 @@ function ProfilePage() {
       try {
         const rec = await getRecipesByUserId(id);
         setRecipes(rec);
-        const fav = await getFavoritesByUser(id);
+        const fav = await getFavoritesByUses(id);
         setFavoriteRecipes(fav);
       } catch (error) {
-        setError("Failed to fetch recipes.");
-        console.error("Error fetching recipes:", error);
+        setError('Failed to fetch recipes.');
+        console.error('Error fetching recipes:', error);
       } finally {
         setIsLoading(false);
       }
@@ -54,14 +68,14 @@ function ProfilePage() {
 
   return (
     <>
-      <h1 className="profile-title">Profile info</h1>
-      <div className="profile-info">
+      <h1 className='profile-title'>Profile info</h1>
+      <div className='profile-info'>
         <ProfileCard />
       </div>
-      <div className="buttons-content">
+      <div className='buttons-content'>
         <button
-          type="button"
-          className="btn btn-primary"
+          type='button'
+          className='btn btn-primary'
           onClick={() => {
             setCreateRecipeIsVisible(!createRecipeIsVisible);
             setUpdateRecipeFormIsVisible(false);
@@ -70,8 +84,8 @@ function ProfilePage() {
           Create New Recipe
         </button>
         <button
-          type="button"
-          className="btn btn-primary"
+          type='button'
+          className='btn btn-primary'
           onClick={() => {
             setCreateRecipeIsVisible(false);
             setUpdateRecipeFormIsVisible(false);
@@ -82,8 +96,8 @@ function ProfilePage() {
           My recipes
         </button>
         <button
-          type="button"
-          className="btn btn-primary"
+          type='button'
+          className='btn btn-primary'
           onClick={() => {
             setCreateRecipeIsVisible(false);
             setUpdateRecipeFormIsVisible(false);
@@ -96,10 +110,7 @@ function ProfilePage() {
       </div>
 
       {createRecipeIsVisible && (
-        <RecipesForm
-          setUpdate={setUpdate}
-          setCreateRecipeIsVisible={setCreateRecipeIsVisible}
-        />
+        <RecipesForm setUpdate={setUpdate} setCreateRecipeIsVisible={setCreateRecipeIsVisible} />
       )}
       {updateRecipeFormIsVisible && (
         <RecipesForm
@@ -120,18 +131,18 @@ function ProfilePage() {
             <div className='no-recipes'>No recipes found</div>
           ) : (
             filteredRecipes.map((recipe) => (
-                <div key={recipe.id} className='recipe-card'>
-                  <ProfileRecipeCard
-                    recipe={recipe}
-                    createRecipeIsVisible={createRecipeIsVisible}
-                    setCreateRecipeIsVisible={setCreateRecipeIsVisible}
-                  />
-                </div>
+              <div key={recipe.id} className='recipe-card'>
+                <ProfileRecipeCard
+                  recipe={recipe}
+                  createRecipeIsVisible={createRecipeIsVisible}
+                  setCreateRecipeIsVisible={setCreateRecipeIsVisible}
+                />
+              </div>
             ))
           )}
         </div>
       </div>
-      <div className="footer-padding"></div>
+      <div className='footer-padding'></div>
     </>
   );
 }

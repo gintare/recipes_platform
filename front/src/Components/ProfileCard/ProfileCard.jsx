@@ -11,8 +11,8 @@ import { getOneUser, getUserEmails, getUserNames } from '../../services/get';
 
 const ProfileCard = () => {
   const [show, setShow] = useState(false);
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState(null);
   const [userId, setUserId] = useState('');
 
   const {
@@ -25,6 +25,8 @@ const ProfileCard = () => {
     updateUser,
     token,
     updateUserAuthContext,
+    user,
+    setUser,
   } = useContext(UserContext);
 
   const [editUsername, setEditUsername] = useState(false);
@@ -39,6 +41,20 @@ const ProfileCard = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getOneUser(id);
+        setUser(user);
+      } catch (error) {
+        setError('Failed to fetch user info.');
+        console.error('Error fetching user info:', error);
+      }
+    };
+
+    fetchUser();
+  }, [id, setUser]);
 
   const fetchUser = async (id) => {
     try {
