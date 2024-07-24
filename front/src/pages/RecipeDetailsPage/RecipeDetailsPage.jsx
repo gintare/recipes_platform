@@ -121,6 +121,7 @@ function RecipeDetailsPage() {
       {/* <h1>Hello Recipe = {recipeId}</h1> */}
       <div className="container-lg">container</div>
       <div className="container">
+      {isLoggedIn && 
         <div className="row">
           <div className="col-sm-2">Like Likes button</div>
           <div className="col-sm-2">
@@ -140,6 +141,7 @@ function RecipeDetailsPage() {
             </button>
           </div>
         </div>
+         }
         <div className="row">
           <div className="col-md-2 image-content">
             <img src={recipe.image} alt="recipe_photo" />
