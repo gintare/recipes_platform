@@ -23,7 +23,6 @@ const ProfileCard = () => {
     id,
     logoutHandler,
     updateUser,
-    token,
     updateUserAuthContext,
     user,
     setUser,
@@ -43,40 +42,26 @@ const ProfileCard = () => {
   } = useForm();
 
   useEffect(() => {
+    if (!sessionStorage.getItem('pageVisited')) {
+      sessionStorage.setItem('pageVisited', 'true');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+
     const fetchUser = async () => {
       try {
-        const user = await getOneUser(id);
-        setUser(user);
+        const data = await getOneUser(id);
+        setUser(data);
       } catch (error) {
-        setError('Failed to fetch user info.');
-        console.error('Error fetching user info:', error);
+        toast.error('Error fetching user details');
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchUser();
-  }, [id, setUser]);
 
-  const fetchUser = async (id) => {
-    try {
-      const data = await getOneUser(id);
-      setUser(data);
-    } catch (error) {
-      toast.error('Error fetching user details');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser(id);
-    if (user) {
-      setValue('userName', user.userName);
-      setValue('image', user.image);
-      setValue('email', user.email);
-    }
-  }, [id, setValue, token]);
-
-  useEffect(() => {
     const fetchUsernames = async () => {
       try {
         const usernames = await getUserNames();
@@ -85,7 +70,6 @@ const ProfileCard = () => {
         console.error('Error fetching usernames:', error);
       }
     };
-    fetchUsernames();
 
     const fetchEmails = async () => {
       try {
@@ -95,8 +79,21 @@ const ProfileCard = () => {
         console.error('Error fetching emails:', error);
       }
     };
+
+    fetchUsernames();
     fetchEmails();
-  }, []);
+    if (sessionStorage.getItem('pageRefreshed')) {
+      sessionStorage.setItem('pageRefreshed', 'true');
+    }
+  }, [id, setUser]);
+
+  useEffect(() => {
+    if (user) {
+      setValue('userName', user.userName);
+      setValue('image', user.image);
+      setValue('email', user.email);
+    }
+  }, [user, setValue]);
 
   const handleShow = (user_id) => {
     setUserId(user_id);
@@ -130,17 +127,23 @@ const ProfileCard = () => {
       if (role === 'ADMIN' || userId === id) {
         const response = await updateUserAuth(userId, { userName: data.userName });
         updateUser();
-        setEditUsername(false);
         if (response.token) {
           updateUserAuthContext(response.token);
         }
         setUser((prevUser) => ({ ...prevUser, userName: data.userName }));
+        const usernames = await getUserNames();
+        setExistingUsernames(usernames);
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
         toast.success('Username updated successfully!');
       } else {
         toast.error('Unauthorized action');
       }
     } catch (error) {
       toast.error(`Error updating username: ${error.message}`);
+    } finally {
+      setEditUsername(false);
     }
   };
 
@@ -153,7 +156,6 @@ const ProfileCard = () => {
       if (role === 'ADMIN' || userId === id) {
         const response = await updateUserAuth(userId, { email: data.email });
         updateUser();
-        setEditEmail(false);
         if (response.token) {
           updateUserAuthContext(response.token);
         }
@@ -164,6 +166,8 @@ const ProfileCard = () => {
       }
     } catch (error) {
       toast.error(`Error updating email: ${error.message}`);
+    } finally {
+      setEditEmail(false);
     }
   };
 
@@ -172,7 +176,6 @@ const ProfileCard = () => {
       if (role === 'ADMIN' || userId === id) {
         const response = await updateUserAuth(userId, { image: data.image });
         updateUser();
-        setEditImage(false);
         if (response.token) {
           updateUserAuthContext(response.token);
         }
@@ -183,6 +186,8 @@ const ProfileCard = () => {
       }
     } catch (error) {
       toast.error(`Error updating image: ${error.message}`);
+    } finally {
+      setEditImage(false);
     }
   };
 

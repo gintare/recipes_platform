@@ -51,13 +51,29 @@ public class UserController {
         return ResponseEntity.ok(loggedUser);
     }
 
+//    @PatchMapping("/users/{id}")
+//    public ResponseEntity<UserResponseDTO> updateAccount(@PathVariable long id, @RequestBody UserRequestDTO userRequestDTO) {
+//        try {
+//            UserResponseDTO updatedAccount = userService.updateAccount(id, userRequestDTO);
+//            if (updatedAccount == null) {
+//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//            }
+//            return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
+//        } catch (UserNotFoundException e) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } catch (AccessDeniedException e) {
+//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+//        } catch (IllegalArgumentException e) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
     @PatchMapping("/users/{id}")
     public ResponseEntity<UserResponseDTO> updateAccount(@PathVariable long id, @RequestBody UserRequestDTO userRequestDTO) {
         try {
             UserResponseDTO updatedAccount = userService.updateAccount(id, userRequestDTO);
-            if (updatedAccount == null) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
             return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
         } catch (UserNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
