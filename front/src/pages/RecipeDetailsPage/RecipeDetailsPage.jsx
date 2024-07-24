@@ -118,34 +118,27 @@ function RecipeDetailsPage() {
 
   return (
     <>
-      <div className="container-lg"></div>
+      {/* <h1>Hello Recipe = {recipeId}</h1> */}
+      <div className="container-lg">container</div>
       <div className="container">
-        <div className="favorites-row-content row">
-          {isLoggedIn && (
-            <>
-              <div className="col-sm-2">Like Likes button</div>
-              <div className="col-sm-2">
-                {favorite ? (
-                  <HeartFill
-                    color="red"
-                    size="36"
-                    onClick={clickFavoriteHandler}
-                  />
-                ) : (
-                  <Heart color="red" size="36" onClick={clickFavoriteHandler} />
-                )}
-              </div>
-              <div className="col">
-                Author : {recipeCreatorUserName}
-                <button
-                  className={follow ? "follow_button_active" : "follow_button"}
-                  onClick={followUser}
-                >
-                  {follow ? "You are following author" : "Follow author"}
-                </button>
-              </div>
-            </>
-          )}
+        <div className="row">
+          <div className="col-sm-2">Like Likes button</div>
+          <div className="col-sm-2">
+            {favorite ? (
+              <HeartFill color="red" size="36" onClick={clickFavoriteHandler} />
+            ) : (
+              <Heart color="red" size="36" onClick={clickFavoriteHandler} />
+            )}
+          </div>
+          <div className="col">
+            Author : {recipeCreatorUserName}
+            <button
+              className={follow ? "follow_button_active" : "follow_button"}
+              onClick={followUser}
+            >
+              {follow ? "You are following author" : "Follow author"}
+            </button>
+          </div>
         </div>
         <div className="row">
           <div className="col-md-2 image-content">

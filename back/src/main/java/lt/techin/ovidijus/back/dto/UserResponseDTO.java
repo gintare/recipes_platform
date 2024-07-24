@@ -14,6 +14,7 @@ public class UserResponseDTO {
     private Long userId;
     private String userName;
     private String email;
+    private String token;
     private String message;
 
     public UserResponseDTO(String message) {
@@ -30,4 +31,12 @@ public class UserResponseDTO {
         this.userName = userName;
         this.email = email;
     }
+
+    public UserResponseDTO(Long userId, String userName, String email, String message) {
+        this.userId = userId;
+        this.userName = userName;
+        this.email = email;
+        this.message = message;
+    }
+
 }
