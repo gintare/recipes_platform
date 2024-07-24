@@ -1,7 +1,7 @@
 import RecipeCarusele from '../../Components/RecipeCarousel/RecipeCarousel';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getAllRecipes } from '../../services/get';
+import { getAllRecipes, getAllRecipesByPage } from '../../services/get';
 import RecipeCard from '../../Components/RecipeCard/RecipeCard';
 import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import { Button } from 'react-bootstrap';
@@ -25,7 +25,7 @@ const RecipesPage = () => {
   const [pages, setPages] = useState(0);
   const RECORDS_PER_PAGE = 12;
   const { isLoggedIn } = useContext(UserContext);
-  const { update, filteredRecipes, setRecipes } = useContext(RecipesContext);
+  const { update, filteredRecipes, setFilteredRecipes, setRecipes } = useContext(RecipesContext);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -39,8 +39,11 @@ const RecipesPage = () => {
     }
   };
 
-  const showMore = () => {
+  const showMore = async () => {
     setPages((prev) => prev + 1);
+    const rec = await getAllRecipesByPage(pages);
+    console.log(rec);
+    setFilteredRecipes(rec);
     console.log("show more "+pages);
   }
 
