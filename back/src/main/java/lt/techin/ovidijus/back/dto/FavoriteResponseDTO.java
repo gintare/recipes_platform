@@ -14,4 +14,5 @@ public class FavoriteResponseDTO {
     private String recipeName;
     private Integer recipeTimeInMinutes;
     private int recipeAmountOfLikes;
+
 }

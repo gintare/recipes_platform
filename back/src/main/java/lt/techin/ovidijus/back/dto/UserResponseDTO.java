@@ -38,4 +38,5 @@ public class UserResponseDTO {
         this.email = email;
         this.message = message;
     }
+
 }

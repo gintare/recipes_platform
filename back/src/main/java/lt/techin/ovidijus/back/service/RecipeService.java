@@ -106,7 +106,7 @@ public class RecipeService {
         for(Recipe recipe : recipes){
             RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
             recipeResponseDTO.setId(recipe.getId());
-           // recipeResponseDTO.setUserId(recipe.getUser().getId());
+            // recipeResponseDTO.setUserId(recipe.getUser().getId());
             recipeResponseDTO.setName(recipe.getName());
             recipeResponseDTO.setDescription(recipe.getDescription());
             recipeResponseDTO.setImage(recipe.getImage());

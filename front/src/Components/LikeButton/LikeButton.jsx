@@ -1,21 +1,30 @@
-import React, { useContext, useState } from 'react';
-import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
-import UserContext from '../../Context/UserContext/UserContext';
+// LikeButton.jsx
+import { useState, useEffect, useContext } from 'react';
+import { addLike, removeLike, checkUserLiked, getRecipeLikes } from '../../services/Likes';
 import { Button } from 'react-bootstrap';
+import UserContext from '../../Context/UserContext/UserContext';
 
 const LikeButton = ({ recipeId, userId }) => {
+  const { isLoggedIn } = useContext(UserContext);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
-  const{isLoggedIn}=useContext(UserContext);
+  
   useEffect(() => {
     const fetchLikes = async () => {
+      console.log('Fetching likes');
+      console.log('User ID:', userId);
+      console.log('Is Logged In:', isLoggedIn);
+
       try {
-        // Get the total count of likes for the recipe
+        if (!recipeId) {
+          console.error('No recipe ID provided');
+          return;
+        }
+
         const likes = await getRecipeLikes(recipeId);
         setLikeCount(likes);
 
         if (isLoggedIn && userId) {
-          // Check if the user has liked the recipe
           const userLiked = await checkUserLiked(recipeId, userId);
           setLiked(userLiked);
         }
@@ -28,25 +37,35 @@ const LikeButton = ({ recipeId, userId }) => {
   }, [recipeId, userId, isLoggedIn]);
 
   const handleLikeClick = async () => {
-  try {
-    if (liked) {
-      await removeLike(recipeId, userId);
-      setLiked(false);
-      setLikeCount(prevCount => prevCount - 1);
-    } else {
-      setLikedRecipes([...likedRecipes, recipeId]);
-      setLikedCounts({ ...likedCounts, [recipeId]: (likedCounts[recipeId] || 0) + 1 });
+    if (!userId) {
+      console.error('User ID is not provided');
+      return;
     }
-    setIsLiked(!isLiked);
+
+    try {
+      if (liked) {
+        await removeLike(recipeId, userId);
+        setLiked(false);
+        setLikeCount(prevCount => prevCount - 1);
+      } else {
+        await addLike(recipeId, userId);
+        setLiked(true);
+        setLikeCount(prevCount => prevCount + 1);
+      }
+    } catch (error) {
+      console.error('Failed to update like status', error);
+    }
   };
 
   return (
-    <>
-      <Button variant={isLiked ? "danger" : "success"} onClick={handleLike} disabled={!isLoggedIn}>
-        {isLiked ? "Unlike" : "Like"}
-      </Button>
-      <span> ({likedCounts[recipeId] || 0})</span>
-    </>
+    <div>
+      {isLoggedIn && (
+        <Button onClick={handleLikeClick} variant={liked ? 'primary' : 'outline-primary'}>
+          {liked ? 'Unlike' : 'Like'}
+        </Button>
+      )}
+      <span>{likeCount} Likes</span>
+    </div>
   );
 };
 

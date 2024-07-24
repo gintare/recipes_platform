@@ -13,7 +13,12 @@ import lt.techin.ovidijus.back.repository.RecipeRepository;
 import lt.techin.ovidijus.back.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+
 import java.util.ArrayList;
+
+import java.time.LocalDateTime;
+import java.util.Calendar;
+
 import java.util.Date;
 import java.util.List;
 
@@ -62,6 +67,7 @@ public class FavoriteService {
         }
     }
 
+
     public List<FavoriteResponseDTO> findFavoritesByUserId(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("No user found by id = "+userId));
         List<Favorite> favorites = this.favoriteRepository.findByUser(user);
@@ -81,4 +87,5 @@ public class FavoriteService {
         }
         return favoriteResponseDTOS;
     }
+
 }

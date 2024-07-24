@@ -13,11 +13,7 @@ const ProfileCard = () => {
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const [existingUsernames, setExistingUsernames] = useState([]);
-  const [existingEmails, setExistingEmails] = useState([]);
-  const [editUsername, setEditUsername] = useState(false);
-  const [editEmail, setEditEmail] = useState(false);
-  const [editImage, setEditImage] = useState(false);
+  const [userId, setUserId] = useState('');
 
   const {
     userName,
@@ -31,6 +27,12 @@ const ProfileCard = () => {
     updateUserAuthContext,
   } = useContext(UserContext);
 
+  const [editUsername, setEditUsername] = useState(false);
+  const [editEmail, setEditEmail] = useState(false);
+  const [existingUsernames, setExistingUsernames] = useState([]);
+  const [existingEmails, setExistingEmails] = useState([]);
+  const [editImage, setEditImage] = useState(false);
+
   const {
     register,
     setValue,
@@ -38,30 +40,25 @@ const ProfileCard = () => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    const fetchUser = async (id) => {
-      try {
-        const data = await getOneUser(id);
-        setUser(data);
-      } catch (error) {
-        toast.error('Error fetching user details');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchUser(id);
+  const fetchUser = async (id) => {
+    try {
+      const data = await getOneUser(id);
+      setUser(data);
+    } catch (error) {
+      toast.error('Error fetching user details');
+    } finally {
+      setIsLoading(false);
     }
-  }, [id]);
+  };
 
   useEffect(() => {
+    fetchUser(id);
     if (user) {
       setValue('userName', user.userName);
       setValue('image', user.image);
       setValue('email', user.email);
     }
-  }, [user, setValue]);
+  }, [id, setValue, token]);
 
   useEffect(() => {
     const fetchUsernames = async () => {
@@ -85,7 +82,8 @@ const ProfileCard = () => {
     fetchEmails();
   }, []);
 
-  const handleShow = () => {
+  const handleShow = (user_id) => {
+    setUserId(user_id);
     setShow(true);
   };
 
@@ -94,8 +92,8 @@ const ProfileCard = () => {
   const handleDelete = async () => {
     try {
       setShow(false);
-      if (role === 'ADMIN' || id === user.id) {
-        await deleteAccount(id);
+      if (role === 'ADMIN' || userId === id) {
+        await deleteAccount(userId);
         logoutHandler();
         toast.success('User deleted successfully');
       } else {
@@ -113,13 +111,12 @@ const ProfileCard = () => {
       return;
     }
     try {
-      if (role === 'ADMIN' || id === user.id) {
-        const response = await updateUserAuth(id, { userName: data.userName });
+      if (role === 'ADMIN' || userId === id) {
+        const response = await updateUserAuth(userId, { userName: data.userName });
         updateUser();
         setEditUsername(false);
         if (response.token) {
-          updateUserAuthContext(response.token);          
-          // window.location.reload();
+          updateUserAuthContext(response.token);
         }
         setUser((prevUser) => ({ ...prevUser, userName: data.userName }));
         toast.success('Username updated successfully!');
@@ -137,8 +134,8 @@ const ProfileCard = () => {
       return;
     }
     try {
-      if (role === 'ADMIN' || id === user.id) {
-        const response = await updateUserAuth(id, { email: data.email });
+      if (role === 'ADMIN' || userId === id) {
+        const response = await updateUserAuth(userId, { email: data.email });
         updateUser();
         setEditEmail(false);
         if (response.token) {
@@ -156,8 +153,8 @@ const ProfileCard = () => {
 
   const handleImageChange = async (data) => {
     try {
-      if (role === 'ADMIN' || id === user.id) {
-        const response = await updateUserAuth(id, { image: data.image });
+      if (role === 'ADMIN' || userId === id) {
+        const response = await updateUserAuth(userId, { image: data.image });
         updateUser();
         setEditImage(false);
         if (response.token) {
@@ -210,6 +207,7 @@ const ProfileCard = () => {
             <button
               className='edit-image-btn'
               onClick={() => {
+                setUserId(id);
                 setEditImage(true);
                 setEditUsername(false);
                 setEditEmail(false);
@@ -219,7 +217,11 @@ const ProfileCard = () => {
             </button>
           )}
           {!editImage && (
-            <button type='button' className='btn btn-danger delete-button' onClick={handleShow}>
+            <button
+              type='button'
+              className='btn btn-danger delete-button'
+              onClick={() => handleShow(id)}
+            >
               Delete account
             </button>
           )}
@@ -254,6 +256,7 @@ const ProfileCard = () => {
               <i
                 className='bi bi-pencil-fill edit-username'
                 onClick={() => {
+                  setUserId(id);
                   setEditUsername(true);
                   setEditEmail(false);
                   setEditImage(false);
@@ -290,6 +293,7 @@ const ProfileCard = () => {
               <i
                 className='bi bi-pencil-fill edit-email'
                 onClick={() => {
+                  setUserId(id);
                   setEditEmail(true);
                   setEditUsername(false);
                   setEditImage(false);

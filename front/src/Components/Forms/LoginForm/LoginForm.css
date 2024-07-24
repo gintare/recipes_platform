@@ -19,3 +19,7 @@
   background-color: var(--white);
   cursor: pointer;
 }
+
+.password-input {
+  border-right: 0;
+}
