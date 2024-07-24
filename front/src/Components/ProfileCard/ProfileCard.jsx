@@ -13,12 +13,9 @@ const ProfileCard = () => {
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const [existingUsernames, setExistingUsernames] = useState([]);
-  const [existingEmails, setExistingEmails] = useState([]);
-  const [editUsername, setEditUsername] = useState(false);
-  const [editEmail, setEditEmail] = useState(false);
-  const [editImage, setEditImage] = useState(false);
+  const [userId, setUserId] = useState('');
 
+<<<<<<< HEAD
   const {
     userName,
     email,
@@ -30,6 +27,16 @@ const ProfileCard = () => {
     token,
     updateUserAuthContext,
   } = useContext(UserContext);
+=======
+  const { userName, email, image, role, id, logoutHandler, updateUser, token } =
+    useContext(UserContext);
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
+
+  const [editUsername, setEditUsername] = useState(false);
+  const [editEmail, setEditEmail] = useState(false);
+  const [existingUsernames, setExistingUsernames] = useState([]);
+  const [existingEmails, setExistingEmails] = useState([]);
+  const [editImage, setEditImage] = useState(false);
 
   const {
     register,
@@ -38,30 +45,40 @@ const ProfileCard = () => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    const fetchUser = async (id) => {
-      try {
-        const data = await getOneUser(id);
-        setUser(data);
-      } catch (error) {
-        toast.error('Error fetching user details');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    if (id) {
-      fetchUser(id);
+  const fetchUser = async (id) => {
+    try {
+      const data = await getOneUser(id);
+<<<<<<< HEAD
+=======
+      console.log('data ===', data);
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
+      setUser(data);
+    } catch (error) {
+      toast.error('Error fetching user details');
+    } finally {
+      setIsLoading(false);
     }
-  }, [id]);
+  };
 
+<<<<<<< HEAD
+=======
+  // useEffect(() => {
+  //   fetchUser(id);
+  // }, [id]);
+
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
   useEffect(() => {
+    fetchUser(id);
     if (user) {
       setValue('userName', user.userName);
       setValue('image', user.image);
       setValue('email', user.email);
     }
-  }, [user, setValue]);
+<<<<<<< HEAD
+  }, [id, setValue, token]);
+=======
+  }, [id, setValue]);
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
 
   useEffect(() => {
     const fetchUsernames = async () => {
@@ -85,7 +102,8 @@ const ProfileCard = () => {
     fetchEmails();
   }, []);
 
-  const handleShow = () => {
+  const handleShow = (user_id) => {
+    setUserId(user_id);
     setShow(true);
   };
 
@@ -94,8 +112,8 @@ const ProfileCard = () => {
   const handleDelete = async () => {
     try {
       setShow(false);
-      if (role === 'ADMIN' || id === user.id) {
-        await deleteAccount(id);
+      if (role === 'ADMIN' || userId === id) {
+        await deleteAccount(userId);
         logoutHandler();
         toast.success('User deleted successfully');
       } else {
@@ -113,15 +131,20 @@ const ProfileCard = () => {
       return;
     }
     try {
-      if (role === 'ADMIN' || id === user.id) {
-        const response = await updateUserAuth(id, { userName: data.userName });
+      if (role === 'ADMIN' || userId === id) {
+<<<<<<< HEAD
+        const response = await updateUserAuth(userId, { userName: data.userName });
         updateUser();
         setEditUsername(false);
         if (response.token) {
-          updateUserAuthContext(response.token);          
-          // window.location.reload();
+          updateUserAuthContext(response.token);
         }
         setUser((prevUser) => ({ ...prevUser, userName: data.userName }));
+=======
+        await updateUserAuth(userId, { userName: data.userName });
+        updateUser();
+        setEditUsername(false);
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
         toast.success('Username updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -137,14 +160,20 @@ const ProfileCard = () => {
       return;
     }
     try {
-      if (role === 'ADMIN' || id === user.id) {
-        const response = await updateUserAuth(id, { email: data.email });
+      if (role === 'ADMIN' || userId === id) {
+<<<<<<< HEAD
+        const response = await updateUserAuth(userId, { email: data.email });
         updateUser();
         setEditEmail(false);
         if (response.token) {
           updateUserAuthContext(response.token);
         }
         setUser((prevUser) => ({ ...prevUser, email: data.email }));
+=======
+        await updateUserAuth(userId, { email: data.email });
+        updateUser();
+        setEditEmail(false);
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
         toast.success('Email updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -156,14 +185,20 @@ const ProfileCard = () => {
 
   const handleImageChange = async (data) => {
     try {
-      if (role === 'ADMIN' || id === user.id) {
-        const response = await updateUserAuth(id, { image: data.image });
+      if (role === 'ADMIN' || userId === id) {
+<<<<<<< HEAD
+        const response = await updateUserAuth(userId, { image: data.image });
         updateUser();
         setEditImage(false);
         if (response.token) {
           updateUserAuthContext(response.token);
         }
         setUser((prevUser) => ({ ...prevUser, image: data.image }));
+=======
+        await updateUserAuth(userId, { image: data.image });
+        updateUser();
+        setEditImage(false);
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
         toast.success('Image updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -210,6 +245,7 @@ const ProfileCard = () => {
             <button
               className='edit-image-btn'
               onClick={() => {
+                setUserId(id);
                 setEditImage(true);
                 setEditUsername(false);
                 setEditEmail(false);
@@ -219,7 +255,11 @@ const ProfileCard = () => {
             </button>
           )}
           {!editImage && (
-            <button type='button' className='btn btn-danger delete-button' onClick={handleShow}>
+            <button
+              type='button'
+              className='btn btn-danger delete-button'
+              onClick={() => handleShow(id)}
+            >
               Delete account
             </button>
           )}
@@ -254,6 +294,7 @@ const ProfileCard = () => {
               <i
                 className='bi bi-pencil-fill edit-username'
                 onClick={() => {
+                  setUserId(id);
                   setEditUsername(true);
                   setEditEmail(false);
                   setEditImage(false);
@@ -290,6 +331,7 @@ const ProfileCard = () => {
               <i
                 className='bi bi-pencil-fill edit-email'
                 onClick={() => {
+                  setUserId(id);
                   setEditEmail(true);
                   setEditUsername(false);
                   setEditImage(false);

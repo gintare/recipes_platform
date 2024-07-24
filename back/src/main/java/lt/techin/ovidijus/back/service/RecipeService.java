@@ -11,6 +11,10 @@ import lt.techin.ovidijus.back.repository.IngredientRepository;
 import lt.techin.ovidijus.back.repository.RecipeRepository;
 import lt.techin.ovidijus.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
+=======
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -77,12 +81,20 @@ public class RecipeService {
                 ingredient.setOrderNumber(Integer.parseInt(ingredientDto.getOrderNumber()));
                 ingredientRepository.save(ingredient);
 
+<<<<<<< HEAD
                 IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
                 ingredientResponseDTO.setIngredientId(ingredient.getId());
                 ingredientResponseDTO.setTitle(ingredient.getTitle());
                 ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
                 ingredientResponseDTOSet.add(ingredientResponseDTO);
             }
+=======
+            IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
+            ingredientResponseDTO.setId(ingredient.getId());
+            ingredientResponseDTO.setTitle(ingredient.getTitle());
+            ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
+            ingredientResponseDTOSet.add(ingredientResponseDTO);
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
 
         }
 
@@ -131,6 +143,7 @@ public class RecipeService {
         Set<IngredientResponseDTO> ingredientResponseDTOSet = new LinkedHashSet<>();
         Set<IngredientRequestDTO> ingredientRequestDTOS = recipeRequestDTO.getIngredients();
         for(IngredientRequestDTO ingredientRequestDTO : ingredientRequestDTOS) {
+<<<<<<< HEAD
             if(ingredientRequestDTO.getTitle().trim().isEmpty()) {
                 if(ingredientRequestDTO.getId() != null){
                     Ingredient ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getId())
@@ -156,6 +169,25 @@ public class RecipeService {
                 ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
                 ingredientResponseDTOSet.add(ingredientResponseDTO);
             }
+=======
+            Ingredient ingredient = null;
+            if(ingredientRequestDTO.getId() != null){
+                ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getId())
+                        .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = "+ingredientRequestDTO.getId()));
+            }else{
+                ingredient = new Ingredient();
+            }
+            ingredient.setTitle(ingredientRequestDTO.getTitle());
+            ingredient.setOrderNumber(Integer.valueOf(ingredientRequestDTO.getOrderNumber()));
+            ingredient.setRecipe(recipe);
+            this.ingredientRepository.save(ingredient);
+
+            IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
+            ingredientResponseDTO.setId(ingredient.getId());
+            ingredientResponseDTO.setTitle(ingredient.getTitle());
+            ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
+            ingredientResponseDTOSet.add(ingredientResponseDTO);
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
         }
 
         RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();

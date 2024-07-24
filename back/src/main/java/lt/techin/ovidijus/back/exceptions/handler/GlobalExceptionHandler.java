@@ -56,10 +56,13 @@ public class GlobalExceptionHandler {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+<<<<<<< HEAD
 
     @ExceptionHandler(SymbolLimitException.class)
     public ResponseEntity<ErrorDetails> exceptionSymbolLimitHandler(SymbolLimitException ex) {
         ErrorDetails errorDetails = new ErrorDetails(ex.getMessage());
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
+=======
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
 }

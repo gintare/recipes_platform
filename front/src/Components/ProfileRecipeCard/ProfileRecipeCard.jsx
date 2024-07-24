@@ -1,16 +1,31 @@
+<<<<<<< HEAD
+// ProfileRecipeCard.jsx
 import { useContext, useState } from 'react';
 import { deleteRecipe } from '../../services/delete';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
+import LikeButton from '../LikeButton/LikeButton';
+=======
+import { useContext, useState } from 'react';
+import { deleteRecipe } from '../../services/delete';
+import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
 import './ProfileRecipeCard.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+<<<<<<< HEAD
+import UserContext from '../../Context/UserContext/UserContext';
+=======
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
 
 function ProfileRecipeCard({ recipe, createRecipeIsVisible, setCreateRecipeIsVisible }) {
   const [show, setShow] = useState(false);
   const [error, setError] = useState('');
   const [recipeId, setRecipeId] = useState('');
+<<<<<<< HEAD
+  const { setUpdate, updateRecipeFormIsVisible, setUpdateRecipeFormIsVisible, updateRecipe, setUpdateRecipe } = useContext(RecipesContext);
+  const { id } = useContext(UserContext); // Naudokite `userId` iš `UserContext`
+=======
   const {
     setUpdate,
     updateRecipeFormIsVisible,
@@ -18,6 +33,7 @@ function ProfileRecipeCard({ recipe, createRecipeIsVisible, setCreateRecipeIsVis
     updateRecipe,
     setUpdateRecipe,
   } = useContext(RecipesContext);
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
 
   const handleShow = (recipe_id) => {
     try {
@@ -43,17 +59,22 @@ function ProfileRecipeCard({ recipe, createRecipeIsVisible, setCreateRecipeIsVis
       setError(error.message);
     }
   };
+
   const handleClose = () => setShow(false);
 
   return (
     <>
       <div className='card'>
-        <Link to={`/recipe/${recipe.id}`}>
-        <img src={recipe.image} className='card-img-top' alt='recipe image' />
-        </Link>
+<<<<<<< HEAD
+        <img src={recipe.image} className='card-img-top' alt={recipe.name} />
+        <div className='card-body'>
+          <h5 className='card-title'>{recipe.name}</h5>
+=======
+        <img src={recipe.image} className='card-img-top' alt='...' />
         <div className='card-body'>
           <h5 className='card-title'>{recipe.name}</h5>
           {/* <p className="card-text">{recipe.description}</p> */}
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
           <a
             href='#'
             className='edit-button btn btn-primary'
@@ -69,6 +90,11 @@ function ProfileRecipeCard({ recipe, createRecipeIsVisible, setCreateRecipeIsVis
           <Button variant='primary' onClick={() => handleShow(recipe.id)}>
             Delete
           </Button>
+<<<<<<< HEAD
+
+          <LikeButton recipeId={recipe.id} userId={id}/> {/* Pridėkite userId kaip prop */}
+=======
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
         </div>
       </div>
       {error && <div className='alert alert-danger mt-3'>{error}</div>}

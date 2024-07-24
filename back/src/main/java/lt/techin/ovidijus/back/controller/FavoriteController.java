@@ -23,11 +23,14 @@ public class FavoriteController {
         return ResponseEntity.ok(favoriteService.isFavorite(userId, recipeId));
     }
 
+<<<<<<< HEAD
     @GetMapping("/api/users/{userId}/favorites")
     public ResponseEntity<?> getFavoritesByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(favoriteService.findFavoritesByUserId(userId));
     }
 
+=======
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
     @DeleteMapping("/api/users/{userId}/recipes/{recipeId}/favorites")
     public void deleteFavorite(@PathVariable Long userId, @PathVariable Long recipeId) {
         favoriteService.deleteFavorite(userId, recipeId);

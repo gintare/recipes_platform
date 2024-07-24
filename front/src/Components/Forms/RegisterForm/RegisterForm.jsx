@@ -41,6 +41,26 @@ const RegisterForm = () => {
     fetchUsersEmail();
   }, []);
 
+  const validateUsername = (data) => {
+    const value = data.name.trim();
+    const min = 3;
+    const max = 15;
+
+    if (value.length < min) {
+      toast.error(`Category name must be at least ${min} character`);
+      return false;
+    }
+    if (value.length > max) {
+      toast.error(`Category name cannot exceed ${max} characters`);
+      return false;
+    }
+    if (!/^[a-zA-Z]+( [a-zA-Z]+)*$/.test(value)) {
+      toast.error('Category name can only contain letters and a single space between words');
+      return false;
+    }
+    return true;
+  };
+
   const formSubmitHandler = async (data) => {
     if (existingUserEmail.includes(data.email)) {
       toast.error('A user with this email already exists!');

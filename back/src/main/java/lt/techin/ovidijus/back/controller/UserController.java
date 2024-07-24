@@ -1,11 +1,22 @@
 package lt.techin.ovidijus.back.controller;
 
+<<<<<<< HEAD
 import lt.techin.ovidijus.back.dto.LoginRequestDTO;
 import lt.techin.ovidijus.back.dto.UserResponseDTO;
 import lt.techin.ovidijus.back.dto.LoginResponseDTO;
 import lt.techin.ovidijus.back.dto.UserRequestDTO;
 import lt.techin.ovidijus.back.exceptions.UserAlreadyExistsException;
 import lt.techin.ovidijus.back.exceptions.UserNotFoundException;
+=======
+import lt.techin.ovidijus.back.dto.LoginDTO;
+import lt.techin.ovidijus.back.dto.UserResponseDTO;
+import lt.techin.ovidijus.back.dto.ResponseLoginDTO;
+import lt.techin.ovidijus.back.dto.UserRequestDTO;
+import lt.techin.ovidijus.back.exceptions.NotAdminException;
+import lt.techin.ovidijus.back.exceptions.UserAlreadyExistsException;
+import lt.techin.ovidijus.back.exceptions.UserNotFoundException;
+import lt.techin.ovidijus.back.model.User;
+>>>>>>> 88a9aa0e33743b0cea617421457c98939bfd8804
 import lt.techin.ovidijus.back.repository.UserRepository;
 import lt.techin.ovidijus.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -41,6 +53,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserResponseDTO(e.getMessage()));
         }
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO) {
