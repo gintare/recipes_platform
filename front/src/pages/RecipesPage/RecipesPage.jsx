@@ -22,6 +22,8 @@ const shuffleArray = (array) => {
 const RecipesPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
+  const [pages, setPages] = useState(0);
+  const RECORDS_PER_PAGE = 12;
   const { isLoggedIn } = useContext(UserContext);
   const { update, filteredRecipes, setRecipes } = useContext(RecipesContext);
 
@@ -36,6 +38,11 @@ const RecipesPage = () => {
       setIsLoading(false);
     }
   };
+
+  const showMore = () => {
+    setPages((prev) => prev + 1);
+    console.log("show more "+pages);
+  }
 
   useEffect(() => {
     fetchData();
@@ -56,10 +63,12 @@ const RecipesPage = () => {
       <RecipeCarusele />
       <div className='recipe-list'>
         {filteredRecipes.map((recipe) => (
-          <Link to={`/recipe/${recipe.id}`} key={recipe.id}>
-            <RecipeCard recipe={recipe} />
-          </Link>
+            <RecipeCard key={recipe.id} recipe={recipe} /> 
         ))}
+      </div>
+      <hr/>
+      <div className='show-more-button-content'>
+        <Button onClick={showMore}>Show more</Button>
       </div>
     </div>
   );
