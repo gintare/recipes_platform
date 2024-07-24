@@ -4,12 +4,14 @@ import UserContext from '../../Context/UserContext/UserContext';
 import { toast } from 'react-toastify';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
 import './Navigation.css';
+import { getAllCategories } from '../../services/get';
 
 const Navigation = () => {
   const { isLoggedIn, logoutHandler, userName, role } = useContext(UserContext);
   const { setFilteredRecipes, recipes } = useContext(RecipesContext);
   const [searchText, setSearchText] = useState('');
   const [sortOption, setSortOption] = useState('name');
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     let filtered = recipes.filter((recipe) =>
@@ -25,6 +27,13 @@ const Navigation = () => {
     }
 
     setFilteredRecipes(filtered);
+    
+    const getCategories = async () => {
+       const cat = await getAllCategories();
+       setCategories(cat);
+    }
+    getCategories();
+
   }, [searchText, sortOption, setFilteredRecipes, recipes]);
 
   const accountPath = role === 'ADMIN' ? '/admin' : '/profile';
@@ -59,6 +68,14 @@ const Navigation = () => {
               onChange={(e) => setSearchText(e.target.value)}
             />
           </form>
+
+          <select class="categories-select form-select mb-3" aria-label="Large select example">
+            <option selected>Select recipe category</option>
+            {categories.map((category) => {
+              return <option value={category.id}>{category.name}</option>
+            })}
+          </select>
+
           <div className='navbar-nav ms-auto text-end gap-2'>
             {isLoggedIn ? (
               <>
