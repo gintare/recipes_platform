@@ -2,6 +2,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import './RecipeCarousel.css';
 import { useEffect, useState } from 'react';
 import { getAllRecipes } from '../../services/get';
+import {getRecipeLikes} from '../../services/Likes';
 
 const RecipeCarousel = () => {
   const [recipes, setRecipes] = useState([]);
@@ -10,8 +11,31 @@ const RecipeCarousel = () => {
     const fetchData = async () => {
       try {
         const data = await getAllRecipes();
-        console.log('Data from API:', data);
-        setRecipes(data);
+        
+
+        
+        if (Array.isArray(data) && data.length > 0) {
+          const recipesWithLikes = await Promise.all(
+            data.map(async (recipe) => {
+              try {
+                const likes = await getRecipeLikes(recipe.id);
+                return { ...recipe, likes };
+              } catch (error) {
+                console.error(`Error fetching likes for recipe ${recipe.id}:`, error);
+                return { ...recipe, likes: 0 };
+              }
+            })
+          );
+
+          
+          const sortedRecipes = recipesWithLikes.sort((a, b) => b.likes - a.likes);
+          console.log('Sorted Recipes:', sortedRecipes);
+
+  
+          setRecipes(sortedRecipes);
+        } else {
+          console.error('Data format is incorrect or missing necessary properties:', data);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -19,8 +43,10 @@ const RecipeCarousel = () => {
     fetchData();
   }, []);
 
+
   const limitedRecipes = recipes.slice(0, 6);
 
+  
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
       return text.slice(0, maxLength) + '...';
