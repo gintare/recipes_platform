@@ -30,7 +30,7 @@ const RecipesPage = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const data = await getAllRecipes();
+      const data = await getAllRecipesByPage(0); //await getAllRecipes();
       setRecipes(shuffleArray(data));
     } catch (error) {
       toast.error('Error fetching data:', error);
@@ -41,12 +41,13 @@ const RecipesPage = () => {
 
   const showMore = async () => {
     setPages((prev) => prev + 1);
-    const rec = await getAllRecipesByPage(pages);
-    console.log(rec);
-    setFilteredRecipes(rec);
-    console.log("show more "+pages);
-    const rec1 = await getAllRecipesByPage(pages+1);
-    setFilteredRecipes(rec + rec1);
+    const rec = await getAllRecipesByPage(pages+1);
+      //console.log("rec.lenght = "+rec.length);
+      for(let i = 0; i < rec.length; i++ ){
+        //console.log(i);
+        //console.log(rec[i]);
+        setRecipes(oldRec => [...oldRec, rec[i]]);
+      }
   }
 
   useEffect(() => {
