@@ -28,10 +28,14 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.recipeService.createRecipe(categoryId, userId, recipeRequestDTO));
     }
 
-
     @GetMapping("/api/recipes")
     public List<RecipeResponseDTO> findAllRecipes() {
         return this.recipeService.findAll();
+    }
+
+    @GetMapping("/api/recipes/pages/{pageNumber}")
+    public List<RecipeResponseDTO> findRecipes(@PathVariable Integer pageNumber) {
+        return this.recipeService.findAllByPageNumber(pageNumber);
     }
 
     @PutMapping("/api/categories/{categoryId}/recipes/{recipeId}")

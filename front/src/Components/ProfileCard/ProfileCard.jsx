@@ -15,8 +15,17 @@ const ProfileCard = () => {
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState('');
 
-  const { userName, email, image, role, id, logoutHandler, updateUser, token } =
-    useContext(UserContext);
+  const {
+    userName,
+    email,
+    image,
+    role,
+    id,
+    logoutHandler,
+    updateUser,
+    token,
+    updateUserAuthContext,
+  } = useContext(UserContext);
 
   const [editUsername, setEditUsername] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
@@ -34,7 +43,6 @@ const ProfileCard = () => {
   const fetchUser = async (id) => {
     try {
       const data = await getOneUser(id);
-      console.log('data ===', data);
       setUser(data);
     } catch (error) {
       toast.error('Error fetching user details');
@@ -43,10 +51,6 @@ const ProfileCard = () => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchUser(id);
-  // }, [id]);
-
   useEffect(() => {
     fetchUser(id);
     if (user) {
@@ -54,7 +58,7 @@ const ProfileCard = () => {
       setValue('image', user.image);
       setValue('email', user.email);
     }
-  }, [id, setValue]);
+  }, [id, setValue, token]);
 
   useEffect(() => {
     const fetchUsernames = async () => {
@@ -108,9 +112,13 @@ const ProfileCard = () => {
     }
     try {
       if (role === 'ADMIN' || userId === id) {
-        await updateUserAuth(userId, { userName: data.userName });
+        const response = await updateUserAuth(userId, { userName: data.userName });
         updateUser();
         setEditUsername(false);
+        if (response.token) {
+          updateUserAuthContext(response.token);
+        }
+        setUser((prevUser) => ({ ...prevUser, userName: data.userName }));
         toast.success('Username updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -127,9 +135,13 @@ const ProfileCard = () => {
     }
     try {
       if (role === 'ADMIN' || userId === id) {
-        await updateUserAuth(userId, { email: data.email });
+        const response = await updateUserAuth(userId, { email: data.email });
         updateUser();
         setEditEmail(false);
+        if (response.token) {
+          updateUserAuthContext(response.token);
+        }
+        setUser((prevUser) => ({ ...prevUser, email: data.email }));
         toast.success('Email updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -142,9 +154,13 @@ const ProfileCard = () => {
   const handleImageChange = async (data) => {
     try {
       if (role === 'ADMIN' || userId === id) {
-        await updateUserAuth(userId, { image: data.image });
+        const response = await updateUserAuth(userId, { image: data.image });
         updateUser();
         setEditImage(false);
+        if (response.token) {
+          updateUserAuthContext(response.token);
+        }
+        setUser((prevUser) => ({ ...prevUser, image: data.image }));
         toast.success('Image updated successfully!');
       } else {
         toast.error('Unauthorized action');

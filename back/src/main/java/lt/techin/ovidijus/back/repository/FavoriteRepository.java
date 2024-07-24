@@ -14,5 +14,8 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
     @Query("select u from Favorite u where u.user = ?1 and u.recipe = ?2")
     List<Favorite> getByUserAndByRecipe(User user, Recipe recipe);
 
+
     List<Favorite> findByUser(User user);
+
+
 }

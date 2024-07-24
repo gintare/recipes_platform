@@ -23,10 +23,12 @@ public class FavoriteController {
         return ResponseEntity.ok(favoriteService.isFavorite(userId, recipeId));
     }
 
+
     @GetMapping("/api/users/{userId}/favorites")
     public ResponseEntity<?> getFavoritesByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(favoriteService.findFavoritesByUserId(userId));
     }
+
 
     @DeleteMapping("/api/users/{userId}/recipes/{recipeId}/favorites")
     public void deleteFavorite(@PathVariable Long userId, @PathVariable Long recipeId) {

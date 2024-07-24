@@ -11,6 +11,9 @@ import lt.techin.ovidijus.back.repository.IngredientRepository;
 import lt.techin.ovidijus.back.repository.RecipeRepository;
 import lt.techin.ovidijus.back.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,6 +22,7 @@ import java.util.*;
 public class RecipeService {
 
     private static final int TIME_IN_MINUTES_MAX_CHARS = 5;
+    private static final int RECORDS_PER_PAGE = 12;
     RecipeRepository recipeRepository;
     CategoryRepository categoryRepository;
     IngredientRepository ingredientRepository;
@@ -106,11 +110,12 @@ public class RecipeService {
         for(Recipe recipe : recipes){
             RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
             recipeResponseDTO.setId(recipe.getId());
-           // recipeResponseDTO.setUserId(recipe.getUser().getId());
+            // recipeResponseDTO.setUserId(recipe.getUser().getId());
             recipeResponseDTO.setName(recipe.getName());
             recipeResponseDTO.setDescription(recipe.getDescription());
             recipeResponseDTO.setImage(recipe.getImage());
             recipeResponseDTO.setInstructions(recipe.getInstructions());
+            recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
             recipeResponseDTOS.add(recipeResponseDTO);
         }
         return recipeResponseDTOS;
@@ -208,14 +213,7 @@ public class RecipeService {
 
         List<RecipeResponseDTO> recipeResponseDTOS = new ArrayList<>();
         for(Recipe recipe : recipes){
-            RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
-            recipeResponseDTO.setId(recipe.getId());
-            recipeResponseDTO.setUserId(recipe.getUser().getId());
-            recipeResponseDTO.setName(recipe.getName());
-            recipeResponseDTO.setDescription(recipe.getDescription());
-            recipeResponseDTO.setImage(recipe.getImage());
-            recipeResponseDTO.setInstructions(recipe.getInstructions());
-            recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
+            RecipeResponseDTO recipeResponseDTO = getRecipeResponseDTO(recipe);
             recipeResponseDTO.setCategoryId(recipe.getCategory().getId());
             Set<IngredientResponseDTO> ingredientResponseDTOS = new LinkedHashSet<>();
             List<Ingredient> ingredientsSorted = recipe.getIngredients().stream().toList();
@@ -245,14 +243,7 @@ public class RecipeService {
     public RecipeResponseDTO findOneRecipe(Long recipeId) {
         Recipe recipe = this.recipeRepository.findById(recipeId).orElseThrow(() -> new RecipeNotFoundException("No recipe found with an id = "+recipeId));
 
-        RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
-        recipeResponseDTO.setId(recipe.getId());
-        recipeResponseDTO.setUserId(recipe.getUser().getId());
-        recipeResponseDTO.setName(recipe.getName());
-        recipeResponseDTO.setDescription(recipe.getDescription());
-        recipeResponseDTO.setImage(recipe.getImage());
-        recipeResponseDTO.setInstructions(recipe.getInstructions());
-        recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
+        RecipeResponseDTO recipeResponseDTO = getRecipeResponseDTO(recipe);
         recipeResponseDTO.setCategoryId(recipe.getCategory().getId());
 
         List<Ingredient> ingredientsSorted = recipe.getIngredients().stream().toList();
@@ -278,4 +269,29 @@ public class RecipeService {
 
         return recipeResponseDTO;
     }
+
+    public List<RecipeResponseDTO> findAllByPageNumber(Integer pageNumber) {
+//        Pageable firstPageWithTwoElements = PageRequest.of(0, 2);
+        Pageable page = PageRequest.of(pageNumber, RECORDS_PER_PAGE);
+        Page<Recipe> recipePage = this.recipeRepository.findAll(page);
+        List<RecipeResponseDTO> recipeResponseDTOS = new ArrayList<>();
+        for(Recipe recipe: recipePage.getContent()){
+            RecipeResponseDTO recipeResponseDTO = getRecipeResponseDTO(recipe);
+            recipeResponseDTOS.add(recipeResponseDTO);
+        }
+        return recipeResponseDTOS;
+    }
+
+    private static RecipeResponseDTO getRecipeResponseDTO(Recipe recipe) {
+        RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
+        recipeResponseDTO.setId(recipe.getId());
+        recipeResponseDTO.setUserId(recipe.getUser().getId());
+        recipeResponseDTO.setName(recipe.getName());
+        recipeResponseDTO.setDescription(recipe.getDescription());
+        recipeResponseDTO.setImage(recipe.getImage());
+        recipeResponseDTO.setInstructions(recipe.getInstructions());
+        recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
+        return recipeResponseDTO;
+    }
 }
+
