@@ -45,6 +45,8 @@ const RecipesPage = () => {
     console.log(rec);
     setFilteredRecipes(rec);
     console.log("show more "+pages);
+    const rec1 = await getAllRecipesByPage(pages+1);
+    setFilteredRecipes(rec + rec1);
   }
 
   useEffect(() => {
