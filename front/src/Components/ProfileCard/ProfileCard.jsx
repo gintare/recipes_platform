@@ -38,6 +38,7 @@ const ProfileCard = () => {
     register,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
@@ -221,6 +222,13 @@ const ProfileCard = () => {
                 onClick={() => setEditImage(false)}
               >
                 <i className='bi bi-x-circle-fill cancel-image'></i>
+              </button>
+              <button
+                type='button'
+                className='btn btn-link p-0'
+                onClick={() => reset({ image: '' })}
+              >
+                <i className='bi bi-stars clear-image'></i>
               </button>
               {errors.image && <div className='error'>{errors.image.message}</div>}
             </div>
