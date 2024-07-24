@@ -1,7 +1,7 @@
 import RecipeCarusele from '../../Components/RecipeCarousel/RecipeCarousel';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getAllRecipes } from '../../services/get';
+import { getAllRecipes, getAllRecipesByPage } from '../../services/get';
 import RecipeCard from '../../Components/RecipeCard/RecipeCard';
 import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import { Button } from 'react-bootstrap';
@@ -22,13 +22,15 @@ const shuffleArray = (array) => {
 const RecipesPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
+  const [pages, setPages] = useState(0);
+  const RECORDS_PER_PAGE = 12;
   const { isLoggedIn } = useContext(UserContext);
-  const { update, filteredRecipes, setRecipes } = useContext(RecipesContext);
+  const { update, filteredRecipes, setFilteredRecipes, setRecipes } = useContext(RecipesContext);
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const data = await getAllRecipes();
+      const data = await getAllRecipesByPage(0); //await getAllRecipes();
       setRecipes(shuffleArray(data));
     } catch (error) {
       toast.error('Error fetching data:', error);
@@ -36,6 +38,17 @@ const RecipesPage = () => {
       setIsLoading(false);
     }
   };
+
+  const showMore = async () => {
+    setPages((prev) => prev + 1);
+    const rec = await getAllRecipesByPage(pages+1);
+      //console.log("rec.lenght = "+rec.length);
+      for(let i = 0; i < rec.length; i++ ){
+        //console.log(i);
+        //console.log(rec[i]);
+        setRecipes(oldRec => [...oldRec, rec[i]]);
+      }
+  }
 
   useEffect(() => {
     fetchData();
@@ -56,10 +69,12 @@ const RecipesPage = () => {
       <RecipeCarusele />
       <div className='recipe-list'>
         {filteredRecipes.map((recipe) => (
-          <Link to={`/recipe/${recipe.id}`} key={recipe.id}>
-            <RecipeCard recipe={recipe} />
-          </Link>
+            <RecipeCard key={recipe.id} recipe={recipe} /> 
         ))}
+      </div>
+      <hr/>
+      <div className='show-more-button-content'>
+        <Button onClick={showMore}>Show more</Button>
       </div>
     </div>
   );
