@@ -46,9 +46,15 @@ public class LikeService {
 
 
     public void removeLike(Long recipeId, Long userId) {
-        Like like = likeRepository.findByRecipeIdAndUserId(recipeId, userId)
-                .orElseThrow(() -> new RuntimeException("Like not found with recipeId " + recipeId + " and userId " + userId));
-        likeRepository.delete(like);
+        try {
+            Like like = likeRepository.findByRecipeIdAndUserId(recipeId, userId)
+                    .orElseThrow(() -> new RuntimeException("Like not found with recipeId " + recipeId + " and userId " + userId));
+            likeRepository.delete(like);
+            System.out.println("Successfully removed like for recipeId " + recipeId + " and userId " + userId);
+        } catch (RuntimeException e) {
+            System.err.println("Failed to remove like for recipeId " + recipeId + " and userId " + userId + ". Error: " + e.getMessage());
+            throw new RuntimeException("Failed to remove like for recipeId " + recipeId + " and userId " + userId, e);
+        }
     }
 
     public boolean checkUserLiked(Long recipeId, Long userId) {

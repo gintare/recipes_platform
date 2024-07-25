@@ -2,7 +2,8 @@ import Carousel from 'react-bootstrap/Carousel';
 import './RecipeCarousel.css';
 import { useEffect, useState } from 'react';
 import { getAllRecipes } from '../../services/get';
-import {getRecipeLikes} from '../../services/Likes';
+import { getRecipeLikes } from '../../services/Likes';
+import { Link } from "react-router-dom";
 
 const RecipeCarousel = () => {
   const [recipes, setRecipes] = useState([]);
@@ -56,14 +57,16 @@ const RecipeCarousel = () => {
         <Carousel>
           {limitedRecipes.map((recipe, index) => (
             <Carousel.Item key={index}>
-              <img
-                src={recipe.image}
-                alt={recipe.name}
-                className="recipe-carousel-image"
-              />
-              <Carousel.Caption>
-                <h3>{truncateText(recipe.name, 40)}</h3>
-              </Carousel.Caption>
+              <Link to={`/recipe/${recipe.id}`}>
+                <img
+                  src={recipe.image}
+                  alt={recipe.name}
+                  className="recipe-carousel-image"
+                />
+                <Carousel.Caption>
+                  <h3>{truncateText(recipe.name, 40)}</h3>
+                </Carousel.Caption>
+              </Link>
             </Carousel.Item>
           ))}
         </Carousel>
