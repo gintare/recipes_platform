@@ -291,7 +291,19 @@ public class RecipeService {
         recipeResponseDTO.setImage(recipe.getImage());
         recipeResponseDTO.setInstructions(recipe.getInstructions());
         recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
+        recipeResponseDTO.setCategoryId(recipe.getCategory().getId());
         return recipeResponseDTO;
     }
-}
 
+    public List<RecipeResponseDTO> findAllByCategoryAndPageNumber(Long categoryId, Integer pageNumber) {
+        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("No category found by id = "+categoryId));
+        Pageable page = PageRequest.of(pageNumber, RECORDS_PER_PAGE);
+        List<Recipe> recipes = this.recipeRepository.findByCategory(category, page);
+        List<RecipeResponseDTO> recipeResponseDTOS = new ArrayList<>();
+        for(Recipe recipe: recipes){
+            RecipeResponseDTO recipeResponseDTO = getRecipeResponseDTO(recipe);
+            recipeResponseDTOS.add(recipeResponseDTO);
+        }
+        return recipeResponseDTOS;
+    }
+}

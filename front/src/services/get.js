@@ -172,3 +172,12 @@ export const getFavoritesByUser = async (userId) => {
     throw new Error(`Error fetching all recipes: ${error.message}`);
   }
 };
+
+export const getRecipesByCategoryByPage = async (categoryId, pageNo) => {
+  try {
+    const resp = await axios.get(`${API_URL}/api/categories/${categoryId}/recipes/pages/${pageNo}`);
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error fetching all recipes: ${error.message}`);
+  }
+};

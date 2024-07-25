@@ -39,6 +39,11 @@ public class RecipeController {
         return this.recipeService.findAllByPageNumber(pageNumber);
     }
 
+     @GetMapping("/api/categories/{categoryId}/recipes/pages/{pageNumber}")
+    public List<RecipeResponseDTO> findRecipesByCategories(@PathVariable Long categoryId, @PathVariable Integer pageNumber) {
+        return this.recipeService.findAllByCategoryAndPageNumber(categoryId, pageNumber);
+    }
+
     @PutMapping("/api/categories/{categoryId}/recipes/{recipeId}")
     public ResponseEntity<?> updateRecipe(@PathVariable Long categoryId, @PathVariable Long recipeId, @RequestBody RecipeRequestDTO recipeRequestDTO){
          return ResponseEntity.ok(this.recipeService.updateRecipe(categoryId, recipeId, recipeRequestDTO));

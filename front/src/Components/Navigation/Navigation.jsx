@@ -4,12 +4,34 @@ import UserContext from '../../Context/UserContext/UserContext';
 import { toast } from 'react-toastify';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
 import './Navigation.css';
+import { getAllCategories, getAllRecipesByPage, getRecipesByCategoryByPage } from '../../services/get';
 
 const Navigation = () => {
   const { isLoggedIn, logoutHandler, userName, role } = useContext(UserContext);
-  const { setFilteredRecipes, recipes } = useContext(RecipesContext);
+  const { setFilteredRecipes, recipes,setRecipes, setSelectedCategory, setDisplayShowMoreButton, setPages } = useContext(RecipesContext);
   const [searchText, setSearchText] = useState('');
   const [sortOption, setSortOption] = useState('name');
+  const [categories, setCategories] = useState([]);
+  const RECORDS_PER_PAGE = 12;
+
+  const onCategorySelectChangeHandler = async (e) => {
+    //console.log("on change "+e.target.value);
+    setSelectedCategory(e.target.value);
+    let rec = null;
+    if(e.target.value !== "0"){    
+      rec = await getRecipesByCategoryByPage(e.target.value, 0);
+      //console.log(rec);
+    } else {
+      rec = await getAllRecipesByPage(0);  
+    }
+    if(rec.length < RECORDS_PER_PAGE){
+      setDisplayShowMoreButton(false);
+    } else {
+      setDisplayShowMoreButton(true);
+    }
+    setRecipes(rec);
+    setPages(0);
+  }
 
   useEffect(() => {
     let filtered = recipes.filter((recipe) =>
@@ -25,6 +47,13 @@ const Navigation = () => {
     }
 
     setFilteredRecipes(filtered);
+    
+    const getCategories = async () => {
+       const cat = await getAllCategories();
+       setCategories(cat);
+    }
+    getCategories();
+
   }, [searchText, sortOption, setFilteredRecipes, recipes]);
 
   const accountPath = role === 'ADMIN' ? '/admin' : '/profile';
@@ -59,6 +88,14 @@ const Navigation = () => {
               onChange={(e) => setSearchText(e.target.value)}
             />
           </form>
+
+          <select onChange={onCategorySelectChangeHandler} className="categories-select form-select mb-3" aria-label="Large select example">
+            <option value={0}>Select recipe category</option>
+            {categories.map((category) => {
+              return <option key={category.id} value={category.id}>{category.name}</option>
+            })}
+          </select>
+
           <div className='navbar-nav ms-auto text-end gap-2'>
             {isLoggedIn ? (
               <>
