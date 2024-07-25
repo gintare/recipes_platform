@@ -1,7 +1,7 @@
 import RecipeCarusele from '../../Components/RecipeCarousel/RecipeCarousel';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getAllRecipes, getAllRecipesByPage } from '../../services/get';
+import { getAllRecipes, getAllRecipesByPage, getRecipesByCategoryByPage } from '../../services/get';
 import RecipeCard from '../../Components/RecipeCard/RecipeCard';
 import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import { Button } from 'react-bootstrap';
@@ -25,7 +25,7 @@ const RecipesPage = () => {
   const [pages, setPages] = useState(0);
   const RECORDS_PER_PAGE = 12;
   const { isLoggedIn } = useContext(UserContext);
-  const { update, filteredRecipes, setFilteredRecipes, setRecipes } = useContext(RecipesContext);
+  const { update, filteredRecipes, setFilteredRecipes, setRecipes, selectedCategory } = useContext(RecipesContext);
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -40,14 +40,21 @@ const RecipesPage = () => {
   };
 
   const showMore = async () => {
+    //console.log("selectedCategory = "+selectedCategory);
     setPages((prev) => prev + 1);
-    const rec = await getAllRecipesByPage(pages+1);
-      //console.log("rec.lenght = "+rec.length);
-      for(let i = 0; i < rec.length; i++ ){
-        //console.log(i);
-        //console.log(rec[i]);
-        setRecipes(oldRec => [...oldRec, rec[i]]);
-      }
+    let rec = null;
+    if(selectedCategory == 0){
+      rec = await getAllRecipesByPage(pages+1);
+      
+    }else{
+      rec = await getRecipesByCategoryByPage(selectedCategory, pages+1);
+    }
+
+    for(let i = 0; i < rec.length; i++ ){
+      //console.log(i);
+      //console.log(rec[i]);
+      setRecipes(oldRec => [...oldRec, rec[i]]);
+    }
   }
 
   useEffect(() => {
