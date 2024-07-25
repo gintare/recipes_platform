@@ -8,6 +8,7 @@ export const RecipesProvider = ({ children }) => {
   const [update, setUpdate] = useState(0);
   const [updateRecipeFormIsVisible, setUpdateRecipeFormIsVisible] = useState(false);
   const [updateRecipe, setUpdateRecipe] = useState({});
+  const [selectedCategory, setSelectedCategory] = useState(0);
 
   return (
     <RecipesContext.Provider
@@ -22,6 +23,8 @@ export const RecipesProvider = ({ children }) => {
         setUpdateRecipeFormIsVisible,
         updateRecipe,
         setUpdateRecipe,
+        selectedCategory,
+        setSelectedCategory,
       }}
     >
       {children}
