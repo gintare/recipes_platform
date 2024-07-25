@@ -1,7 +1,15 @@
 import "./ProfileFavoriteRecipeCard.css";
 import { Link } from "react-router-dom";
+import LikeButton from "../LikeButton/LikeButton";
+import UserContext from '../../Context/UserContext/UserContext';
+import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
+import { useContext } from 'react';
 
 function ProfileFavoriteRecipeCard({ favoriteRecipe }) {
+  const { id } = useContext(UserContext);
+  const { recipe } = useContext(RecipesContext);
+  
+  
   return (
     <>
       <Link to={`/recipe/${favoriteRecipe.recipeId}`}>
@@ -17,7 +25,7 @@ function ProfileFavoriteRecipeCard({ favoriteRecipe }) {
               Preparation time, min : {favoriteRecipe.recipeTimeInMinutes}
             </p>
             <p className="card-text">
-              {favoriteRecipe.recipeAmountOfLikes} likes
+              {recipe && id && <LikeButton recipeId={recipe.id} userId={id} />}
             </p>
           </div>
         </div>
