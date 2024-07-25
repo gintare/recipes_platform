@@ -4,21 +4,33 @@ import UserContext from '../../Context/UserContext/UserContext';
 import { toast } from 'react-toastify';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
 import './Navigation.css';
-import { getAllCategories, getRecipesByCategoryByPage } from '../../services/get';
+import { getAllCategories, getAllRecipesByPage, getRecipesByCategoryByPage } from '../../services/get';
 
 const Navigation = () => {
   const { isLoggedIn, logoutHandler, userName, role } = useContext(UserContext);
-  const { setFilteredRecipes, recipes,setRecipes, setSelectedCategory } = useContext(RecipesContext);
+  const { setFilteredRecipes, recipes,setRecipes, setSelectedCategory, setDisplayShowMoreButton, setPages } = useContext(RecipesContext);
   const [searchText, setSearchText] = useState('');
   const [sortOption, setSortOption] = useState('name');
   const [categories, setCategories] = useState([]);
+  const RECORDS_PER_PAGE = 12;
 
   const onCategorySelectChangeHandler = async (e) => {
-    console.log("on change "+e.target.value);
+    //console.log("on change "+e.target.value);
     setSelectedCategory(e.target.value);
-    const rec = await getRecipesByCategoryByPage(e.target.value, 0);
-    console.log(rec);
+    let rec = null;
+    if(e.target.value !== "0"){    
+      rec = await getRecipesByCategoryByPage(e.target.value, 0);
+      //console.log(rec);
+    } else {
+      rec = await getAllRecipesByPage(0);  
+    }
+    if(rec.length < RECORDS_PER_PAGE){
+      setDisplayShowMoreButton(false);
+    } else {
+      setDisplayShowMoreButton(true);
+    }
     setRecipes(rec);
+    setPages(0);
   }
 
   useEffect(() => {
