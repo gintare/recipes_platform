@@ -3,6 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import { addLike, removeLike, checkUserLiked, getRecipeLikes } from '../../services/Likes';
 import { Button } from 'react-bootstrap';
 import UserContext from '../../Context/UserContext/UserContext';
+import './LikeButton.css';
 
 const LikeButton = ({ recipeId, userId }) => {
   const { isLoggedIn } = useContext(UserContext);
@@ -11,10 +12,6 @@ const LikeButton = ({ recipeId, userId }) => {
   
   useEffect(() => {
     const fetchLikes = async () => {
-      //console.log('Fetching likes');
-      //console.log('User ID:', userId);
-      //console.log('Is Logged In:', isLoggedIn);
-
       try {
         if (!recipeId) {
           console.error('No recipe ID provided');
@@ -58,13 +55,17 @@ const LikeButton = ({ recipeId, userId }) => {
   };
 
   return (
-    <div>
+    <div className="like-button-container">
+      <span>{likeCount} Likes</span>
       {isLoggedIn && (
-        <Button onClick={handleLikeClick} variant={liked ? 'primary' : 'outline-primary'}>
+        <Button
+          onClick={handleLikeClick}
+          variant={liked ? 'primary' : 'outline-primary'}
+          className="like-button"
+        >
           {liked ? 'Unlike' : 'Like'}
         </Button>
       )}
-      <span>{likeCount} Likes</span>
     </div>
   );
 };
