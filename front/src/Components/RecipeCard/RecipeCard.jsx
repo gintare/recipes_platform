@@ -12,7 +12,9 @@ const RecipeCard = ({ recipe }) => {
 
   return (
     <Card className="recipe-card">
+     <Link to={`/recipe/${recipe.id}`} key={recipe.id}>
       <Card.Img variant="top" src={recipe.image} alt={recipe.title} />
+      </Link>
       <Card.Body>
         <Card.Title className="recipe-card-title">{recipe.name}</Card.Title>
         <Card.Text>

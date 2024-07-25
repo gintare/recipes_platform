@@ -56,6 +56,7 @@ const LikeButton = ({ recipeId, userId }) => {
 
   return (
     <div className="like-button-container">
+      <span>{likeCount} Likes</span>
       {isLoggedIn && (
         <Button
           onClick={handleLikeClick}
@@ -65,7 +66,6 @@ const LikeButton = ({ recipeId, userId }) => {
           {liked ? 'Unlike' : 'Like'}
         </Button>
       )}
-      <span>{likeCount} Likes</span>
     </div>
   );
 };

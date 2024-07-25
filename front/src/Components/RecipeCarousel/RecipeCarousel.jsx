@@ -12,8 +12,6 @@ const RecipeCarousel = () => {
       try {
         const data = await getAllRecipes();
         
-
-        
         if (Array.isArray(data) && data.length > 0) {
           const recipesWithLikes = await Promise.all(
             data.map(async (recipe) => {
@@ -26,11 +24,9 @@ const RecipeCarousel = () => {
               }
             })
           );
-
           
           const sortedRecipes = recipesWithLikes.sort((a, b) => b.likes - a.likes);
           console.log('Sorted Recipes:', sortedRecipes);
-
   
           setRecipes(sortedRecipes);
         } else {
@@ -43,10 +39,8 @@ const RecipeCarousel = () => {
     fetchData();
   }, []);
 
-
   const limitedRecipes = recipes.slice(0, 6);
 
-  
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
       return text.slice(0, maxLength) + '...';
