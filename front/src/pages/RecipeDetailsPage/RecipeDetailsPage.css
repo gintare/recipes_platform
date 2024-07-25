@@ -33,3 +33,12 @@
   margin-top: 100px;
 }
 
+.author-content{
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.author-button-content {
+  display: inline-block;
+}
+
