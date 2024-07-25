@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../Context/UserContext/UserContext';
-import { getRecipesByUserId, getFavoritesByUser } from '../../services/get';
+import { getRecipesByUserId, getFavoritesByUser, getOneUser } from '../../services/get';
 import ProfileRecipeCard from '../../Components/ProfileRecipeCard/ProfileRecipeCard';
 import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';

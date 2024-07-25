@@ -30,9 +30,10 @@ const ProfileCard = () => {
 
   const [editUsername, setEditUsername] = useState(false);
   const [editEmail, setEditEmail] = useState(false);
+  const [editImage, setEditImage] = useState(false);
+
   const [existingUsernames, setExistingUsernames] = useState([]);
   const [existingEmails, setExistingEmails] = useState([]);
-  const [editImage, setEditImage] = useState(false);
 
   const {
     register,
@@ -42,26 +43,23 @@ const ProfileCard = () => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    if (!sessionStorage.getItem('pageVisited')) {
-      sessionStorage.setItem('pageVisited', 'true');
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-    }
+  const handleShowDeleteConfirmation = (user_id) => {
+    setUserId(user_id);
+    setShow(true);
+  };
 
-    const fetchUser = async () => {
+  useEffect(() => {
+    const fetchData = async () => {
       try {
         const data = await getOneUser(id);
         setUser(data);
       } catch (error) {
+        console.error('Error fetching user details:', error);
         toast.error('Error fetching user details');
       } finally {
         setIsLoading(false);
       }
     };
-
-    fetchUser();
 
     const fetchUsernames = async () => {
       try {
@@ -83,9 +81,7 @@ const ProfileCard = () => {
 
     fetchUsernames();
     fetchEmails();
-    if (sessionStorage.getItem('pageRefreshed')) {
-      sessionStorage.setItem('pageRefreshed', 'true');
-    }
+    fetchData();
   }, [id, setUser]);
 
   useEffect(() => {
@@ -100,7 +96,6 @@ const ProfileCard = () => {
     setUserId(user_id);
     setShow(true);
   };
-
   const handleClose = () => setShow(false);
 
   const handleDelete = async () => {
@@ -119,6 +114,23 @@ const ProfileCard = () => {
     }
   };
 
+  // const handleUsernameChange = async (data) => {
+  //   try {
+  //     const response = await updateUserAuth(id, { userName: data.userName });
+  //     if (response.success) {
+  //       updateUser();
+  //       setUser((prevUser) => ({ ...prevUser, userName: data.userName }));
+  //       toast.success('Username updated successfully!');
+  //     } else {
+  //       throw new Error('Failed to update username');
+  //     }
+  //   } catch (error) {
+  //     toast.error(`Error updating username: ${error.message}`);
+  //   } finally {
+  //     setEditUsername(false);
+  //   }
+  // };
+
   const handleUsernameChange = async (data) => {
     if (existingUsernames.includes(data.userName)) {
       toast.error('A user with this username already exists!');
@@ -126,17 +138,17 @@ const ProfileCard = () => {
     }
     try {
       if (role === 'ADMIN' || userId === id) {
-        const response = await updateUserAuth(userId, { userName: data.userName });
-        updateUser();
+        const response = await updateUserAuth(id, { userName: data.userName });
         if (response.token) {
+          updateUser();
+          setUser((prevUser) => ({ ...prevUser, userName: data.userName }));
           updateUserAuthContext(response.token);
         }
-        setUser((prevUser) => ({ ...prevUser, userName: data.userName }));
         const usernames = await getUserNames();
         setExistingUsernames(usernames);
-        setTimeout(() => {
-          window.location.reload();
-        }, 800);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 800);
         toast.success('Username updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -148,6 +160,23 @@ const ProfileCard = () => {
     }
   };
 
+  // const handleEmailChange = async (data) => {
+  //   try {
+  //     const response = await updateUserAuth(id, { email: data.email });
+  //     if (response.success) {
+  //       updateUser();
+  //       setUser((prevUser) => ({ ...prevUser, email: data.email }));
+  //       toast.success('Email updated successfully!');
+  //     } else {
+  //       throw new Error('Failed to update email');
+  //     }
+  //   } catch (error) {
+  //     toast.error(`Error updating email: ${error.message}`);
+  //   } finally {
+  //     setEditEmail(false);
+  //   }
+  // };
+
   const handleEmailChange = async (data) => {
     if (existingEmails.includes(data.email)) {
       toast.error('A user with this email already exists!');
@@ -155,12 +184,12 @@ const ProfileCard = () => {
     }
     try {
       if (role === 'ADMIN' || userId === id) {
-        const response = await updateUserAuth(userId, { email: data.email });
-        updateUser();
+        const response = await updateUserAuth(id, { email: data.email });
         if (response.token) {
+          updateUser();
+          setUser((prevUser) => ({ ...prevUser, email: data.email }));
           updateUserAuthContext(response.token);
         }
-        setUser((prevUser) => ({ ...prevUser, email: data.email }));
         toast.success('Email updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -172,15 +201,32 @@ const ProfileCard = () => {
     }
   };
 
+  // const handleImageChange = async (data) => {
+  //   try {
+  //     const response = await updateUserAuth(id, { image: data.image });
+  //     if (response.success) {
+  //       updateUser();
+  //       setUser((prevUser) => ({ ...prevUser, image: data.image }));
+  //       toast.success('Image updated successfully!');
+  //     } else {
+  //       throw new Error('Failed to update image');
+  //     }
+  //   } catch (error) {
+  //     toast.error(`Error updating image: ${error.message}`);
+  //   } finally {
+  //     setEditImage(false);
+  //   }
+  // };
+
   const handleImageChange = async (data) => {
     try {
       if (role === 'ADMIN' || userId === id) {
-        const response = await updateUserAuth(userId, { image: data.image });
-        updateUser();
+        const response = await updateUserAuth(id, { image: data.image });
         if (response.token) {
+          updateUser();
+          setUser((prevUser) => ({ ...prevUser, image: data.image }));
           updateUserAuthContext(response.token);
         }
-        setUser((prevUser) => ({ ...prevUser, image: data.image }));
         toast.success('Image updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -249,7 +295,7 @@ const ProfileCard = () => {
             <button
               type='button'
               className='btn btn-danger delete-button'
-              onClick={() => handleShow(id)}
+              onClick={() => handleShowDeleteConfirmation(id)}
             >
               Delete account
             </button>

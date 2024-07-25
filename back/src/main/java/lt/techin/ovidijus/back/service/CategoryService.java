@@ -19,11 +19,13 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final UserService userService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository, UserService userService) {
+    public CategoryService(CategoryRepository categoryRepository, UserService userService, CustomUserDetailsService customUserDetailsService) {
         this.categoryRepository = categoryRepository;
         this.userService = userService;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     public List<CategoryResponseDTO> selectAll() {
@@ -70,7 +72,7 @@ public class CategoryService {
         validateCategory(categoryRequestDTO.getName());
 
         if (categoryRequestDTO.getName() != null) {
-            if (categoryRepository.existsByName(categoryRequestDTO.getName())){
+            if (categoryRepository.existsByName(categoryRequestDTO.getName())) {
                 return new CategoryResponseDTO(existingCategory.getId(), "Category already exists!");
             }
             existingCategory.setName(categoryRequestDTO.getName());
@@ -92,8 +94,15 @@ public class CategoryService {
         }
     }
 
+//    public User checkAuthorized() {
+//        if (userService.getCurrentUser() == null) {
+//            throw new RuntimeException("Not authorized");
+//        }
+//        return null;
+//    }
+
     public User checkAuthorized() {
-        return userService.getCurrentUser()
+        return customUserDetailsService.getCurrentUser()
                 .orElseThrow(() -> new RuntimeException("Not authorized"));
     }
 
