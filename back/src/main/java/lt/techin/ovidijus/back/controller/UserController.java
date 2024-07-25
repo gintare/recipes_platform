@@ -1,5 +1,7 @@
 package lt.techin.ovidijus.back.controller;
 
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import lt.techin.ovidijus.back.dto.LoginRequestDTO;
 import lt.techin.ovidijus.back.dto.UserResponseDTO;
 import lt.techin.ovidijus.back.dto.LoginResponseDTO;
@@ -20,6 +22,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping
+@Slf4j
 public class UserController {
 
     private final UserRepository userRepository;
@@ -59,8 +62,6 @@ public class UserController {
             return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
         } catch (UserNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (AccessDeniedException e) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
@@ -68,38 +69,22 @@ public class UserController {
         }
     }
 
-//    @PatchMapping("/users/{id}")
-//    public ResponseEntity<UserResponseDTO> updateAccount(@PathVariable long id, @RequestBody UserRequestDTO userRequestDTO) {
-//        try {
-//            UserResponseDTO updatedAccount = userService.updateAccount(id, userRequestDTO);
-//            return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
-//        } catch (UserNotFoundException e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        } catch (AccessDeniedException e) {
-//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//        } catch (IllegalArgumentException e) {
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+
+
+//    @DeleteMapping("/users/{id}")
+//    public UserResponseDTO deleteAccount(@PathVariable long id) throws AccessDeniedException {
+//        return userService.deleteAccount(id);
 //    }
 
     @DeleteMapping("/users/{id}")
-    public UserResponseDTO deleteAccount(@PathVariable long id) throws AccessDeniedException {
-        return userService.deleteAccount(id);
+    public ResponseEntity<UserResponseDTO> deleteAccount(@PathVariable long id) {
+        try {
+            UserResponseDTO response = userService.deleteAccount(id);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
-//    @DeleteMapping("/users/{id}")
-//    public ResponseEntity<UserResponseDTO> deleteAccount(@PathVariable long id) {
-//        try {
-//            UserResponseDTO response = userService.deleteAccount(id);
-//            return new ResponseEntity<>(response, HttpStatus.OK);
-//        } catch (AccessDeniedException e) {
-//            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-//        } catch (UserNotFoundException e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
 
     @GetMapping("/users/emails")
     public ResponseEntity<List<String>> getAllUserEmails() {

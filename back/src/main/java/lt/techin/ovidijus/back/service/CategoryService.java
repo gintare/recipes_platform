@@ -19,13 +19,11 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final UserService userService;
-    private final CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository, UserService userService, CustomUserDetailsService customUserDetailsService) {
+    public CategoryService(CategoryRepository categoryRepository, UserService userService) {
         this.categoryRepository = categoryRepository;
         this.userService = userService;
-        this.customUserDetailsService = customUserDetailsService;
     }
 
     public List<CategoryResponseDTO> selectAll() {
@@ -94,15 +92,8 @@ public class CategoryService {
         }
     }
 
-//    public User checkAuthorized() {
-//        if (userService.getCurrentUser() == null) {
-//            throw new RuntimeException("Not authorized");
-//        }
-//        return null;
-//    }
-
     public User checkAuthorized() {
-        return customUserDetailsService.getCurrentUser()
+        return userService.getCurrentUser()
                 .orElseThrow(() -> new RuntimeException("Not authorized"));
     }
 

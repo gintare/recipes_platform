@@ -8,8 +8,16 @@
   font-weight: 600;
 }
 
-.loader {
-  text-align: center;
+.admin-loading-text {
+  margin-top: 0.5rem;
   font-weight: 600;
-  margin-top: 5rem;
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+.admin-loader {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

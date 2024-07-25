@@ -6,6 +6,7 @@ import lt.techin.ovidijus.back.dto.LoginRequestDTO;
 import lt.techin.ovidijus.back.dto.UserResponseDTO;
 import lt.techin.ovidijus.back.dto.LoginResponseDTO;
 import lt.techin.ovidijus.back.dto.UserRequestDTO;
+import org.springframework.security.access.AccessDeniedException;
 import lt.techin.ovidijus.back.exceptions.UserAlreadyExistsException;
 import lt.techin.ovidijus.back.exceptions.UserNotFoundException;
 import lt.techin.ovidijus.back.model.User;
@@ -18,7 +19,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -34,17 +34,16 @@ public class UserService {
     private final JwtService jwtService;
     private final HttpServletRequest request;
     private final UserDetailsService userDetailsService;
-    private final CustomUserDetailsService customUserDetailsService;
+
 
     @Autowired
-    public UserService(UserRepository userRepository, AuthenticationService authenticationService, PasswordEncoder passwordEncoder, JwtService jwtService, HttpServletRequest request, @Qualifier("userDetailsService") UserDetailsService userDetailsService, CustomUserDetailsService customUserDetailsService) {
+    public UserService(UserRepository userRepository, AuthenticationService authenticationService, PasswordEncoder passwordEncoder, JwtService jwtService, HttpServletRequest request, @Qualifier("userDetailsService") UserDetailsService userDetailsService) {
         this.userRepository = userRepository;
         this.authenticationService = authenticationService;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.request = request;
         this.userDetailsService = userDetailsService;
-        this.customUserDetailsService = customUserDetailsService;
     }
 
     public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) throws UserAlreadyExistsException {
@@ -88,11 +87,12 @@ public class UserService {
 
     public UserResponseDTO updateAccount(Long id, UserRequestDTO userRequestDTO)
             throws AccessDeniedException, UserNotFoundException {
-//kazka reikia padaryti su authorize kad neleistu atnaujinti kitu
+
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
-        if (!id.equals(existingUser.getId()) && existingUser.getRole().equals("ADMIN")) {
+
+        if (!id.equals(existingUser.getId()) && !existingUser.getRole().equals("ADMIN")) {
             throw new AccessDeniedException("You don't have permission to update this user's details");
         }
 
@@ -140,12 +140,10 @@ public class UserService {
     }
 
     public UserResponseDTO deleteAccount(Long id) throws AccessDeniedException {
-        User user = checkAuthorized();
-
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
-        if (!user.getRole().equals("ADMIN") && !user.getId().equals(id)) {
+        if (!existingUser.getRole().equals("ADMIN") && !existingUser.getId().equals(id)) {
             throw new AccessDeniedException("Current user does not have permission to delete this user");
         } else {
             userRepository.deleteById(id);
@@ -173,20 +171,15 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public User checkAuthorized() {
-        return customUserDetailsService.getCurrentUser()
-                .orElseThrow(() -> new RuntimeException("Not authorized"));
-    }
+    public Optional<User> getCurrentUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-//    public Optional<User> getCurrentUser() {
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//
-//        if (principal instanceof UserDetails) {
-//            String username = ((UserDetails) principal).getUsername();
-//            return userRepository.findByUserName(username);
-//        }
-//        return Optional.empty();
-//    }
+        if (principal instanceof UserDetails) {
+            String username = ((UserDetails) principal).getUsername();
+            return userRepository.findByUserName(username);
+        }
+        return Optional.empty();
+    }
 
     public void validateEmail(String email) {
         if (!Pattern.matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$", email)) {

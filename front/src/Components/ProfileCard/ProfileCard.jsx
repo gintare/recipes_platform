@@ -114,23 +114,6 @@ const ProfileCard = () => {
     }
   };
 
-  // const handleUsernameChange = async (data) => {
-  //   try {
-  //     const response = await updateUserAuth(id, { userName: data.userName });
-  //     if (response.success) {
-  //       updateUser();
-  //       setUser((prevUser) => ({ ...prevUser, userName: data.userName }));
-  //       toast.success('Username updated successfully!');
-  //     } else {
-  //       throw new Error('Failed to update username');
-  //     }
-  //   } catch (error) {
-  //     toast.error(`Error updating username: ${error.message}`);
-  //   } finally {
-  //     setEditUsername(false);
-  //   }
-  // };
-
   const handleUsernameChange = async (data) => {
     if (existingUsernames.includes(data.userName)) {
       toast.error('A user with this username already exists!');
@@ -145,10 +128,7 @@ const ProfileCard = () => {
           updateUserAuthContext(response.token);
         }
         const usernames = await getUserNames();
-        setExistingUsernames(usernames);
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 800);
+        setExistingUsernames(usernames);       
         toast.success('Username updated successfully!');
       } else {
         toast.error('Unauthorized action');
@@ -160,22 +140,6 @@ const ProfileCard = () => {
     }
   };
 
-  // const handleEmailChange = async (data) => {
-  //   try {
-  //     const response = await updateUserAuth(id, { email: data.email });
-  //     if (response.success) {
-  //       updateUser();
-  //       setUser((prevUser) => ({ ...prevUser, email: data.email }));
-  //       toast.success('Email updated successfully!');
-  //     } else {
-  //       throw new Error('Failed to update email');
-  //     }
-  //   } catch (error) {
-  //     toast.error(`Error updating email: ${error.message}`);
-  //   } finally {
-  //     setEditEmail(false);
-  //   }
-  // };
 
   const handleEmailChange = async (data) => {
     if (existingEmails.includes(data.email)) {
@@ -201,22 +165,6 @@ const ProfileCard = () => {
     }
   };
 
-  // const handleImageChange = async (data) => {
-  //   try {
-  //     const response = await updateUserAuth(id, { image: data.image });
-  //     if (response.success) {
-  //       updateUser();
-  //       setUser((prevUser) => ({ ...prevUser, image: data.image }));
-  //       toast.success('Image updated successfully!');
-  //     } else {
-  //       throw new Error('Failed to update image');
-  //     }
-  //   } catch (error) {
-  //     toast.error(`Error updating image: ${error.message}`);
-  //   } finally {
-  //     setEditImage(false);
-  //   }
-  // };
 
   const handleImageChange = async (data) => {
     try {
