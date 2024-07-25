@@ -29,17 +29,12 @@ public class LikeService {
 
     public Like addLike(Long recipeId, Long userId) {
         Like like = new Like();
-
-        // Assuming you have methods to find User and Recipe entities
-
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id " + userId));
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new RuntimeException("Recipe not found with id " + recipeId));
-
         like.setUser(user);
         like.setRecipe(recipe);
-
         return likeRepository.save(like);
     }
 
@@ -50,10 +45,8 @@ public class LikeService {
             Like like = likeRepository.findByRecipeIdAndUserId(recipeId, userId)
                     .orElseThrow(() -> new RuntimeException("Like not found with recipeId " + recipeId + " and userId " + userId));
             likeRepository.delete(like);
-            System.out.println("Successfully removed like for recipeId " + recipeId + " and userId " + userId);
         } catch (RuntimeException e) {
-            System.err.println("Failed to remove like for recipeId " + recipeId + " and userId " + userId + ". Error: " + e.getMessage());
-            throw new RuntimeException("Failed to remove like for recipeId " + recipeId + " and userId " + userId, e);
+             new RuntimeException("Failed to remove like for recipeId " + recipeId + " and userId " + userId, e);
         }
     }
 

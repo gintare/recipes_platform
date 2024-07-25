@@ -27,7 +27,6 @@ const RecipeCarousel = () => {
           );
           
           const sortedRecipes = recipesWithLikes.sort((a, b) => b.likes - a.likes);
-          console.log('Sorted Recipes:', sortedRecipes);
   
           setRecipes(sortedRecipes);
         } else {

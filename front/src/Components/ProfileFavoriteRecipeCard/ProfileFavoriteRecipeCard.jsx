@@ -9,9 +9,7 @@ function ProfileFavoriteRecipeCard({ favoriteRecipe }) {
   const { id } = useContext(UserContext);
   const { recipe } = useContext(RecipesContext);
   
-  console.log('User ID:', id);
-  console.log('Recipe:', recipe);
-
+  
   return (
     <>
       <Link to={`/recipe/${favoriteRecipe.recipeId}`}>
