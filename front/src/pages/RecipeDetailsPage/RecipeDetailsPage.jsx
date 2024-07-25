@@ -19,6 +19,7 @@ import {
 import { BarChartLineFill, HeartFill, Heart } from "react-bootstrap-icons";
 import { useForm } from "react-hook-form";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
+import LikeButton from "../../Components/LikeButton/LikeButton";
 
 function RecipeDetailsPage() {
   const { id: recipeId } = useParams();
@@ -123,7 +124,7 @@ function RecipeDetailsPage() {
       <div className="container">
       {isLoggedIn && 
         <div className="row">
-          <div className="col-sm-2">Like Likes button</div>
+          <LikeButton recipeId={recipe.id} userId={id} />
           <div className="col-sm-2">
             {favorite ? (
               <HeartFill color="red" size="36" onClick={clickFavoriteHandler} />
