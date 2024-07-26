@@ -158,7 +158,7 @@ public class UserService {
     public UserResponseDTO getOneUser(Long id) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
-        return new UserResponseDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getEmail());
+        return new UserResponseDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getEmail(), "", existingUser.getImage());
     }
 
     public List<String> getAllUserNames() {
