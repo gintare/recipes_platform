@@ -2,6 +2,7 @@ package lt.techin.ovidijus.back.service;
 
 import lombok.AllArgsConstructor;
 import lt.techin.ovidijus.back.dto.FollowerResponseDTO;
+import lt.techin.ovidijus.back.dto.UserResponseDTO;
 import lt.techin.ovidijus.back.exceptions.UserNotFoundException;
 import lt.techin.ovidijus.back.model.Follower;
 import lt.techin.ovidijus.back.model.User;
@@ -9,6 +10,7 @@ import lt.techin.ovidijus.back.repository.FollowerRepository;
 import lt.techin.ovidijus.back.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,5 +52,22 @@ public class FollowerService {
         for(Follower follower: followers){
             this.followerRepository.delete(follower);
         }
+    }
+
+    public List<FollowerResponseDTO> isFollowingByIdWho(Long idWho) {
+        User userWho = this.userRepository.findById(idWho).orElseThrow(() -> new UserNotFoundException("Not found user by id = "+idWho));
+        List<Follower> followers = this.followerRepository.findByFollowWho(userWho);
+
+        List<FollowerResponseDTO> followerResponseDTOS = new ArrayList<>();
+        for(Follower follower: followers){
+            FollowerResponseDTO followerResponseDTO = new FollowerResponseDTO();
+            followerResponseDTO.setFollowWhoUserId(follower.getFollowWho().getId());
+            followerResponseDTO.setFollowWhatUserId(follower.getFollowWhat().getId());
+            followerResponseDTO.setFollowWhatUserName(follower.getFollowWhat().getUsername());
+            followerResponseDTO.setFollowWhatProfileImage(follower.getFollowWhat().getImage());
+            followerResponseDTOS.add(followerResponseDTO);
+        }
+
+        return followerResponseDTOS;
     }
 }
