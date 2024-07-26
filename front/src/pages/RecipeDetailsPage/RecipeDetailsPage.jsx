@@ -124,13 +124,15 @@ function RecipeDetailsPage() {
       <div className="container">
       {isLoggedIn && 
         <div className="row">
-          <LikeButton recipeId={recipe.id} userId={id} />
           <div className="col-sm-2">
             {favorite ? (
               <HeartFill color="red" size="36" onClick={clickFavoriteHandler} />
             ) : (
               <Heart color="red" size="36" onClick={clickFavoriteHandler} />
             )}
+          </div>
+          <div className="Like-Button-in-details-page">
+          <LikeButton recipeId={recipe.id} userId={id} />
           </div>
           <div className="col">
             Author : {recipeCreatorUserName}
