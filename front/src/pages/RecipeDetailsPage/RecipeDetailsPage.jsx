@@ -19,6 +19,7 @@ import {
 import { BarChartLineFill, HeartFill, Heart } from "react-bootstrap-icons";
 import { useForm } from "react-hook-form";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
+import LikeButton from "../../Components/LikeButton/LikeButton";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 
 function RecipeDetailsPage() {
@@ -130,7 +131,6 @@ function RecipeDetailsPage() {
       <div className="container">
       {isLoggedIn && 
         <div className="row">
-          <div className="col-sm-2">Like Likes button</div>
           <div className="col-sm-2">
             {favorite ? (
               
@@ -144,6 +144,9 @@ function RecipeDetailsPage() {
               <Heart color="red" size="36" onClick={clickFavoriteHandler} />
               </OverlayTrigger>
             )}
+          </div>
+          <div className="Like-Button-in-details-page">
+          <LikeButton recipeId={recipe.id} userId={id} />
           </div>
           <div className="col">
             <div className="author-content">Author : {recipeCreatorUserName}</div>

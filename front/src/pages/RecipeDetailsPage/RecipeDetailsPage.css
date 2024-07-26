@@ -32,6 +32,9 @@
 .container {
   margin-top: 100px;
 }
+.Like-Button-in-details-page{
+  display: flex;
+}
 
 .author-content{
   display: inline-block;

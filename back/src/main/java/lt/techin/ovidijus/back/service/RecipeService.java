@@ -306,4 +306,15 @@ public class RecipeService {
         }
         return recipeResponseDTOS;
     }
+    public List<RecipeResponseDTO> searchRecipesByName(String searchTerm, Integer pageNumber) {
+        Pageable page = PageRequest.of(pageNumber, RECORDS_PER_PAGE);
+        List<Recipe> recipes = this.recipeRepository.findByNameContaining(searchTerm, page);
+        List<RecipeResponseDTO> recipeResponseDTOS = new ArrayList<>();
+        for (Recipe recipe : recipes) {
+            RecipeResponseDTO recipeResponseDTO = getRecipeResponseDTO(recipe);
+            recipeResponseDTOS.add(recipeResponseDTO);
+        }
+        return recipeResponseDTOS;
+    }
+
 }
