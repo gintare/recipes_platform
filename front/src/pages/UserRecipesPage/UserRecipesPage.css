@@ -23,8 +23,17 @@
 }
 
 .user-card-name {
-    display: inline-block;
+    display: block;
     padding: 1rem;
     border: 1px solid black;
     margin: 1rem;
+}
+
+.user-card-button {
+    display: block;
+}
+
+.user-card-content-info{
+    display: inline-block;
+    margin-left: 1rem;
 }
