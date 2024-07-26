@@ -71,5 +71,12 @@ public class RecipeController {
     public RecipeResponseDTO findOneRecipe(@PathVariable Long recipeId) {
         return this.recipeService.findOneRecipe(recipeId);
     }
+    @GetMapping("/api/search")
+    public ResponseEntity<List<RecipeResponseDTO>> searchRecipes(
+            @RequestParam String query,
+            @RequestParam Integer page) {
+        List<RecipeResponseDTO> recipes = recipeService.searchRecipesByName(query, page);
+        return ResponseEntity.ok(recipes);
+    }
 
-}
+    }

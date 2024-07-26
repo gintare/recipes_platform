@@ -1,8 +1,8 @@
-.image-content img{
+.image-content img {
   width: 100%;
 }
 
-.image-content{
+.image-content {
   min-width: 400px;
   padding: 30px 0px;
 }
@@ -11,29 +11,30 @@
   border: 1px solid gray;
 }
 
-.follow_button_active{
+.follow_button_active {
   border: 1px solid red;
 }
 
 .recipe-info-content {
-   padding: 30px;
+  padding: 30px;
 }
 
 .footer_padding {
   height: 5rem;
-
 }
 
-.favorites-row-content{
+.favorites-row-content {
   padding: 2rem;
-
 }
 
 .container {
-  margin-top: 100px;
+  margin-top: 13rem;
+}
+.Like-Button-in-details-page{
+  display: flex;
 }
 
-.author-content{
+.author-content {
   display: inline-block;
   margin-right: 10px;
 }
@@ -42,3 +43,18 @@
   display: inline-block;
 }
 
+.recipes-link {
+  position: absolute;
+  transform: translate(1rem, -6rem);
+  border: none;
+  background-color: transparent;
+}
+
+.back-text {
+  margin-left: 0.2rem;
+}
+
+.back-button {
+  font-size: 2rem;
+  color: var(--primary-blue);
+}
