@@ -9,6 +9,7 @@ import lt.techin.ovidijus.back.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,18 +38,21 @@ public class CategoryController {
 //    }
 
     @PostMapping("/api/categories")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> createCategory(@RequestBody CategoryRequestDTO categoryRequestDTO) throws NotAdminException {
         Category newCategory = categoryService.createCategory(categoryRequestDTO);
         return new ResponseEntity<>(newCategory, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/api/categories/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteCategory(@PathVariable long id) throws CategoryNotFoundException, NotAdminException {
         categoryService.deleteCategory(id);
         return ResponseEntity.ok("Category deleted");
     }
 
     @PatchMapping("/api/categories/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryResponseDTO> updateCategory(@PathVariable long id, @RequestBody CategoryRequestDTO categoryRequestDTO) {
         try {
             CategoryResponseDTO updatedCategory = categoryService.updateCategory(id, categoryRequestDTO);
@@ -63,7 +67,7 @@ public class CategoryController {
     }
 
     @GetMapping("/api/categories/{id}")
-    public ResponseEntity<?> getOneCategory(@PathVariable long id){
+    public ResponseEntity<?> getOneCategory(@PathVariable long id) {
         return ResponseEntity.ok(this.categoryService.getOneCategory(id));
     }
 
