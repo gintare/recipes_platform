@@ -54,3 +54,8 @@ nav .nav-link {
   padding: 0.2rem 0.3rem;
   border-radius: 0.2rem;
 }
+
+.categories-select {
+  width: 300px;
+  margin: 20px;
+}

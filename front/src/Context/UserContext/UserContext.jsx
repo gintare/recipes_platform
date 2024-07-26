@@ -34,7 +34,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const updateUser = () => {
-    setUpdate((prev) => prev + 1);
+    setUpdate((prev) => prev[update] + 1);
   };
 
   const updateUserAuthContext = (newToken) => {

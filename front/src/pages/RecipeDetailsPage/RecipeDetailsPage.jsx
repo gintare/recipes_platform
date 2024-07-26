@@ -20,6 +20,7 @@ import { BarChartLineFill, HeartFill, Heart } from "react-bootstrap-icons";
 import { useForm } from "react-hook-form";
 import NotFoundPage from "../NotFoundPage/NotFoundPage";
 import LikeButton from "../../Components/LikeButton/LikeButton";
+import { OverlayTrigger, Popover } from "react-bootstrap";
 
 function RecipeDetailsPage() {
   const { id: recipeId } = useParams();
@@ -86,6 +87,12 @@ function RecipeDetailsPage() {
     setUpdate((prev) => prev + 1);
   };
 
+  const popoverHoverFocus = (
+    <Popover id="popover-trigger-hover-focus" title="Popover bottom">
+      Add to <strong>favorites</strong>
+    </Popover>
+  );
+
   useEffect(() => {
     const getRecipe = async () => {
       try {
@@ -126,22 +133,31 @@ function RecipeDetailsPage() {
         <div className="row">
           <div className="col-sm-2">
             {favorite ? (
+              
               <HeartFill color="red" size="36" onClick={clickFavoriteHandler} />
             ) : (
+              <OverlayTrigger
+              trigger={['hover', 'focus']}
+              placement="top"
+              overlay={popoverHoverFocus}
+            >
               <Heart color="red" size="36" onClick={clickFavoriteHandler} />
+              </OverlayTrigger>
             )}
           </div>
           <div className="Like-Button-in-details-page">
           <LikeButton recipeId={recipe.id} userId={id} />
           </div>
           <div className="col">
-            Author : {recipeCreatorUserName}
+            <div className="author-content">Author : {recipeCreatorUserName}</div>
+            <div className="author-button-content">
             <button
               className={follow ? "follow_button_active" : "follow_button"}
               onClick={followUser}
             >
               {follow ? "You are following author" : "Follow author"}
             </button>
+            </div>
           </div>
         </div>
          }

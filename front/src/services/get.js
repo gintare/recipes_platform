@@ -111,8 +111,6 @@ export const getOneCategory = async (categoryId) => {
   }
 };
 
-
-
 export const getIsFavorite = async (userId, recipeId) => {
   try {
     const resp = await axios.get(`${API_URL}/api/users/${userId}/recipes/${recipeId}/favorites`, {
@@ -169,6 +167,15 @@ export const getFavoritesByUser = async (userId) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error fetching all recipes: ${error.message}`);
+  }
+};
+
+export const getRecipesByCategoryByPage = async (categoryId, pageNo) => {
+  try {
+    const resp = await axios.get(`${API_URL}/api/categories/${categoryId}/recipes/pages/${pageNo}`);
     return resp.data;
   } catch (error) {
     throw new Error(`Error fetching all recipes: ${error.message}`);
