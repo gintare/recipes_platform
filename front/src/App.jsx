@@ -14,7 +14,7 @@ import AdminPage from './pages/AdminPage/AdminPage';
 import { CategoriesProvider } from './Context/CategoriesContext/CategoriesContext';
 import { RecipesProvider } from './Context/RecipesContentxt/RecipesContext';
 import RecipeDetailsPage from './pages/RecipeDetailsPage/RecipeDetailsPage';
- 
+
 import { useContext } from 'react';
 
 function App() {
@@ -25,44 +25,40 @@ function App() {
       <ToastContainer autoClose={1200} position='top-center' />
       <CategoriesProvider>
         <RecipesProvider>
-        <Header />
-        <Routes>
-          <Route path='/' element={<Navigate to='/recipes' />} />
-          {!isLoggedIn ? (
-            <>
-              <Route path='/register' element={<RegisterPage />} />
-              <Route path='/login' element={<LoginPage />} />
-            </>
-          ) : (
-            <>
-              <Route path='/register' element={<Navigate to='/recipes' replace />} />
-              <Route path='/login' element={<Navigate to='/recipes' replace />} />
-            </>
-          )}
-          <Route path='/recipes' element={<RecipesPage />} />
-          <Route
-            path='/admin'
-            element={
-              <ProtectedRoute adminOnly={true}>
-                <AdminPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/profile'
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path='/recipe/:id'
-            element={<RecipeDetailsPage />}
-            
-          />
-          <Route path='*' element={<NotFoundPage />} />
-        </Routes>
+          <Header />
+          <Routes>
+            <Route path='/' element={<Navigate to='/recipes' />} />
+            {!isLoggedIn ? (
+              <>
+                <Route path='/register' element={<RegisterPage />} />
+                <Route path='/login' element={<LoginPage />} />
+              </>
+            ) : (
+              <>
+                <Route path='/register' element={<Navigate to='/recipes' replace />} />
+                <Route path='/login' element={<Navigate to='/recipes' replace />} />
+              </>
+            )}
+            <Route path='/recipes' element={<RecipesPage />} />
+            <Route
+              path='/admin'
+              element={
+                <ProtectedRoute adminOnly={true}>
+                  <AdminPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path='/profile'
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route path='/recipe/:id' element={<RecipeDetailsPage />} />
+            <Route path='*' element={<NotFoundPage />} />
+          </Routes>
         </RecipesProvider>
       </CategoriesProvider>
       <Footer />

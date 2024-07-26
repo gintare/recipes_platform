@@ -1,10 +1,7 @@
 package lt.techin.ovidijus.back.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +14,7 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class User implements UserDetails {
 
     @Id
@@ -25,7 +23,6 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "user_name")
-//    @Length(min = 4, max = 20)
     private String userName;
 
     @Column(name = "email")

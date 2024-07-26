@@ -111,8 +111,6 @@ export const getOneCategory = async (categoryId) => {
   }
 };
 
-
-
 export const getIsFavorite = async (userId, recipeId) => {
   try {
     const resp = await axios.get(`${API_URL}/api/users/${userId}/recipes/${recipeId}/favorites`, {
