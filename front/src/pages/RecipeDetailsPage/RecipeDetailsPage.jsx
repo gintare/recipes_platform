@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
-// import { useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   getCommentsByRecipe,
   getIsFavorite,
@@ -13,9 +12,8 @@ import './RecipeDetailsPage.css';
 import UserContext from '../../Context/UserContext/UserContext';
 import { commentPost, favoritePost, followerPost } from '../../services/post';
 import { deleteComment, deleteFavorite, deleteFollower } from '../../services/delete';
-import { BarChartLineFill, HeartFill, Heart } from 'react-bootstrap-icons';
+import { HeartFill, Heart } from 'react-bootstrap-icons';
 import { useForm } from 'react-hook-form';
-import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 function RecipeDetailsPage() {
@@ -29,8 +27,8 @@ function RecipeDetailsPage() {
   const [update, setUpdate] = useState(0);
   const { id, userName, isLoggedIn } = useContext(UserContext);
   const [follow, setFollow] = useState(true);
-  const location = useLocation();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
   const {
     register,
     control,
@@ -105,9 +103,6 @@ function RecipeDetailsPage() {
     };
     getRecipe();
   }, [update]);
-
-  // let history = useHistory();
-  const navigate = useNavigate();
 
   return (
     <>
