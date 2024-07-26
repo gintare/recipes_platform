@@ -7,4 +7,6 @@ public class FollowerResponseDTO {
     private Long id;
     private Long followWhoUserId;
     private Long followWhatUserId;
+    private String followWhatUserName;
+    private String followWhatProfileImage;
 }
