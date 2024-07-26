@@ -17,22 +17,22 @@ public class FollowerController {
 
     private final FollowerService followerService;
 
-    @PostMapping("api/follower/{IdWho}/{IdWhat}")
+    @PostMapping("api/followers/{IdWho}/{IdWhat}")
     public ResponseEntity<?> createFollower(@PathVariable Long IdWho, @PathVariable Long IdWhat){
         return ResponseEntity.status(HttpStatus.CREATED).body(followerService.createFollower(IdWho, IdWhat));
     }
 
-    @GetMapping("api/follower/{IdWho}/{IdWhat}")
+    @GetMapping("api/followers/{IdWho}/{IdWhat}")
     public ResponseEntity<?> isFollowing(@PathVariable Long IdWho, @PathVariable Long IdWhat) {
         return ResponseEntity.ok(followerService.isFollowing(IdWho, IdWhat));
     }
 
-    @DeleteMapping("api/follower/{IdWho}/{IdWhat}")
+    @DeleteMapping("api/followers/{IdWho}/{IdWhat}")
     public void deleteFollower(@PathVariable Long IdWho, @PathVariable Long IdWhat){
         followerService.deleteFollower(IdWho, IdWhat);
     }
 
-    @GetMapping("api/follower/{IdWho}")
+    @GetMapping("api/followers/{IdWho}")
     public List<FollowerResponseDTO> isFollowing(@PathVariable Long IdWho) {
         return followerService.isFollowingByIdWho(IdWho);
     }
