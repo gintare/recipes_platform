@@ -2,6 +2,8 @@ import Carousel from 'react-bootstrap/Carousel';
 import './RecipeCarousel.css';
 import { useEffect, useState } from 'react';
 import { getAllRecipes } from '../../services/get';
+import { getRecipeLikes } from '../../services/Likes';
+import { Link } from "react-router-dom";
 
 const RecipeCarousel = () => {
   const [recipes, setRecipes] = useState([]);
@@ -10,8 +12,26 @@ const RecipeCarousel = () => {
     const fetchData = async () => {
       try {
         const data = await getAllRecipes();
-        console.log('Data from API:', data);
-        setRecipes(data);
+        
+        if (Array.isArray(data) && data.length > 0) {
+          const recipesWithLikes = await Promise.all(
+            data.map(async (recipe) => {
+              try {
+                const likes = await getRecipeLikes(recipe.id);
+                return { ...recipe, likes };
+              } catch (error) {
+                console.error(`Error fetching likes for recipe ${recipe.id}:`, error);
+                return { ...recipe, likes: 0 };
+              }
+            })
+          );
+          
+          const sortedRecipes = recipesWithLikes.sort((a, b) => b.likes - a.likes);
+  
+          setRecipes(sortedRecipes);
+        } else {
+          console.error('Data format is incorrect or missing necessary properties:', data);
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -36,14 +56,16 @@ const RecipeCarousel = () => {
         <Carousel>
           {limitedRecipes.map((recipe, index) => (
             <Carousel.Item key={index}>
-              <img
-                src={recipe.image}
-                alt={recipe.name}
-                className="recipe-carousel-image"
-              />
-              <Carousel.Caption>
-                <h3>{truncateText(recipe.name, 40)}</h3>
-              </Carousel.Caption>
+              <Link to={`/recipe/${recipe.id}`}>
+                <img
+                  src={recipe.image}
+                  alt={recipe.name}
+                  className="recipe-carousel-image"
+                />
+                <Carousel.Caption>
+                  <h3>{truncateText(recipe.name, 40)}</h3>
+                </Carousel.Caption>
+              </Link>
             </Carousel.Item>
           ))}
         </Carousel>

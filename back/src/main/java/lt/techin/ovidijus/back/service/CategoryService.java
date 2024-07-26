@@ -70,7 +70,7 @@ public class CategoryService {
         validateCategory(categoryRequestDTO.getName());
 
         if (categoryRequestDTO.getName() != null) {
-            if (categoryRepository.existsByName(categoryRequestDTO.getName())){
+            if (categoryRepository.existsByName(categoryRequestDTO.getName())) {
                 return new CategoryResponseDTO(existingCategory.getId(), "Category already exists!");
             }
             existingCategory.setName(categoryRequestDTO.getName());

@@ -80,6 +80,11 @@
   transition: opacity 0.3s ease;
 }
 
+.clear-image {
+  color: var(--gradient-violet-blue);
+  margin-left: 0.3rem;
+}
+
 @media screen and (min-width: 577px) {
   .profile-card {
     flex-direction: row;
