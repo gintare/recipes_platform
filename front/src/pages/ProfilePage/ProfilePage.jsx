@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../Context/UserContext/UserContext';
-import { getRecipesByUserId, getFavoritesByUser, getOneUser } from '../../services/get';
+import { getRecipesByUserId, getFavoritesByUser, getOneUser, getFollowByWho } from '../../services/get';
 import ProfileRecipeCard from '../../Components/ProfileRecipeCard/ProfileRecipeCard';
 import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
@@ -9,6 +9,7 @@ import ProfileCard from '../../Components/ProfileCard/ProfileCard';
 import { Link, useParams } from 'react-router-dom';
 import PulseLoader from 'react-spinners/PulseLoader';
 import ProfileFavoriteRecipeCard from '../../Components/ProfileFavoriteRecipeCard/ProfileFavoriteRecipeCard';
+import ProfileFollowCard from '../../Components/ProfileFollowCard/ProfileFollowCard';
 
 function ProfilePage() {
   const [error, setError] = useState('');
@@ -16,6 +17,8 @@ function ProfilePage() {
   const [createRecipeIsVisible, setCreateRecipeIsVisible] = useState(false);
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [myRecipesIsVisible, setMyRecipesIsVisible] = useState(true);
+  const [following, setFollowing] = useState([]);
+  const [favorateRecipesIsVisible, setFavorateRecipesIsVisible] = useState(true);
   const { id, setUser } = useContext(UserContext);
   const { recipeId } = useParams();
   const {
@@ -54,8 +57,12 @@ function ProfilePage() {
       try {
         const rec = await getRecipesByUserId(id);
         setRecipes(rec);
-        const fav = await getFavoritesByUses(id);
+        const fav = await getFavoritesByUser(id);
         setFavoriteRecipes(fav);
+
+        const fol = await getFollowByWho(id);
+        console.log(fol);
+        setFollowing(fol);
       } catch (error) {
         setError('Failed to fetch recipes.');
         console.error('Error fetching recipes:', error);
@@ -109,6 +116,19 @@ function ProfilePage() {
           >
             My favorite recipes
           </button>
+          <button
+            type='button'
+            className='btn btn-primary'
+            onClick={() => {
+              setCreateRecipeIsVisible(false);
+              setUpdateRecipeFormIsVisible(false);
+              setMyRecipesIsVisible(false);
+              setFavorateRecipesIsVisible(false);
+              setUpdate((prev) => prev + 1);
+            }}
+          >
+            Authors I follow
+          </button>
         </div>
         {createRecipeIsVisible && (
           <RecipesForm setUpdate={setUpdate} setCreateRecipeIsVisible={setCreateRecipeIsVisible} />
@@ -143,8 +163,10 @@ function ProfilePage() {
             )}
           </div>
         </div>
+        {favorateRecipesIsVisible && 
+        <>
         <hr />
-        My favorite recipes
+         <p>My favorite recipes</p>
         <div className='container text-center'>
           <div className='recipe-list'>
             {favoriteRecipes.map((fRecipe) => {
@@ -152,8 +174,21 @@ function ProfilePage() {
             })}
           </div>
         </div>
+        </>
+        }
+        
+        <hr/>
+         I follow authors
+         <div className='container text-center'>
+          <div className='recipe-list'>
+            {following.map((foll) => {
+              return <ProfileFollowCard key={foll.id} followingWhat={foll} />;
+            })}
+          </div>
+        </div>
         <div className='footer-padding'></div>
       </div>
+      
     </>
   );
 }

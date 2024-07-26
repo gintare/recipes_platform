@@ -16,6 +16,7 @@ import { RecipesProvider } from './Context/RecipesContentxt/RecipesContext';
 import RecipeDetailsPage from './pages/RecipeDetailsPage/RecipeDetailsPage';
 
 import { useContext } from 'react';
+import UserRecipesPage from './pages/UserRecipesPage/UserRecipesPage';
 
 function App() {
   const { isLoggedIn } = useContext(UserContext);
@@ -57,6 +58,7 @@ function App() {
               }
             />
             <Route path='/recipe/:id' element={<RecipeDetailsPage />} />
+            <Route path='/user/recipes/:id' element={<UserRecipesPage />} />
             <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </RecipesProvider>

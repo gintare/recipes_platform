@@ -40,7 +40,7 @@ export const deleteRecipe = async (id) => {
 
 export const deleteFollower = async (whoUserId, whatUserId) => {
   try {
-    const resp = await axios.delete(`${API_URL}/api/follower/${whoUserId}/${whatUserId}`, {
+    const resp = await axios.delete(`${API_URL}/api/followers/${whoUserId}/${whatUserId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
