@@ -135,9 +135,11 @@ public class UserService {
                 existingUser.getUsername(),
                 existingUser.getEmail(),
                 newToken,
-                String.format("User with id %d was updated", existingUser.getId())
+                String.format("User with id %d was updated", existingUser.getId()),
+                existingUser.getImage()
         );
     }
+
 
     public UserResponseDTO deleteAccount(Long id) throws AccessDeniedException {
         User existingUser = userRepository.findById(id)
