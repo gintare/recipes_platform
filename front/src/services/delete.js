@@ -90,3 +90,16 @@ export const deleteComment = async (commentId) => {
     throw new Error(`Error deleting recipe ${error.message}`);
   }
 };
+
+export const deleteIngredient = async (ingredientId) => {
+  try {
+    const resp = await axios.delete(`${API_URL}/api/ingredients/${ingredientId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error deleting recipe ${error.message}`);
+  }
+};

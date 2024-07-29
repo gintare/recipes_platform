@@ -46,15 +46,10 @@ const Navigation = () => {
 
   useEffect(() => {
     let filtered = recipes.filter((recipe) => {
-      return (
-        recipe.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        recipe.category.name.toLowerCase().includes(searchText.toLowerCase()) ||
-        recipe.ingredients.some((ingredient) => {
-          return (
-            ingredient.title && ingredient.title.toLowerCase().includes(searchText.toLowerCase())
-          );
-        })
-      );
+        return recipe.name.toLowerCase().includes(searchText.toLowerCase()) ||
+          recipe.category.name.toLowerCase().includes(searchText.toLowerCase())||
+          recipe.ingredients.some((ingredient) => {
+          return ingredient.title && ingredient.title.toLowerCase().includes(searchText.toLowerCase()) });
     });
 
     if (sortOption) {

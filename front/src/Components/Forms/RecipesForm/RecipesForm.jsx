@@ -73,7 +73,6 @@ const RecipesForm = ({ recipe, setCreateRecipeIsVisible, setUpdateRecipeFormIsVi
         toast.success('Recipe has been updated');
         setUpdateRecipeFormIsVisible(false);
       } else {
-        console.log(data);
         const recipe = await recipePost(data.categoryId, id, data);
         setUpdate((prev) => prev + 1);
         toast.success('Recipe has been created');
@@ -237,6 +236,7 @@ const RecipesForm = ({ recipe, setCreateRecipeIsVisible, setUpdateRecipeFormIsVi
             ingredients={ingredients}
             setIngredients={setIngredients}
             register={register}
+            setValue = {setValue}
           />
           {errors.ingredients && (
             <div className='invalid-feedback'>{errors.ingredients.message}</div>
