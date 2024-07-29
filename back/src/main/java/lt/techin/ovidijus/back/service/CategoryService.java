@@ -43,10 +43,10 @@ public class CategoryService {
 //    }
 
     public Category createCategory(CategoryRequestDTO categoryRequestDTO) throws NotAdminException {
-        User user = checkAuthorized();
-        if (!user.getRole().equals("ADMIN")) {
-            throw new NotAdminException("Only admins can create categories!");
-        }
+//        User user = checkAuthorized();
+//        if (!user.getRole().equals("ADMIN")) {
+//            throw new NotAdminException("Only admins can create categories!");
+//        }
         if (categoryRepository.existsByName(categoryRequestDTO.getName())) {
             throw new RuntimeException("Category already exists!");
         }
@@ -59,10 +59,10 @@ public class CategoryService {
     }
 
     public CategoryResponseDTO updateCategory(long id, CategoryRequestDTO categoryRequestDTO) throws CategoryNotFoundException, NotAdminException {
-        User user = checkAuthorized();
-        if (!user.getRole().equals("ADMIN")) {
-            throw new NotAdminException("Only admins can update categories!");
-        }
+//        User user = checkAuthorized();
+//        if (!user.getRole().equals("ADMIN")) {
+//            throw new NotAdminException("Only admins can update categories!");
+//        }
 
         Category existingCategory = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
@@ -81,10 +81,10 @@ public class CategoryService {
     }
 
     public void deleteCategory(long id) throws CategoryNotFoundException, NotAdminException {
-        User user = checkAuthorized();
-        if (!user.getRole().equals("ADMIN")) {
-            throw new NotAdminException("Only admins can delete categories!");
-        }
+//        User user = checkAuthorized();
+//        if (!user.getRole().equals("ADMIN")) {
+//            throw new NotAdminException("Only admins can delete categories!");
+//        }
         if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);
         } else {
