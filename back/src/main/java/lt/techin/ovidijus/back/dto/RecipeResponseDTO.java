@@ -15,5 +15,6 @@ public class RecipeResponseDTO {
     private String instructions;
     private int timeInMinutes;
     private Long categoryId;
+    private CategoryResponseDTO category;
     private Set<IngredientResponseDTO> ingredients;
 }

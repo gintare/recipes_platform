@@ -15,6 +15,7 @@ import { deleteComment, deleteFavorite, deleteFollower } from '../../services/de
 import { HeartFill, Heart } from 'react-bootstrap-icons';
 import { useForm } from 'react-hook-form';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
+import LikeButton from '../../Components/LikeButton/LikeButton';
 
 function RecipeDetailsPage() {
   const { id: recipeId } = useParams();
@@ -114,7 +115,7 @@ function RecipeDetailsPage() {
       <div className='container'>
         {isLoggedIn && (
           <div className='row'>
-            <div className='col-sm-2'>Like Likes button</div>
+            
             <div className='col-sm-2'>
               {favorite ? (
                 <HeartFill color='red' size='36' onClick={clickFavoriteHandler} />
@@ -127,6 +128,9 @@ function RecipeDetailsPage() {
                   <Heart color='red' size='36' onClick={clickFavoriteHandler} />
                 </OverlayTrigger>
               )}
+            </div>
+            <div className='like-button-details-page'>
+            <LikeButton recipeId={recipe.id} userId={id} />
             </div>
             <div className='col'>
               <div className='author-content'>Author : {recipeCreatorUserName}</div>
