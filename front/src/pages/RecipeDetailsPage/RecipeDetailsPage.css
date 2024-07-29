@@ -59,5 +59,6 @@
   color: var(--primary-blue);
 }
 .like-button-details-page{
-  display: flex;
+  display:flex;
+  
 }
