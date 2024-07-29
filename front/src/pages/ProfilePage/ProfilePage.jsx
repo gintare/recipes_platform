@@ -110,6 +110,7 @@ function ProfilePage() {
               setCreateRecipeIsVisible(false);
               setUpdateRecipeFormIsVisible(false);
               setMyRecipesIsVisible(false);
+              setFavorateRecipesIsVisible(true);
               setUpdate((prev) => prev + 1);
             }}
           >
