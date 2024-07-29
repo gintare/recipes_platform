@@ -1,12 +1,17 @@
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../Context/UserContext/UserContext';
-import { getRecipesByUserId, getFavoritesByUser, getOneUser, getFollowByWho } from '../../services/get';
+import {
+  getRecipesByUserId,
+  getFavoritesByUser,
+  getOneUser,
+  getFollowByWho,
+} from '../../services/get';
 import ProfileRecipeCard from '../../Components/ProfileRecipeCard/ProfileRecipeCard';
 import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
 import './ProfilePage.css';
 import ProfileCard from '../../Components/ProfileCard/ProfileCard';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import PulseLoader from 'react-spinners/PulseLoader';
 import ProfileFavoriteRecipeCard from '../../Components/ProfileFavoriteRecipeCard/ProfileFavoriteRecipeCard';
 import ProfileFollowCard from '../../Components/ProfileFollowCard/ProfileFollowCard';
@@ -18,7 +23,7 @@ function ProfilePage() {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [myRecipesIsVisible, setMyRecipesIsVisible] = useState(true);
   const [following, setFollowing] = useState([]);
-  const [favorateRecipesIsVisible, setFavorateRecipesIsVisible] = useState(true);
+  const [favoriteRecipesIsVisible, setFavoriteRecipesIsVisible] = useState(true);
   const { id, setUser } = useContext(UserContext);
   const { recipeId } = useParams();
   const {
@@ -61,7 +66,6 @@ function ProfilePage() {
         setFavoriteRecipes(fav);
 
         const fol = await getFollowByWho(id);
-        console.log(fol);
         setFollowing(fol);
       } catch (error) {
         setError('Failed to fetch recipes.');
@@ -99,7 +103,7 @@ function ProfilePage() {
               setCreateRecipeIsVisible(false);
               setUpdateRecipeFormIsVisible(false);
               setMyRecipesIsVisible(true);
-              setUpdate((prev) => prev + 1);
+              setFavoriteRecipesIsVisible(false);
             }}
           >
             My recipes
@@ -111,7 +115,7 @@ function ProfilePage() {
               setCreateRecipeIsVisible(false);
               setUpdateRecipeFormIsVisible(false);
               setMyRecipesIsVisible(false);
-              setUpdate((prev) => prev + 1);
+              setFavoriteRecipesIsVisible(true);
             }}
           >
             My favorite recipes
@@ -123,8 +127,7 @@ function ProfilePage() {
               setCreateRecipeIsVisible(false);
               setUpdateRecipeFormIsVisible(false);
               setMyRecipesIsVisible(false);
-              setFavorateRecipesIsVisible(false);
-              setUpdate((prev) => prev + 1);
+              setFavoriteRecipesIsVisible(false);
             }}
           >
             Authors I follow
@@ -147,48 +150,43 @@ function ProfilePage() {
                 <p className='profile-loading-text'>Loading...</p>
                 <PulseLoader color='var(--primary-blue)' size={20} />
               </div>
-            ) : filteredRecipes.length === 0 ? (
-              <div className='no-recipes'>No recipes found</div>
+            ) : myRecipesIsVisible ? (
+              filteredRecipes.length === 0 ? (
+                <div className='no-recipes'>No recipes found</div>
+              ) : (
+                filteredRecipes.map((recipe) => (
+                  <div key={recipe.id || recipe.user_id} className='recipe-card'>
+                    <ProfileRecipeCard
+                      recipe={recipe}
+                      createRecipeIsVisible={createRecipeIsVisible}
+                      setCreateRecipeIsVisible={setCreateRecipeIsVisible}
+                    />
+                  </div>
+                ))
+              )
+            ) : favoriteRecipesIsVisible ? (
+              favoriteRecipes.length === 0 ? (
+                <div className='no-recipes'>No favorite recipes found</div>
+              ) : (
+                favoriteRecipes.map((fRecipe) => (
+                  <div key={fRecipe.id} className='recipe-card'>
+                    <ProfileFavoriteRecipeCard favoriteRecipe={fRecipe} />
+                  </div>
+                ))
+              )
+            ) : following.length === 0 ? (
+              <div className='no-recipes'>No followed authors found</div>
             ) : (
-              myRecipesIsVisible &&
-              filteredRecipes.map((recipe) => (
-                <div key={recipe.id} className='recipe-card'>
-                  <ProfileRecipeCard
-                    recipe={recipe}
-                    createRecipeIsVisible={createRecipeIsVisible}
-                    setCreateRecipeIsVisible={setCreateRecipeIsVisible}
-                  />
+              following.map((foll) => (
+                <div key={foll.id} className='recipe-card'>
+                  <ProfileFollowCard followingWhat={foll} />
                 </div>
               ))
             )}
           </div>
         </div>
-        {favorateRecipesIsVisible && 
-        <>
-        <hr />
-         <p>My favorite recipes</p>
-        <div className='container text-center'>
-          <div className='recipe-list'>
-            {favoriteRecipes.map((fRecipe) => {
-              return <ProfileFavoriteRecipeCard key={fRecipe.id} favoriteRecipe={fRecipe} />;
-            })}
-          </div>
-        </div>
-        </>
-        }
-        
-        <hr/>
-         I follow authors
-         <div className='container text-center'>
-          <div className='recipe-list'>
-            {following.map((foll) => {
-              return <ProfileFollowCard key={foll.id} followingWhat={foll} />;
-            })}
-          </div>
-        </div>
         <div className='footer-padding'></div>
       </div>
-      
     </>
   );
 }

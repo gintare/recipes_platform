@@ -25,13 +25,22 @@ const RecipesPage = () => {
   //const [pages, setPages] = useState(0);
   const RECORDS_PER_PAGE = 12;
   const { isLoggedIn } = useContext(UserContext);
-  const { update, filteredRecipes, setFilteredRecipes, setRecipes, selectedCategory, displayShowMoreButton, setDisplayShowMoreButton, pages, setPages } = useContext(RecipesContext);
+  const {
+    update,
+    filteredRecipes,
+    setFilteredRecipes,
+    setRecipes,
+    selectedCategory,
+    displayShowMoreButton,
+    setDisplayShowMoreButton,
+    pages,
+    setPages,
+  } = useContext(RecipesContext);
 
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const data = await getAllRecipesByPage(0); //await getAllRecipes();
-      //setRecipes(shuffleArray(data));
+      const data = await getAllRecipesByPage(0);
       setRecipes(data);
     } catch (error) {
       toast.error('Error fetching data:', error);
@@ -41,29 +50,25 @@ const RecipesPage = () => {
   };
 
   const showMore = async () => {
-    console.log("selectedCategory = "+selectedCategory);
+    console.log('selectedCategory = ' + selectedCategory);
     setPages((prev) => prev + 1);
-    console.log("pages = "+pages);
     let rec = null;
-    if(selectedCategory == 0){
-      rec = await getAllRecipesByPage(pages+1);
-    }else{
-      rec = await getRecipesByCategoryByPage(selectedCategory, pages+1);
+    if (selectedCategory == 0) {
+      rec = await getAllRecipesByPage(pages + 1);
+    } else {
+      rec = await getRecipesByCategoryByPage(selectedCategory, pages + 1);
     }
 
-    for(let i = 0; i < rec.length; i++ ){
-      //console.log(i);
-      console.log(rec[i]);
-      setRecipes(oldRec => [...oldRec, rec[i]]);
+    for (let i = 0; i < rec.length; i++) {
+      setRecipes((oldRec) => [...oldRec, rec[i]]);
     }
-    console.log("rec.lenght = "+rec.length)
 
-    if(rec.length < RECORDS_PER_PAGE){
+    if (rec.length < RECORDS_PER_PAGE) {
       setDisplayShowMoreButton(false);
     } else {
       setDisplayShowMoreButton(true);
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
@@ -84,14 +89,15 @@ const RecipesPage = () => {
       <RecipeCarusele />
       <div className='recipe-list'>
         {filteredRecipes.map((recipe) => (
-            <RecipeCard key={recipe.id} recipe={recipe} /> 
+          <RecipeCard key={recipe.id} recipe={recipe} />
         ))}
       </div>
-      <hr/>
-      {displayShowMoreButton && 
+      <hr />
+      {displayShowMoreButton && (
         <div className='show-more-button-content'>
           <Button onClick={showMore}>Show more</Button>
-        </div>}
+        </div>
+      )}
     </div>
   );
 };
