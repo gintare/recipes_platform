@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class IngredientRequestDTO {
-    private Long id;
+    private Long ingredientId;
     private String title;
     private String orderNumber;
 }

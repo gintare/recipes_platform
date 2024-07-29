@@ -137,16 +137,16 @@ public class RecipeService {
         Set<IngredientRequestDTO> ingredientRequestDTOS = recipeRequestDTO.getIngredients();
         for(IngredientRequestDTO ingredientRequestDTO : ingredientRequestDTOS) {
             if(ingredientRequestDTO.getTitle().trim().isEmpty()) {
-                if(ingredientRequestDTO.getId() != null){
-                    Ingredient ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getId())
-                            .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = " + ingredientRequestDTO.getId()));
+                if(ingredientRequestDTO.getIngredientId() != null){
+                    Ingredient ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getIngredientId())
+                            .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = " + ingredientRequestDTO.getIngredientId()));
                     this.ingredientRepository.delete(ingredient);
                 }
             } else {
                 Ingredient ingredient = null;
-                if (ingredientRequestDTO.getId() != null) {
-                    ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getId())
-                            .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = " + ingredientRequestDTO.getId()));
+                if (ingredientRequestDTO.getIngredientId() != null) {
+                    ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getIngredientId())
+                            .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = " + ingredientRequestDTO.getIngredientId()));
                 } else {
                     ingredient = new Ingredient();
                 }
@@ -255,7 +255,7 @@ public class RecipeService {
         }
 
         if(!isNull){
-            ingredientsSorted = recipe.getIngredients().stream().sorted((i1, i2) -> i1.getOrderNumber().compareTo(i2.getOrderNumber())).toList();
+            ingredientsSorted = recipe.getIngredients().stream().sorted(Comparator.comparing(Ingredient::getOrderNumber)).toList();
         }
         Set<IngredientResponseDTO>  ingredientResponseDTOS = new LinkedHashSet<>();
         for(Ingredient ingredient : ingredientsSorted){
@@ -296,12 +296,6 @@ public class RecipeService {
         categoryResponseDTO.setId(recipe.getCategory().getId());
         categoryResponseDTO.setName(recipe.getCategory().getName());
         recipeResponseDTO.setCategory(categoryResponseDTO);
-        Set<IngredientResponseDTO> ingredientResponseDTOS = getIngredientResponseDTOS(recipe);
-        recipeResponseDTO.setIngredients(ingredientResponseDTOS);
-        return recipeResponseDTO;
-    }
-
-    private static Set<IngredientResponseDTO> getIngredientResponseDTOS(Recipe recipe) {
         Set<IngredientResponseDTO> ingredientResponseDTOS = new LinkedHashSet<>();
         for(Ingredient ingredient: recipe.getIngredients()) {
             IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
@@ -310,7 +304,8 @@ public class RecipeService {
             ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
             ingredientResponseDTOS.add(ingredientResponseDTO);
         }
-        return ingredientResponseDTOS;
+        recipeResponseDTO.setIngredients(ingredientResponseDTOS);
+        return recipeResponseDTO;
     }
 
     public List<RecipeResponseDTO> findAllByCategoryAndPageNumber(Long categoryId, Integer pageNumber) {

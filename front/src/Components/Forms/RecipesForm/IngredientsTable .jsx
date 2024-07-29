@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
+import { deleteIngredient } from "../../../services/delete";
 
-function IngredientsTable({ ingredients, setIngredients, register }) {
+function IngredientsTable({ ingredients, setIngredients, register, setValue }) {
   const [ingredientsArray, setIngredientsArray] = useState([{ title: "" }]);
 
   const handleAddRow = () => {
@@ -9,14 +10,19 @@ function IngredientsTable({ ingredients, setIngredients, register }) {
     setIngredientsArray([...ingredientsArray, newRow]);
   };
 
-  // const handleRemoveRow = (index) => {
-  //   if (ingredientsArray.length > 1) {
-  //     console.log("index = "+index);
-  //     const newIngredientsArray = ingredientsArray.filter((_, i) => i !== index);
-  //     console.log(newIngredientsArray);
-  //     setIngredientsArray(newIngredientsArray);
-  //   }
-  // }
+  const handleRemoveRow = async (index) => {
+    try{
+      if (ingredientsArray.length > 1) {
+        const ingredId = ingredients[index].ingredientId;
+        await deleteIngredient(ingredId);
+        const newIngredients = ingredients.filter((ingre) => ingre.ingredientId != ingredId);
+        setIngredients(newIngredients);
+      }
+    }catch(error){
+      console.log(error.message);
+    }
+    
+  }
 
   const renderIngredients = (ingredient, index) => {
     return (
@@ -41,25 +47,19 @@ function IngredientsTable({ ingredients, setIngredients, register }) {
         <td>
           <Button onClick={handleAddRow}>+</Button>
         </td>
-        {/* <td>
+        <td>
           <Button onClick={() => handleRemoveRow(index)}>-</Button>
-        </td> */}
+        </td>
       </tr>
     );
   };
 
   useEffect(() => {
-    const getIngredients = async () => {
-      try {
-        if (ingredients.length > 0) {
-          setIngredientsArray(ingredients);
-        }
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-    getIngredients();
-  }, [ingredients]);
+    if (ingredients.length > 0) {
+      setIngredientsArray(ingredients);
+      setValue('ingredients', ingredients, { shouldValidate: true });
+    }
+  }, [ingredients, setIngredients]);
 
   return (
     <Table striped bordered hover>

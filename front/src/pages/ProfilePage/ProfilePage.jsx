@@ -61,7 +61,6 @@ function ProfilePage() {
         setFavoriteRecipes(fav);
 
         const fol = await getFollowByWho(id);
-        console.log(fol);
         setFollowing(fol);
       } catch (error) {
         setError('Failed to fetch recipes.');
