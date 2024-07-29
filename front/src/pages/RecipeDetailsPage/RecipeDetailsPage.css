@@ -58,3 +58,6 @@
   font-size: 2rem;
   color: var(--primary-blue);
 }
+.like-button-details-page{
+  display: flex;
+}
