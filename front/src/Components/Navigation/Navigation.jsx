@@ -52,7 +52,7 @@ const Navigation = () => {
           recipe.category.name.toLowerCase().includes(searchText.toLowerCase())||
           recipe.ingredients.some((ingredient) => {
           console.log(ingredient.title)
-          return ingredient.title.toLowerCase().includes(searchText.toLowerCase()) });
+          return ingredient.title && ingredient.title.toLowerCase().includes(searchText.toLowerCase()) });
     });
 
     if (sortOption) {
