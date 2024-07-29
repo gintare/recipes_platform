@@ -23,4 +23,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long>  {
     List<Recipe> findByNameContaining(@Param("searchTerm") String searchTerm, Pageable page);
 //    @Query("SELECT u FROM Recipe u WHERE u.user.id = 1")
 //    Collection<Recipe> findByUser();
+
+    List<Recipe> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }

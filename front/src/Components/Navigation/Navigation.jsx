@@ -45,7 +45,6 @@ const Navigation = () => {
   };
 
   useEffect(() => {
-
     let filtered = recipes.filter((recipe) => {
         return recipe.name.toLowerCase().includes(searchText.toLowerCase()) ||
           recipe.category.name.toLowerCase().includes(searchText.toLowerCase())||
