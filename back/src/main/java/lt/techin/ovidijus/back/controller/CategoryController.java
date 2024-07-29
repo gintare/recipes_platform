@@ -38,21 +38,18 @@ public class CategoryController {
 //    }
 
     @PostMapping("/api/categories")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> createCategory(@RequestBody CategoryRequestDTO categoryRequestDTO) throws NotAdminException {
         Category newCategory = categoryService.createCategory(categoryRequestDTO);
         return new ResponseEntity<>(newCategory, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/api/categories/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> deleteCategory(@PathVariable long id) throws CategoryNotFoundException, NotAdminException {
         categoryService.deleteCategory(id);
         return ResponseEntity.ok("Category deleted");
     }
 
     @PatchMapping("/api/categories/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryResponseDTO> updateCategory(@PathVariable long id, @RequestBody CategoryRequestDTO categoryRequestDTO) {
         try {
             CategoryResponseDTO updatedCategory = categoryService.updateCategory(id, categoryRequestDTO);
