@@ -13,10 +13,12 @@ import lt.techin.ovidijus.back.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -56,7 +58,7 @@ public class UserController {
     }
 
     @PatchMapping("/users/{id}")
-    public ResponseEntity<UserResponseDTO> updateAccount(@PathVariable long id, @RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity<UserResponseDTO> updateAccount(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
         try {
             UserResponseDTO updatedAccount = userService.updateAccount(id, userRequestDTO);
             return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
@@ -64,17 +66,12 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (AccessDeniedException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
-//    @DeleteMapping("/users/{id}")
-//    public UserResponseDTO deleteAccount(@PathVariable long id) throws AccessDeniedException {
-//        return userService.deleteAccount(id);
-//    }
 
     @DeleteMapping("/users/{id}")
     public ResponseEntity<UserResponseDTO> deleteAccount(@PathVariable long id) {

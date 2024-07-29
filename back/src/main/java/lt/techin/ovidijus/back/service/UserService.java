@@ -140,6 +140,7 @@ public class UserService {
         );
     }
 
+
     public UserResponseDTO deleteAccount(Long id) throws AccessDeniedException {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
