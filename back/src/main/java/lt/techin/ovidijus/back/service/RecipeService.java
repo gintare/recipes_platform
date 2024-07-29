@@ -292,7 +292,25 @@ public class RecipeService {
         recipeResponseDTO.setInstructions(recipe.getInstructions());
         recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
         recipeResponseDTO.setCategoryId(recipe.getCategory().getId());
+        CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
+        categoryResponseDTO.setId(recipe.getCategory().getId());
+        categoryResponseDTO.setName(recipe.getCategory().getName());
+        recipeResponseDTO.setCategory(categoryResponseDTO);
+        Set<IngredientResponseDTO> ingredientResponseDTOS = getIngredientResponseDTOS(recipe);
+        recipeResponseDTO.setIngredients(ingredientResponseDTOS);
         return recipeResponseDTO;
+    }
+
+    private static Set<IngredientResponseDTO> getIngredientResponseDTOS(Recipe recipe) {
+        Set<IngredientResponseDTO> ingredientResponseDTOS = new LinkedHashSet<>();
+        for(Ingredient ingredient: recipe.getIngredients()) {
+            IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
+            ingredientResponseDTO.setIngredientId(ingredient.getId());
+            ingredientResponseDTO.setTitle(ingredient.getTitle());
+            ingredientResponseDTO.setOrderNumber(ingredient.getOrderNumber());
+            ingredientResponseDTOS.add(ingredientResponseDTO);
+        }
+        return ingredientResponseDTOS;
     }
 
     public List<RecipeResponseDTO> findAllByCategoryAndPageNumber(Long categoryId, Integer pageNumber) {
