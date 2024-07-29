@@ -136,19 +136,12 @@ public class RecipeService {
 
         Set<IngredientResponseDTO> ingredientResponseDTOSet = new LinkedHashSet<>();
         Set<IngredientRequestDTO> ingredientRequestDTOS = recipeRequestDTO.getIngredients();
-<<<<<<< HEAD
+
         for(IngredientRequestDTO ingredientRequestDTO : ingredientRequestDTOS) {
             if(ingredientRequestDTO.getTitle().trim().isEmpty()) {
                 if(ingredientRequestDTO.getIngredientId() != null){
                     Ingredient ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getIngredientId())
                             .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = " + ingredientRequestDTO.getIngredientId()));
-=======
-        for (IngredientRequestDTO ingredientRequestDTO : ingredientRequestDTOS) {
-            if (ingredientRequestDTO.getTitle().trim().isEmpty()) {
-                if (ingredientRequestDTO.getId() != null) {
-                    Ingredient ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getId())
-                            .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = " + ingredientRequestDTO.getId()));
->>>>>>> f3c8dea081d89016bcf6226ccb886d52b3b117f0
                     this.ingredientRepository.delete(ingredient);
                 }
             } else {
@@ -264,13 +257,8 @@ public class RecipeService {
             }
         }
 
-<<<<<<< HEAD
         if(!isNull){
             ingredientsSorted = recipe.getIngredients().stream().sorted(Comparator.comparing(Ingredient::getOrderNumber)).toList();
-=======
-        if (!isNull) {
-            ingredientsSorted = recipe.getIngredients().stream().sorted((i1, i2) -> i1.getOrderNumber().compareTo(i2.getOrderNumber())).toList();
->>>>>>> f3c8dea081d89016bcf6226ccb886d52b3b117f0
         }
         Set<IngredientResponseDTO> ingredientResponseDTOS = new LinkedHashSet<>();
         for (Ingredient ingredient : ingredientsSorted) {
