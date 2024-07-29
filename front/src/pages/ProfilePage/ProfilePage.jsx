@@ -23,7 +23,8 @@ function ProfilePage() {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
   const [myRecipesIsVisible, setMyRecipesIsVisible] = useState(true);
   const [following, setFollowing] = useState([]);
-  const [favoriteRecipesIsVisible, setFavoriteRecipesIsVisible] = useState(true);
+  const [followingAuthorVisible, setFollowingAuthorVisible] = useState(false);
+  const [favoriteRecipesIsVisible, setFavoriteRecipesIsVisible] = useState(false);
   const { id, setUser } = useContext(UserContext);
   const { recipeId } = useParams();
   const {
@@ -104,6 +105,7 @@ function ProfilePage() {
               setUpdateRecipeFormIsVisible(false);
               setMyRecipesIsVisible(true);
               setFavoriteRecipesIsVisible(false);
+              setFollowingAuthorVisible(false);
             }}
           >
             My recipes
@@ -116,6 +118,7 @@ function ProfilePage() {
               setUpdateRecipeFormIsVisible(false);
               setMyRecipesIsVisible(false);
               setFavoriteRecipesIsVisible(true);
+              setFollowingAuthorVisible(false);
             }}
           >
             My favorite recipes
@@ -128,6 +131,7 @@ function ProfilePage() {
               setUpdateRecipeFormIsVisible(false);
               setMyRecipesIsVisible(false);
               setFavoriteRecipesIsVisible(false);
+              setFollowingAuthorVisible(true);
             }}
           >
             Authors I follow
@@ -155,7 +159,7 @@ function ProfilePage() {
                 <div className='no-recipes'>No recipes found</div>
               ) : (
                 filteredRecipes.map((recipe) => (
-                  <div key={recipe.id || recipe.user_id} className='recipe-card'>
+                  <div key={recipe.id} className='recipe-card'>
                     <ProfileRecipeCard
                       recipe={recipe}
                       createRecipeIsVisible={createRecipeIsVisible}
@@ -168,21 +172,23 @@ function ProfilePage() {
               favoriteRecipes.length === 0 ? (
                 <div className='no-recipes'>No favorite recipes found</div>
               ) : (
-                favoriteRecipes.map((fRecipe) => (
-                  <div key={fRecipe.id} className='recipe-card'>
+                favoriteRecipes.map((fRecipe, index) => (
+                  <div key={index} className='recipe-card'>
                     <ProfileFavoriteRecipeCard favoriteRecipe={fRecipe} />
                   </div>
                 ))
               )
-            ) : following.length === 0 ? (
-              <div className='no-recipes'>No followed authors found</div>
-            ) : (
-              following.map((foll) => (
-                <div key={foll.id} className='recipe-card'>
-                  <ProfileFollowCard followingWhat={foll} />
-                </div>
-              ))
-            )}
+            ) : followingAuthorVisible ? (
+              following.length === 0 ? (
+                <div className='no-recipes'>No followed authors found</div>
+              ) : (
+                following.map((foll, index) => (
+                  <div key={index} className='recipe-card'>
+                    <ProfileFollowCard followingWhat={foll} />
+                  </div>
+                ))
+              )
+            ) : null}
           </div>
         </div>
         <div className='footer-padding'></div>
