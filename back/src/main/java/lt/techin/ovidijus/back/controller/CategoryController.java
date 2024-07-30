@@ -9,6 +9,7 @@ import lt.techin.ovidijus.back.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -63,7 +64,7 @@ public class CategoryController {
     }
 
     @GetMapping("/api/categories/{id}")
-    public ResponseEntity<?> getOneCategory(@PathVariable long id){
+    public ResponseEntity<?> getOneCategory(@PathVariable long id) {
         return ResponseEntity.ok(this.categoryService.getOneCategory(id));
     }
 

@@ -14,8 +14,14 @@ function ProfileRecipeCard({ recipe, createRecipeIsVisible, setCreateRecipeIsVis
   const [show, setShow] = useState(false);
   const [error, setError] = useState('');
   const [recipeId, setRecipeId] = useState('');
-  const { setUpdate, updateRecipeFormIsVisible, setUpdateRecipeFormIsVisible, updateRecipe, setUpdateRecipe } = useContext(RecipesContext);
-  const { id } = useContext(UserContext); // Naudokite `userId` iš `UserContext`
+  const {
+    setUpdate,
+    updateRecipeFormIsVisible,
+    setUpdateRecipeFormIsVisible,
+    updateRecipe,
+    setUpdateRecipe,
+  } = useContext(RecipesContext);
+  const { id } = useContext(UserContext);
 
   const handleShow = (recipe_id) => {
     try {
@@ -48,7 +54,7 @@ function ProfileRecipeCard({ recipe, createRecipeIsVisible, setCreateRecipeIsVis
     <>
       <div className='card'>
         <Link to={`/recipe/${recipe.id}`}>
-        <img src={recipe.image} className='card-img-top' alt={recipe.name} />
+          <img src={recipe.image} className='card-img-top' alt={recipe.name} />
         </Link>
         <div className='card-body'>
           <h5 className='card-title'>{recipe.name}</h5>
@@ -68,7 +74,7 @@ function ProfileRecipeCard({ recipe, createRecipeIsVisible, setCreateRecipeIsVis
             Delete
           </Button>
 
-          <LikeButton recipeId={recipe.id} userId={id}/> {/* Pridėkite userId kaip prop */}
+          <LikeButton recipeId={recipe.id} userId={id} />
         </div>
       </div>
       {error && <div className='alert alert-danger mt-3'>{error}</div>}

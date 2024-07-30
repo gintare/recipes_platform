@@ -135,9 +135,11 @@ public class UserService {
                 existingUser.getUsername(),
                 existingUser.getEmail(),
                 newToken,
-                String.format("User with id %d was updated", existingUser.getId())
+                String.format("User with id %d was updated", existingUser.getId()),
+                existingUser.getImage()
         );
     }
+
 
     public UserResponseDTO deleteAccount(Long id) throws AccessDeniedException {
         User existingUser = userRepository.findById(id)
@@ -156,7 +158,7 @@ public class UserService {
     public UserResponseDTO getOneUser(Long id) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
-        return new UserResponseDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getEmail());
+        return new UserResponseDTO(existingUser.getId(), existingUser.getUsername(), existingUser.getEmail(), "", existingUser.getImage());
     }
 
     public List<String> getAllUserNames() {

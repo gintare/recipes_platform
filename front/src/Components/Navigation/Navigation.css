@@ -56,6 +56,6 @@ nav .nav-link {
 }
 
 .categories-select {
-  width: 300px;
-  margin: 20px;
+  width: 100%;
+  margin: 1rem 0;
 }

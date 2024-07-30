@@ -2,7 +2,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './Components/Header/Header';
 import Footer from './Components/Footer/Footer';
-import { Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import RecipesPage from './pages/RecipesPage/RecipesPage';
@@ -16,6 +16,7 @@ import { RecipesProvider } from './Context/RecipesContentxt/RecipesContext';
 import RecipeDetailsPage from './pages/RecipeDetailsPage/RecipeDetailsPage';
 
 import { useContext } from 'react';
+import UserRecipesPage from './pages/UserRecipesPage/UserRecipesPage';
 
 function App() {
   const { isLoggedIn } = useContext(UserContext);
@@ -57,6 +58,7 @@ function App() {
               }
             />
             <Route path='/recipe/:id' element={<RecipeDetailsPage />} />
+            <Route path='/user/recipes/:id' element={<UserRecipesPage />} />
             <Route path='*' element={<NotFoundPage />} />
           </Routes>
         </RecipesProvider>

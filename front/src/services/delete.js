@@ -40,7 +40,7 @@ export const deleteRecipe = async (id) => {
 
 export const deleteFollower = async (whoUserId, whatUserId) => {
   try {
-    const resp = await axios.delete(`${API_URL}/api/follower/${whoUserId}/${whatUserId}`, {
+    const resp = await axios.delete(`${API_URL}/api/followers/${whoUserId}/${whatUserId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -81,6 +81,19 @@ export const deleteFavorite = async (userId, recipeId) => {
 export const deleteComment = async (commentId) => {
   try {
     const resp = await axios.delete(`${API_URL}/api/comments/${commentId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return resp.data;
+  } catch (error) {
+    throw new Error(`Error deleting recipe ${error.message}`);
+  }
+};
+
+export const deleteIngredient = async (ingredientId) => {
+  try {
+    const resp = await axios.delete(`${API_URL}/api/ingredients/${ingredientId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

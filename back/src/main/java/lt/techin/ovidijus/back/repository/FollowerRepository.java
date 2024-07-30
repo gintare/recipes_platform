@@ -10,4 +10,6 @@ import java.util.List;
 public interface FollowerRepository extends JpaRepository<Follower, Long> {
 
     List<Follower> getByFollowWhoAndFollowWhat(User followerWho, User followerWhat);
+
+    List<Follower> findByFollowWho(User userWho);
 }

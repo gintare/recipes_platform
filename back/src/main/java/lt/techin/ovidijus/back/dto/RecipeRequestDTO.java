@@ -5,6 +5,8 @@ import lombok.Data;
 import lt.techin.ovidijus.back.model.Category;
 import lt.techin.ovidijus.back.model.Ingredient;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -20,5 +22,5 @@ public class RecipeRequestDTO {
 
     private int timeInMinutes;
 
-    private Set<IngredientRequestDTO> ingredients ;
+    private Set<IngredientRequestDTO> ingredients;
 }

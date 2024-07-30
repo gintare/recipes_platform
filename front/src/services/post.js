@@ -62,7 +62,7 @@ export const recipePost = async (categoryId, userId, data) => {
 export const followerPost = async (followerWhoId, followerWhatId) => {
   try {
     const userToken = getDefaultToken();
-    const response = await axios.post(`${API_URL}/api/follower/${followerWhoId}/${followerWhatId}`, null, {
+    const response = await axios.post(`${API_URL}/api/followers/${followerWhoId}/${followerWhatId}`, null, {
       headers: {
         Authorization: `Bearer ${userToken}`,
       },
