@@ -56,6 +56,7 @@ git update-index --skip-worktree back/src/main/resources/application.properties
 
 1. Open applciation.properties
 1. Comment out local database code. If you haven't changed anything leave it as is.
+1. Enter password "AVNS_QoJPguBwavwoRCNaHxk" without quotes.
 
 ## Back End
 
