@@ -38,7 +38,8 @@ const Navigation = () => {
     } else {
       setDisplayShowMoreButton(true);
     }
-    setRecipes(rec);
+    setRecipes(rec)
+
     setPages(0);
   };
 
