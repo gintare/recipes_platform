@@ -16,6 +16,10 @@ Recipe sharing platform is an app for sharing and discovering recipes, connectin
 - Categorize recipes and search by title, ingredients, or category.
 - Users can edit or delete only their own recipes.
 
+### Visitor Interaction
+
+- View recipes, likes.
+
 ### User Interaction
 
 - Like, comment on, and save favorite recipes.
@@ -52,7 +56,6 @@ git update-index --skip-worktree back/src/main/resources/application.properties
 
 1. Open applciation.properties
 1. Comment out local database code. If you haven't changed anything leave it as is.
-1. Enter password.
 
 ## Back End
 
@@ -82,3 +85,19 @@ The front end is written in React. To run the front end, follow these steps:
 | [Vladimir Michailov](https://github.com/VladimirMichailov) | [Slavomir Michailin](https://github.com/SMichailin) |
 | [Alina Trečiokė](https://github.com/AlinaTrecioke)         | [Ovidijus Eitminavičius](https://github.com/Ovii2)  |
 | [Gintaras Jezepčikas](https://github.com/gjezepcikas)      |
+
+### Technologies used
+
+Back-end
+
+1. Java
+2. Spring boot 3+
+3. Spring security 6+
+4. MySql databse
+5. Selenium
+
+Front-end
+
+1. React
+2. CSS
+3. Bootstrap

@@ -25,6 +25,7 @@ function ProfilePage() {
   const [following, setFollowing] = useState([]);
   const [followingAuthorVisible, setFollowingAuthorVisible] = useState(false);
   const [favoriteRecipesIsVisible, setFavoriteRecipesIsVisible] = useState(false);
+  const [recipesByUserId, setRecipesByUserId] = useState([]);
   const { id, setUser } = useContext(UserContext);
   const { recipeId } = useParams();
   const {
@@ -44,7 +45,8 @@ function ProfilePage() {
   }
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchRecipes = async () => {
+      setIsLoading(true);
       try {
         const user = await getOneUser(id);
         setUser(user);
@@ -52,16 +54,10 @@ function ProfilePage() {
         setError('Failed to fetch user info.');
         console.error('Error fetching user info:', error);
       }
-    };
 
-    fetchUser();
-  }, [id, setUser]);
-
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      setIsLoading(true);
       try {
         const rec = await getRecipesByUserId(id);
+        setRecipesByUserId(rec);
         setRecipes(rec);
         const fav = await getFavoritesByUser(id);
         setFavoriteRecipes(fav);
@@ -77,7 +73,7 @@ function ProfilePage() {
     };
 
     fetchRecipes();
-  }, [id, recipeId, update, setRecipes]);
+  }, [id, recipeId, update, setRecipes, setUser]);
 
   return (
     <>
@@ -155,10 +151,10 @@ function ProfilePage() {
                 <PulseLoader color='var(--primary-blue)' size={20} />
               </div>
             ) : myRecipesIsVisible ? (
-              filteredRecipes.length === 0 ? (
+              recipesByUserId.length === 0 ? (
                 <div className='no-recipes'>No recipes found</div>
               ) : (
-                filteredRecipes.map((recipe) => (
+                  recipesByUserId.map((recipe) => (
                   <div key={recipe.id} className='recipe-card'>
                     <ProfileRecipeCard
                       recipe={recipe}
