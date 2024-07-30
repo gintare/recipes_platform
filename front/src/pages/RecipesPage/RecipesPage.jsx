@@ -76,8 +76,8 @@ const RecipesPage = () => {
 
       <RecipeCarusele />
       <div className='recipe-list'>
-        {filteredRecipes.map((recipe) => (
-          <RecipeCard key={recipe.id} recipe={recipe} />
+        {filteredRecipes.map((recipe, index) => (
+            <RecipeCard key={index} recipe={recipe} /> 
         ))}
       </div>
       <hr />

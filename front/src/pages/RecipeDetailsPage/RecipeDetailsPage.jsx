@@ -113,9 +113,11 @@ function RecipeDetailsPage() {
         </i>
       </button>
       <div className='container'>
+      <div className='like-button-details-page'>
+            <LikeButton recipeId={recipe.id} userId={id} />
+            </div>
         {isLoggedIn && (
           <div className='row'>
-            
             <div className='col-sm-2'>
               {favorite ? (
                 <HeartFill color='red' size='36' onClick={clickFavoriteHandler} />
@@ -129,22 +131,22 @@ function RecipeDetailsPage() {
                 </OverlayTrigger>
               )}
             </div>
-            <div className='like-button-details-page'>
-            <LikeButton recipeId={recipe.id} userId={id} />
-            </div>
+            
             <div className='col'>
-              <div className='author-content'>Author : {recipeCreatorUserName}</div>
+              <div className='author-content'>Author : {recipeCreatorUserName}
+              </div>
               <div className='author-button-content'>
                 <button
                   className={follow ? 'follow_button_active' : 'follow_button'}
                   onClick={followUser}
                 >
-                  {follow ? 'You are following author' : 'Follow author'}
+               {follow ? 'You are following author' : 'Follow author'}
                 </button>
               </div>
             </div>
           </div>
         )}
+        
         <div className='row'>
           <div className='col-md-2 image-content'>
             <img src={recipe.image} alt='recipe_photo' />
