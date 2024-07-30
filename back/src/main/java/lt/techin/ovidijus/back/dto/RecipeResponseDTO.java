@@ -3,6 +3,9 @@ package lt.techin.ovidijus.back.dto;
 import lombok.Data;
 import lt.techin.ovidijus.back.model.Ingredient;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -17,4 +20,5 @@ public class RecipeResponseDTO {
     private Long categoryId;
     private CategoryResponseDTO category;
     private Set<IngredientResponseDTO> ingredients;
+    private LocalDateTime createdAt;
 }

@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -40,7 +41,7 @@ public class Recipe {
     private int timeInMinutes;
 
     @Column(name = "created_at", columnDefinition = "timestamp")
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -66,7 +67,7 @@ public class Recipe {
     @PrePersist
     protected void onCreate() {
         if (this.createdAt == null) {
-            this.createdAt = new Timestamp(System.currentTimeMillis());
+            this.createdAt = new Timestamp(System.currentTimeMillis()).toLocalDateTime();
         }
     }
 

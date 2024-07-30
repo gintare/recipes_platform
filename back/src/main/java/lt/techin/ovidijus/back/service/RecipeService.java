@@ -139,9 +139,9 @@ public class RecipeService {
         Set<IngredientResponseDTO> ingredientResponseDTOSet = new LinkedHashSet<>();
         Set<IngredientRequestDTO> ingredientRequestDTOS = recipeRequestDTO.getIngredients();
 
-        for(IngredientRequestDTO ingredientRequestDTO : ingredientRequestDTOS) {
-            if(ingredientRequestDTO.getTitle().trim().isEmpty()) {
-                if(ingredientRequestDTO.getIngredientId() != null){
+        for (IngredientRequestDTO ingredientRequestDTO : ingredientRequestDTOS) {
+            if (ingredientRequestDTO.getTitle().trim().isEmpty()) {
+                if (ingredientRequestDTO.getIngredientId() != null) {
                     Ingredient ingredient = this.ingredientRepository.findById(ingredientRequestDTO.getIngredientId())
                             .orElseThrow(() -> new IngredientNotFoundException("No ingredient found with an id = " + ingredientRequestDTO.getIngredientId()));
                     this.ingredientRepository.delete(ingredient);
@@ -268,7 +268,7 @@ public class RecipeService {
             }
         }
 
-        if(!isNull){
+        if (!isNull) {
             ingredientsSorted = recipe.getIngredients().stream().sorted(Comparator.comparing(Ingredient::getOrderNumber)).toList();
         }
         Set<IngredientResponseDTO> ingredientResponseDTOS = new LinkedHashSet<>();
@@ -317,6 +317,7 @@ public class RecipeService {
         recipeResponseDTO.setInstructions(recipe.getInstructions());
         recipeResponseDTO.setTimeInMinutes(recipe.getTimeInMinutes());
         recipeResponseDTO.setCategoryId(recipe.getCategory().getId());
+        recipeResponseDTO.setCreatedAt(recipe.getCreatedAt());
         CategoryResponseDTO categoryResponseDTO = new CategoryResponseDTO();
         categoryResponseDTO.setId(recipe.getCategory().getId());
         categoryResponseDTO.setName(recipe.getCategory().getName());

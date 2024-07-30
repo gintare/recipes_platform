@@ -1,34 +1,22 @@
 import RecipeCarusele from '../../Components/RecipeCarousel/RecipeCarousel';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getAllRecipes, getAllRecipesByPage, getRecipesByCategoryByPage } from '../../services/get';
+import { getAllRecipesByPage, getRecipesByCategoryByPage } from '../../services/get';
 import RecipeCard from '../../Components/RecipeCard/RecipeCard';
 import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import { Button } from 'react-bootstrap';
 import './RecipesPage.css';
 import UserContext from '../../Context/UserContext/UserContext';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
-import { Link } from 'react-router-dom';
-
-/*const shuffleArray = (array) => {
-  let shuffledArray = array.slice();
-  for (let i = shuffledArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-  }
-  return shuffledArray;
-};*/
 
 const RecipesPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
-  //const [pages, setPages] = useState(0);
   const RECORDS_PER_PAGE = 12;
   const { isLoggedIn } = useContext(UserContext);
   const {
     update,
     filteredRecipes,
-    setFilteredRecipes,
     setRecipes,
     selectedCategory,
     displayShowMoreButton,
@@ -41,7 +29,8 @@ const RecipesPage = () => {
     setIsLoading(true);
     try {
       const data = await getAllRecipesByPage(0);
-      setRecipes(data);
+      const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));      
+      setRecipes(sortedData);
     } catch (error) {
       toast.error('Error fetching data:', error);
     } finally {
@@ -50,18 +39,19 @@ const RecipesPage = () => {
   };
 
   const showMore = async () => {
-    console.log('selectedCategory = ' + selectedCategory);
     setPages((prev) => prev + 1);
     let rec = null;
-    if (selectedCategory == 0) {
+    if (selectedCategory === 0) {
       rec = await getAllRecipesByPage(pages + 1);
     } else {
       rec = await getRecipesByCategoryByPage(selectedCategory, pages + 1);
     }
 
-    for (let i = 0; i < rec.length; i++) {
-      setRecipes((oldRec) => [...oldRec, rec[i]]);
-    }
+    const newRecipes = [...filteredRecipes, ...rec];
+    const sortedNewRecipes = newRecipes.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    setRecipes(sortedNewRecipes);
 
     if (rec.length < RECORDS_PER_PAGE) {
       setDisplayShowMoreButton(false);
@@ -88,9 +78,11 @@ const RecipesPage = () => {
 
       <RecipeCarusele />
       <div className='recipe-list'>
-        {filteredRecipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} /> 
-        ))}
+        {filteredRecipes
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .map((recipe, index) => (
+            <RecipeCard key={index} recipe={recipe} />
+          ))}
       </div>
       <hr />
       {displayShowMoreButton && (
