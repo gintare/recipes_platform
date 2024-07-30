@@ -1,7 +1,7 @@
 import RecipeCarusele from '../../Components/RecipeCarousel/RecipeCarousel';
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { getAllRecipes, getAllRecipesByPage, getRecipesByCategoryByPage } from '../../services/get';
+import { getAllRecipesByPage, getRecipesByCategoryByPage } from '../../services/get';
 import RecipeCard from '../../Components/RecipeCard/RecipeCard';
 import RecipesForm from '../../Components/Forms/RecipesForm/RecipesForm';
 import { Button } from 'react-bootstrap';
@@ -29,7 +29,8 @@ const RecipesPage = () => {
     setIsLoading(true);
     try {
       const data = await getAllRecipesByPage(0);
-      setRecipes(data);
+      const sortedData = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));      
+      setRecipes(sortedData);
     } catch (error) {
       toast.error('Error fetching data:', error);
     } finally {
@@ -38,18 +39,19 @@ const RecipesPage = () => {
   };
 
   const showMore = async () => {
-    console.log('selectedCategory = ' + selectedCategory);
     setPages((prev) => prev + 1);
     let rec = null;
-    if (selectedCategory == 0) {
+    if (selectedCategory === 0) {
       rec = await getAllRecipesByPage(pages + 1);
     } else {
       rec = await getRecipesByCategoryByPage(selectedCategory, pages + 1);
     }
 
-    for (let i = 0; i < rec.length; i++) {
-      setRecipes((oldRec) => [...oldRec, rec[i]]);
-    }
+    const newRecipes = [...filteredRecipes, ...rec];
+    const sortedNewRecipes = newRecipes.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+    setRecipes(sortedNewRecipes);
 
     if (rec.length < RECORDS_PER_PAGE) {
       setDisplayShowMoreButton(false);
@@ -76,9 +78,11 @@ const RecipesPage = () => {
 
       <RecipeCarusele />
       <div className='recipe-list'>
-        {filteredRecipes.map((recipe, index) => (
-            <RecipeCard key={index} recipe={recipe} /> 
-        ))}
+        {filteredRecipes
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .map((recipe, index) => (
+            <RecipeCard key={index} recipe={recipe} />
+          ))}
       </div>
       <hr />
       {displayShowMoreButton && (

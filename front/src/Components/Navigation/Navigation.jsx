@@ -26,12 +26,10 @@ const Navigation = () => {
   const RECORDS_PER_PAGE = 12;
 
   const onCategorySelectChangeHandler = async (e) => {
-    //console.log("on change "+e.target.value);
     setSelectedCategory(e.target.value);
     let rec = null;
     if (e.target.value !== '0') {
       rec = await getRecipesByCategoryByPage(e.target.value, 0);
-      //console.log(rec);
     } else {
       rec = await getAllRecipesByPage(0);
     }
@@ -46,10 +44,15 @@ const Navigation = () => {
 
   useEffect(() => {
     let filtered = recipes.filter((recipe) => {
-        return recipe.name.toLowerCase().includes(searchText.toLowerCase()) ||
-          recipe.category.name.toLowerCase().includes(searchText.toLowerCase())||
-          recipe.ingredients.some((ingredient) => {
-          return ingredient.title && ingredient.title.toLowerCase().includes(searchText.toLowerCase()) });
+      return (
+        recipe.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        recipe.category.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        recipe.ingredients.some((ingredient) => {
+          return (
+            ingredient.title && ingredient.title.toLowerCase().includes(searchText.toLowerCase())
+          );
+        })
+      );
     });
 
     if (sortOption) {
