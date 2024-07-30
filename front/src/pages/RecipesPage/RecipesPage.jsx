@@ -8,27 +8,15 @@ import { Button } from 'react-bootstrap';
 import './RecipesPage.css';
 import UserContext from '../../Context/UserContext/UserContext';
 import RecipesContext from '../../Context/RecipesContentxt/RecipesContext';
-import { Link } from 'react-router-dom';
-
-/*const shuffleArray = (array) => {
-  let shuffledArray = array.slice();
-  for (let i = shuffledArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
-  }
-  return shuffledArray;
-};*/
 
 const RecipesPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
-  //const [pages, setPages] = useState(0);
   const RECORDS_PER_PAGE = 12;
   const { isLoggedIn } = useContext(UserContext);
   const {
     update,
     filteredRecipes,
-    setFilteredRecipes,
     setRecipes,
     selectedCategory,
     displayShowMoreButton,
