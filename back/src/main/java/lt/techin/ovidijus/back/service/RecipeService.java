@@ -38,6 +38,7 @@ public class RecipeService {
     }
 
     public RecipeResponseDTO createRecipe(Long categoryId, Long userId, RecipeRequestDTO recipeRequestDTO) {
+        validateImage(recipeRequestDTO.getImage());
         validateCharCount(recipeRequestDTO.getTimeInMinutes());
         if (recipeRequestDTO.getName().trim().isEmpty()) {
             throw new RequiredFieldIsEmptyException("Required name field is empty");
@@ -123,6 +124,7 @@ public class RecipeService {
     }
 
     public RecipeResponseDTO updateRecipe(Long categoryId, Long recipeId, RecipeRequestDTO recipeRequestDTO) {
+        validateImage(recipeRequestDTO.getImage());
         validateCharCount(recipeRequestDTO.getTimeInMinutes());
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("No category found by id = " + categoryId));
         Recipe recipe = this.recipeRepository.findById(recipeId).orElseThrow(() -> new RecipeNotFoundException("No recipe found with an id = " + recipeId));
@@ -177,6 +179,15 @@ public class RecipeService {
         recipeResponseDTO.setIngredients(ingredientResponseDTOSet);
 
         return recipeResponseDTO;
+    }
+
+    private void validateImage(String image) {
+        if(image == null){
+            throw new ImageNotFoundException("Image is null");
+        }
+        if(image.trim().isEmpty()){
+            throw new ImageNotFoundException("Image is empty");
+        }
     }
 
     private void validateCharCount(int timeInMinutes) {
